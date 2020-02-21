@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cursoandroid.mioper">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:replace="android:appComponentFactory"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+        >
+        <activity
+            android:name=".Jogo"
+            android:label="@string/title_activity_jogo"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity
+            android:name=".IndiqueGanhe"
+            android:label="@string/title_activity_indique_ganhe"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity
+            android:name=".HistoricoViagens"
+            android:label="@string/title_activity_historico_viagens"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity
+            android:name=".GerenciarPagamentos"
+            android:label="@string/title_activity_gerenciar_pagamentos"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity
+            android:name=".MeusDados"
+            android:label="@string/title_activity_meus_dados"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity
+            android:name=".Principal"
+            android:label="@string/title_activity_principal"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity
+            android:name=".EsqueciSenha"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".Cadastro"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".Login"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+        </activity> <!-- para funcionalidades do Botão de Login do Facebook -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
+            android:value="false" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1983047995103716"
+            android:exported="true" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity> <!-- Configurar app para o Back4App -->
+        <meta-data
+            android:name="com.parse.SERVER_URL"
+            android:value="@string/back4app_server_url" />
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/back4app_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/back4app_client_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+    </application>
+
+</manifest>

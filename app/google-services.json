@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "395326483251",
+    "firebase_url": "https://mioper.firebaseio.com",
+    "project_id": "mioper",
+    "storage_bucket": "mioper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395326483251:android:e20b0fdbdc79a49b",
+        "android_client_info": {
+          "package_name": "com.cursoandroid.mioper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "395326483251-k221eq339m38i7bplknvbg5srqt1mqa4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cursoandroid.mioper",
+            "certificate_hash": "7d944690b7c88fd3816e2e6aad8071bb31fe0c2e"
+          }
+        },
+        {
+          "client_id": "395326483251-qkqh4ec4aumh363fv6hnnjoq31cup11j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0-5Z4smVInf_mwF4Fvhaj9abKMJ8C4rE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "395326483251-qkqh4ec4aumh363fv6hnnjoq31cup11j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

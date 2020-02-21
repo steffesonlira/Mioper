@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/van"
+            android:title="@string/menu_navegue_mioper" />
+        <item
+            android:id="@+id/nav_data"
+            android:icon="@drawable/data_icon"
+            android:title="@string/menu_meus_dados" />
+        <item
+            android:id="@+id/nav_payment"
+            android:icon="@drawable/pagamento_ic"
+            android:title="@string/menu_payment" />
+        <item
+            android:id="@+id/nav_travel_history"
+            android:icon="@drawable/travelhistory_ic"
+            android:title="@string/menu_travel_history" />
+        <item
+            android:id="@+id/nav_indication"
+            android:icon="@drawable/indicate"
+            android:title="@string/menu_indicate" />
+        <item
+            android:id="@+id/nav_game"
+            android:icon="@drawable/game_ic"
+            android:title="@string/menu_game" />
+    </group>
+
+    <item android:title="Informações Adicionais">
+        <menu>
+
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/logo"
+                android:title="@string/menu_about_us" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/exit_ic"
+                android:title="@string/menu_exit" />
+        </menu>
+    </item>
+
+</menu>

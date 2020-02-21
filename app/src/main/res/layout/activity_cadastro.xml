@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/cadastromioper"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+
+        android:paddingRight="24dp">
+
+        <ImageView
+            android:layout_width="126dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/logo" />
+
+        <!-- Name Label -->
+
+        <!-- Address Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColorHint="#FFFFFF">
+
+            <EditText
+                android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                android:hint="Nome:"
+                android:inputType="textPersonName"
+                android:textColor="@color/White"
+                android:textColorHighlight="#C5C1C1"
+                android:textColorHint="#FFFFFF"
+                android:textCursorDrawable="@color/design_default_color_primary_dark" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_address"
+                android:layout_width="match_parent"
+                android:textColorHighlight="#C5C1C1"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:backgroundTint="@android:color/white"
+                android:textColor="@color/White"
+                android:inputType="textPostalAddress"
+                android:hint="Endereço Residencial:" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <!--  Email Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:textColorHighlight="#C5C1C1"
+                android:layout_height="wrap_content"
+                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:backgroundTint="@android:color/white"
+                android:textColor="@color/White"
+                android:inputType="textEmailAddress"
+                android:hint="E-mail:" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <!-- mobile number -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_mobile"
+                android:layout_width="match_parent"
+                android:backgroundTint="@android:color/white"
+                android:textColorHighlight="#C5C1C1"
+                android:textColor="@color/White"
+                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Celular:" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                android:textColorHighlight="#C5C1C1"
+                android:textColor="@color/White"
+                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:inputType="textPassword"
+                android:hint="Senha:"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Re-enter Label -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_reEnterPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                android:inputType="textPassword"
+                android:textColorHighlight="#C5C1C1"
+                android:textColor="@color/White"
+                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:hint="Confirme a senha:"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Signup Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_signup"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Criar conta"/>
+
+        <TextView android:id="@+id/link_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@android:color/white"
+            android:text="Já é um Mioper? Faça o Login"
+            android:textColorHighlight="#C5C1C1"
+            android:textColor="@android:color/white"
+            android:textCursorDrawable="@color/design_default_color_primary_dark"
+            android:gravity="center"
+            android:textSize="16dip"/>
+
+    </LinearLayout>
+</ScrollView>
