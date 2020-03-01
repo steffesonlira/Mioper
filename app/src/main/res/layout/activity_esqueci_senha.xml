@@ -31,19 +31,18 @@
         android:id="@+id/textView3"
         android:layout_width="317dp"
         android:layout_height="83dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/description"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24dip"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:layout_conversion_wrapHeight="247"
-
         tools:layout_conversion_wrapWidth="1032" />
 
     <AutoCompleteTextView
@@ -71,6 +70,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Recuperar Senha"
+        android:background="@color/Blue2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

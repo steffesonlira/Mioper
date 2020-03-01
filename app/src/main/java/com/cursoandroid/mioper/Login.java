@@ -76,7 +76,6 @@ public class Login extends AppCompatActivity {
 
         //region login with google+
         btn_login = findViewById(R.id.login_google);
-        btn_logout = findViewById(R.id.logout_google);
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
                 .Builder()
@@ -85,7 +84,7 @@ public class Login extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         btn_login.setOnClickListener(v -> SignInGoogle());
-        btn_logout.setOnClickListener(v -> Logout());
+        //btn_logout.setOnClickListener(v -> Logout());
         if(mAuth.getCurrentUser() != null){
             FirebaseUser user = mAuth.getCurrentUser();
             updateUI(user);

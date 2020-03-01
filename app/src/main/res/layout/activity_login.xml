@@ -85,9 +85,11 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:background="#6366"
-            android:padding="12dp"
-            android:text="Login"
+            android:padding="8dp"
+            android:text="Acessar  "
+            android:textScaleX="1"
             android:textColor="@color/White"
+            android:textAlignment="center"
             android:textSize="24sp" />
 
 
@@ -95,48 +97,37 @@
             android:id="@+id/txtEsqueciSenhaId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="center"
             android:text="Esqueceu a senha? Clique aqui para recuperá-la"
             android:textColor="#FFFFFF"
             android:textColorLink="#3F51B5"
             android:textSize="14sp"
             app:textAllCaps="false" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_face"
-            android:layout_width="180dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="70dp"
-            android:layout_marginBottom="30dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="136dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/login_google"
-            android:layout_width="149dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="185dp"
-            android:layout_marginTop="-55dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginBottom="60dp"
-            android:background="@drawable/round_bg"
-            android:drawableStart="@drawable/ic_google_logo"
-            android:drawableLeft="@drawable/ic_google_logo"
-            android:text="Google+"
-            android:textSize="10sp" />
+            <Button
+                android:id="@+id/login_google"
+                android:layout_width="250dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="26dp"
+                android:layout_marginBottom="60dp"
+                android:text="Continue with Google"
+                android:textSize="10sp" />
 
-        <Button
-            android:id="@+id/logout_google"
-            android:layout_width="140dp"
-            android:layout_height="27dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="185dp"
-            android:layout_marginTop="-90dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginBottom="60dp"
-            android:background="@drawable/round_bg"
-            android:text="Logout"
-            android:visibility="invisible" />
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_face"
+                android:layout_width="250dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-40dp"
+                />
+        </LinearLayout>
 
 
         <TextView
