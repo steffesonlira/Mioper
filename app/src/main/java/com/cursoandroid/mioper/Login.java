@@ -60,6 +60,7 @@ public class Login extends AppCompatActivity {
     DatabaseReference databaseReference;
     static final int GOOGLE_SIGN = 123;
     FirebaseAuth mAuth;
+   // private FirebaseAuth
     Button btn_login, btn_logout;
     TextView text;
     ImageView image;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollViewId"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -41,7 +42,7 @@
             <EditText
                 android:id="@+id/edtUsuario"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@android:color/white"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/background_light"
@@ -104,30 +105,38 @@
             android:textSize="14sp"
             app:textAllCaps="false" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="136dp"
-            android:orientation="vertical">
+            android:layout_height="136dp">
 
             <Button
                 android:id="@+id/login_google"
-                android:layout_width="250dp"
-                android:layout_height="45dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="26dp"
-                android:layout_marginBottom="60dp"
+                android:layout_width="258dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginEnd="29dp"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@drawable/googleg_standard_color_18"
                 android:text="Continue with Google"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@+id/login_face"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.921"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_face"
                 android:layout_width="250dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="-40dp"
-                />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_google" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <TextView
