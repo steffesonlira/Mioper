@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     // region Declaração de variáveis
     Thread splashThread;
     private FirebaseAuth mAuth;
+    private ImageView logo;
+    private Animation topanimation, bottom_animation, middle_animation;
 
     public void onAttachedToWindow(){
         super.onAttachedToWindow();
@@ -35,9 +37,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StartAnimations();
+        logo = findViewById(R.id.logoMioperId);
+        topanimation = AnimationUtils.loadAnimation(this, R.anim.top_animation);
+        bottom_animation = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
+        middle_animation = AnimationUtils.loadAnimation(this, R.anim.middle_animation);
+
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+                Intent intent = new Intent(MainActivity.this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                logo.setAnimation(topanimation);
+            }
+        });
 
         StartAnimations();
 
@@ -45,25 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
     // region Animação de tela
     private void StartAnimations(){
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        animation.reset();
-        ConstraintLayout layout = findViewById(R.id.linearId);
-        layout.clearAnimation();
-        layout.startAnimation(animation);
-
-        animation = AnimationUtils.loadAnimation(this, R.anim.blink);
-        animation.reset();
-        ImageView logo = findViewById(R.id.logoMioperId);
-        logo.clearAnimation();
-        logo.startAnimation(animation);
-
         splashThread = new Thread(){
             @Override
             public void run(){
                 try{
                     int pause = 0;
                     // Splash screen em tempo de espera
-                    while (pause < 3000){
+                    while (pause < 1700){
                         sleep(200);
                         pause += 100;
                     }
@@ -78,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }else{
                         Intent intent = new Intent(MainActivity.this, Login.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                         startActivity(intent);
 
                     }
