@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -60,7 +61,7 @@ public class Login extends AppCompatActivity {
     DatabaseReference databaseReference;
     static final int GOOGLE_SIGN = 123;
     FirebaseAuth mAuth;
-   // private FirebaseAuth
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     Button btn_login, btn_logout;
     TextView text;
     ImageView image;
@@ -74,6 +75,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
 
         //region login with google+
         btn_login = findViewById(R.id.login_google);
@@ -102,32 +105,42 @@ public class Login extends AppCompatActivity {
         //endregionregion
 
         //region login with facebook
-        callbackManager = CallbackManager.Factory.create();
-        logarFace.setPermissions(Arrays.asList("email", "public_profile"));
-
+      mAuth = FirebaseAuth.getInstance();
+      callbackManager = CallbackManager.Factory.create();
+      logarFace.setPermissions(Arrays.asList("email", "public_profile"));
 
         logarFace.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
 
-                Intent intent = new Intent(Login.this, Principal.class);
-                startActivity(intent);
             }
 
             @Override
             public void onCancel() {
 
-                Intent intent = new Intent(Login.this, Login.class);
-                startActivity(intent);
-
+                Toast.makeText(getApplicationContext(),"Canceled", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Intent intent = new Intent(Login.this, Login.class);
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+
+
+        });
+
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+          @Override
+          public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if(user != null){
+                Intent intent = new Intent(Login.this, Principal.class);
                 startActivity(intent);
             }
-        });
+          }
+      };
+
         //endregion
 
         //region MÉTODO PARA LOGAR PADRÃO
@@ -190,7 +203,21 @@ public class Login extends AppCompatActivity {
         });
         //endregion
     }
-        //region signIn with google
+
+    private void handleFacebookAccessToken(AccessToken accessToken) {
+            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+            mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(!task.isSuccessful()){
+                        Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
+                    }
+                }
+            });
+        }
+
+
+    //region signIn with google
     void SignInGoogle() {
 
         Intent signIntent = mGoogleSignInClient.getSignInIntent();
@@ -219,6 +246,17 @@ public class Login extends AppCompatActivity {
         }
     }
     //endregion
+    @Override
+    protected void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(firebaseAuthListener);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mAuth.removeAuthStateListener(firebaseAuthListener);
+    }
 
         //region Google+  Firebase
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
