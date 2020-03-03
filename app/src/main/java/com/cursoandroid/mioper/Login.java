@@ -294,7 +294,7 @@ public class Login extends AppCompatActivity {
                         Log.w("TAG", "Falha na realização do Login", task.getException());
                         Toast.makeText(this, "Falha na Realização do Login", Toast.LENGTH_SHORT).show();
                         updateUI(null);
-                        return;
+                        return;//k
                     }
 
                 });
