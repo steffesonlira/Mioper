@@ -1,0 +1,16 @@
+Index: app/src/main/java/com/cursoandroid/mioper/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/cursoandroid/mioper/Login.java	(date 1583112329000)
++++ app/src/main/java/com/cursoandroid/mioper/Login.java	(date 1583200718873)
+@@ -294,7 +294,7 @@
+                         Log.w("TAG", "Falha na realização do Login", task.getException());
+                         Toast.makeText(this, "Falha na Realização do Login", Toast.LENGTH_SHORT).show();
+                         updateUI(null);
+-                        return;
++                        return;//k
+                     }
+ 
+                 });
