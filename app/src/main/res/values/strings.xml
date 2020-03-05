@@ -48,5 +48,26 @@
     <string name="title_activity_historico_viagens">HistoricoViagens</string>
     <string name="title_activity_indique_ganhe">IndiqueGanhe</string>
     <string name="title_activity_jogo">Jogo</string>
+    <string name="formas_de_pagamento">Formas de pagamento</string>
+
+    <string-array name="paises">
+        <item>Brasil</item>
+        <item>Afeganistão</item>
+        <item>Alemanha</item>
+        <item>Argentina</item>
+        <item>Canadá</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Egito</item>
+        <item>Estados Unidos</item>
+        <item>Guatemala</item>
+        <item>Haiti</item>
+        <item>Índia</item>
+        <item>Itália</item>
+        <item>México</item>
+        <item>Portugal</item>
+        <item>Rússia</item>
+        <item>Suíça</item>
+    </string-array>
 
 </resources>

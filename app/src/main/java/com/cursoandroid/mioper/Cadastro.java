@@ -193,7 +193,6 @@ public class Cadastro extends AppCompatActivity {
             _addressText.setError(null);
         }
 
-
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("Entre com um e-mail válido");
             valid = false;

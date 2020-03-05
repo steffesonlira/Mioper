@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/main"
-    tools:context=".GerenciarPagamentos">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="5dp"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
 
 
+            android:layout_height="87dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll"
+                    app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+
+                    app:toolbarId="@+id/toolbar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/setaVoltarId"
+                        android:layout_width="58dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|left|center_vertical"
+                        android:drawingCacheQuality="auto"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:scrollbarAlwaysDrawVerticalTrack="false"
+                        app:srcCompat="?attr/homeAsUpIndicator"
+                        android:contentDescription="TODO" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="17dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/localAberto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:foregroundGravity="left"
+                        android:gravity="center"
+                        android:lineSpacingExtra="24sp"
+                        android:text="@string/formas_de_pagamento"
+                        android:textAlignment="textStart"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        android:visibility="visible"
+                        tools:ignore="RtlCompat"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/formas_de_pagamento"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="197dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/adcionarCartaoID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/design_default_color_primary"
+            android:clickable="true"
+            android:contextClickable="true"
+            android:drawableStart="@drawable/mais"
+            android:text="Adicionar Cartão" />
+
+
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        android:background="@color/White"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/setaVoltarId"
+                        android:layout_width="58dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center|left|center_vertical"
+                        android:drawingCacheQuality="auto"
+                        android:scrollbarAlwaysDrawHorizontalTrack="true"
+                        android:scrollbarAlwaysDrawVerticalTrack="false"
+                        app:srcCompat="?attr/homeAsUpIndicator" />
+
+                    <Space
+                        android:layout_width="57dp"
+                        android:layout_height="17dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/localAberto"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:foregroundGravity="left"
+                        android:gravity="center"
+                        android:lineSpacingExtra="24sp"
+                        android:text="Adicionar cartao"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        android:visibility="visible"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="Número do Cartao"
+                android:textColor="#000000"
+                android:textColorLink="#FFFFFF" />
+
+            <EditText
+                android:id="@+id/numeroCartaoId"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/White"
+                android:drawableLeft="@drawable/cartao_credito_frente"
+                android:hint="0000 0000 0000 0000"
+                android:inputType="number"
+                 />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="27dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="113dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Data de vencimento"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:text="Código de seurança"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/dataVencCartaoId"
+                    android:layout_width="201dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/White"
+                    android:ems="10"
+                    android:hint="MM/AA"
+                    android:inputType="date" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="27dp"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/codigoCartaoId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/White"
+                    android:ems="10"
+                    android:hint="CVV"
+                    android:inputType="number" />
+
+                <Space
+                    android:layout_width="34dp"
+                    android:layout_height="27dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/paisesId"
+                android:layout_width="match_parent"
+                android:layout_height="46dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="61dp" />
+
+            <Button
+                android:id="@+id/confirmaCadastroId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/com_facebook_likeboxcountview_text_color"
+                android:text="COMFIRMAR" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
