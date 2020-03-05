@@ -10,7 +10,7 @@
 
 
     <include
-        layout="@layout/app_bar_meus_dados"
+        layout="@layout/content_meus_dados"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="#B0C4DE"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_principal"
         app:menu="@menu/activity_principal_drawer" />

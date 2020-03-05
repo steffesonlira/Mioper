@@ -58,6 +58,7 @@ public class MeusDados extends AppCompatActivity
     @BindView(R.id.profile_nascimento) EditText PNascimento;
     @BindView(R.id.btn_alterar_cadastro) Button btnAltera;
     @BindView(R.id.encerra_conta) TextView TxtEcerra;
+    DrawerLayout drawer;
     //Fim da declaração das variáveis
 
 
@@ -65,8 +66,18 @@ public class MeusDados extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_bar_meus_dados);
+        setContentView(R.layout.activity_meus_dados);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         spinner = findViewById(R.id.SPGenre);
