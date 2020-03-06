@@ -31,6 +31,9 @@ public class GerenciarPagamentos extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+
         botaoAdcionarCartao = findViewById(R.id.adcionarCartaoID);
         botaoAdcionarCartao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,9 +44,10 @@ public class GerenciarPagamentos extends AppCompatActivity
         });
 
 
+
     }
 
-    //metodos padroes
+    /*------------------------metodos padroes------------------------*/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

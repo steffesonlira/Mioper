@@ -10,6 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 public class cadastrarCartao extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -39,7 +47,10 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
                 //recebe os numeros digitados
                 numCartao = findViewById(R.id.numeroCartaoId);
                 dataVencimentoCartao = findViewById(R.id.dataVencCartaoId);
-                codNumCartao = findViewById(R.id.codigoCartaoId);
+
+                validate();
+
+
             }
         });
     }
@@ -52,5 +63,64 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String numCartaoValidacao = numCartao.getText().toString();
+        String dataCartaoValidacao = dataVencimentoCartao.getText().toString();
+        String codNumCartaoValidacao = codNumCartao.getText().toString();
+
+        //validacao do campo de numero do cartao
+        if (numCartaoValidacao.isEmpty() || numCartaoValidacao.length() < 12 ) {
+            numCartao.setError("Entre com pelo menos 12 caracteres");
+            valid = false;
+        } else if (numCartaoValidacao.equals("111111111111111")){
+            numCartao.setError("Número de Cartão inválido");
+            valid = false;
+        }else{
+            numCartao.setError(null);
+        }
+
+        //validacao do campo da data de vencimento do cartao
+        String dateFormat = "MM/uu";
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);
+        LocalDate date = LocalDate.parse(dataCartaoValidacao, dateTimeFormatter);
+
+        if (dataCartaoValidacao.isEmpty()) {
+            dataVencimentoCartao.setError("Entre com a data");
+            valid = false;
+        } else if (date.equals(dataVencimentoCartao)){
+               dataVencimentoCartao.setError(null);
+        }else{
+            dataVencimentoCartao.setError("Data inválida");
+            valid = false;
+        }
+
+        //validacao do codigo de seguranca da cartao
+        if (numCartaoValidacao.isEmpty() || numCartaoValidacao.length() < 12 ) {
+            numCartao.setError("Entre com pelo menos 12 caracteres");
+            valid = false;
+        } else if (numCartaoValidacao.equals("111111111111111")){
+            numCartao.setError("Número de Cartão inválido");
+            valid = false;
+        }else{
+            numCartao.setError(null);
+        }
+
+        return valid;
+    }
+
+    public static boolean isDateValid(String data) {
+
+
+
+        try {
+
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }
