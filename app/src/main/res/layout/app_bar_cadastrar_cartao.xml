@@ -25,43 +25,26 @@
                 android:id="@+id/appbar"
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="61dp"
+                android:background="#000000">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/localAbertoId"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/setaVoltarId"
-                        android:layout_width="58dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center|left|center_vertical"
-                        android:drawingCacheQuality="auto"
-                        android:scrollbarAlwaysDrawHorizontalTrack="true"
-                        android:scrollbarAlwaysDrawVerticalTrack="false"
-                        app:srcCompat="?attr/homeAsUpIndicator" />
-
-                    <Space
-                        android:layout_width="57dp"
-                        android:layout_height="17dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:id="@+id/localAberto"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="left"
-                        android:foregroundGravity="left"
-                        android:gravity="center"
-                        android:lineSpacingExtra="24sp"
-                        android:text="Adicionar cartao"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textStyle="bold"
-                        android:typeface="normal"
-                        android:visibility="visible"
-                        tools:visibility="visible" />
-                </LinearLayout>
+                    android:layout_height="56dp"
+                    android:layout_gravity="left"
+                    android:foregroundGravity="left"
+                    android:gravity="center"
+                    android:lineSpacingExtra="24sp"
+                    android:text="  ←   Adicionar cartão"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    android:visibility="visible"
+                    tools:ignore="RtlCompat"
+                    tools:visibility="visible" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -102,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="113dp"
+                    android:layout_width="105dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
@@ -113,7 +96,6 @@
                     android:id="@+id/textView14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:text="Código de seurança"
                     android:textColor="#000000" />
@@ -126,13 +108,14 @@
 
                 <EditText
                     android:id="@+id/dataVencCartaoId"
-                    android:layout_width="201dp"
+                    android:layout_width="192dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="5dp"
                     android:background="@color/White"
                     android:ems="10"
                     android:hint="MM/AA"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -143,16 +126,13 @@
                     android:id="@+id/codigoCartaoId"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:background="@color/White"
                     android:ems="10"
                     android:hint="CVV"
                     android:inputType="number" />
 
-                <Space
-                    android:layout_width="34dp"
-                    android:layout_height="27dp"
-                    android:layout_weight="1" />
             </LinearLayout>
 
             <Spinner

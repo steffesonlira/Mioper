@@ -10,7 +10,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="5dp"
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
 
 
-            android:layout_height="87dp"
+            android:layout_height="59dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
@@ -26,7 +25,8 @@
                 android:id="@+id/appbar"
 
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="72dp"
+                android:background="#000000">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
@@ -42,33 +42,18 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/setaVoltarId"
-                        android:layout_width="58dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center|left|center_vertical"
-                        android:drawingCacheQuality="auto"
-                        android:scrollbarAlwaysDrawHorizontalTrack="true"
-                        android:scrollbarAlwaysDrawVerticalTrack="false"
-                        app:srcCompat="?attr/homeAsUpIndicator"
-                        android:contentDescription="TODO" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="17dp"
-                        android:layout_weight="1" />
-
                     <TextView
-                        android:id="@+id/localAberto"
+                        android:id="@+id/localAbertoId"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="61dp"
                         android:layout_gravity="left"
                         android:foregroundGravity="left"
                         android:gravity="center"
                         android:lineSpacingExtra="24sp"
-                        android:text="@string/formas_de_pagamento"
+                        android:text="  ←   Gerenciar Pagamentos"
                         android:textAlignment="textStart"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold"
                         android:typeface="normal"
                         android:visibility="visible"
@@ -78,6 +63,10 @@
 
             </com.google.android.material.appbar.AppBarLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="22dp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -89,6 +78,10 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
@@ -98,17 +91,20 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" />
+
         <Button
             android:id="@+id/adcionarCartaoID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/design_default_color_primary"
+            android:background="@color/browser_actions_bg_grey"
             android:clickable="true"
             android:contextClickable="true"
             android:drawableStart="@drawable/mais"
-            android:text="Adicionar Cartão" />
+            android:text="Adicionar método de pagamento"
+            android:textAlignment="textStart" />
 
 
     </LinearLayout>
