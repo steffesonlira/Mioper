@@ -68,6 +68,8 @@ public class Login extends AppCompatActivity {
     ProgressBar progressBar;
     GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
+    public Toast backToast;
+    private long backPressedTime;
     //endregion
 
     @SuppressLint("WrongViewCast")
@@ -383,5 +385,20 @@ public class Login extends AppCompatActivity {
         request.setParameters(parameters);
         request.executeAsync();
     }
+
+    @Override
+    public void onBackPressed() {
+           if(backPressedTime + 2000 > System.currentTimeMillis()){
+               // bbackToast.cancel();
+               super.onBackPressed();
+               return;
+            }
+           else{
+               Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.",Toast.LENGTH_SHORT).show();
+           }
+            backPressedTime = System.currentTimeMillis();
+
+        }
+
 
 }

@@ -34,6 +34,7 @@ public class Jogo extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(toolbar);
 
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,6 +51,9 @@ public class Jogo extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            startActivity(new Intent(this, Jogo.class)); //O efeito ao ser pressionado do botão (no caso abre a activity)
+            finishAffinity(); //Método para matar a activity e não deixa-lá indexada na pilhagem
+            return;
         }
     }
 
@@ -119,4 +123,5 @@ public class Jogo extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
