@@ -391,7 +391,7 @@ public class Login extends AppCompatActivity {
            if(backPressedTime + 2000 > System.currentTimeMillis()){
                // bbackToast.cancel();
                super.onBackPressed();
-               return;
+               finish();
             }
            else{
                Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.",Toast.LENGTH_SHORT).show();

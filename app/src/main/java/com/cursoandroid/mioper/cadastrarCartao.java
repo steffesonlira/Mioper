@@ -2,7 +2,9 @@ package com.cursoandroid.mioper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,12 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.app_bar_cadastrar_cartao);
 
         confirmar = findViewById(R.id.confirmaCadastroId);
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Retornar em Gerenciar Pagamentos");
+        //endregion
 
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesId);
@@ -122,5 +130,23 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        Intent h= new Intent(cadastrarCartao.this,GerenciarPagamentos.class);
+        startActivity(h);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, GerenciarPagamentos.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:break;
+        }
+        return true;
     }
 }

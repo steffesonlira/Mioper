@@ -226,4 +226,10 @@ public class Cadastro extends AppCompatActivity {
 
     }
     //endregion
+    @Override
+    public void onBackPressed() {
+        Intent h= new Intent(Cadastro.this,Login.class);
+        startActivity(h);
+    }
+
 }

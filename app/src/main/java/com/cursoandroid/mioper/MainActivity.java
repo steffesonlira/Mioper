@@ -113,4 +113,9 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
 }

@@ -50,12 +50,8 @@ public class GerenciarPagamentos extends AppCompatActivity
     /*------------------------metodos padroes------------------------*/
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        Intent h= new Intent(GerenciarPagamentos.this,Principal.class);
+        startActivity(h);
     }
 
     @Override
@@ -124,4 +120,6 @@ public class GerenciarPagamentos extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

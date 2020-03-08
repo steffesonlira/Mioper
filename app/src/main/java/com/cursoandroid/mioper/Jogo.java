@@ -46,15 +46,7 @@ public class Jogo extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-            startActivity(new Intent(this, Jogo.class)); //O efeito ao ser pressionado do botão (no caso abre a activity)
-            finishAffinity(); //Método para matar a activity e não deixa-lá indexada na pilhagem
-            return;
-        }
+
     }
 
     @Override
