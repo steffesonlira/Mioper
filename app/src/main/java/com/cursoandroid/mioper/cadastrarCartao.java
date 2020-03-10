@@ -35,11 +35,6 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
 
         confirmar = findViewById(R.id.confirmaCadastroId);
 
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Retornar em Gerenciar Pagamentos");
-        //endregion
 
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesId);
@@ -55,7 +50,9 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
                 //recebe os numeros digitados
                 numCartao = findViewById(R.id.numeroCartaoId);
                 dataVencimentoCartao = findViewById(R.id.dataVencCartaoId);
+                codNumCartao = findViewById(R.id.codigoCartaoId);
 
+                Toast.makeText(getApplicationContext(), numCartao.getText().toString(), Toast.LENGTH_LONG);
                 validate();
 
 
@@ -107,10 +104,10 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
         }
 
         //validacao do codigo de seguranca da cartao
-        if (numCartaoValidacao.isEmpty() || numCartaoValidacao.length() < 12 ) {
-            numCartao.setError("Entre com pelo menos 12 caracteres");
+        if (codNumCartaoValidacao.isEmpty() || codNumCartaoValidacao.length() < 3 || codNumCartaoValidacao.length() > 3 ) {
+            numCartao.setError("Entre com o código do cartão corretamente");
             valid = false;
-        } else if (numCartaoValidacao.equals("111111111111111")){
+        } else if (numCartaoValidacao.equals("111")){
             numCartao.setError("Número de Cartão inválido");
             valid = false;
         }else{
@@ -120,17 +117,6 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
         return valid;
     }
 
-    public static boolean isDateValid(String data) {
-
-
-
-        try {
-
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
     @Override
     public void onBackPressed() {
 

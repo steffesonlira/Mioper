@@ -62,17 +62,18 @@
                 android:textColor="#000000"
                 android:textColorLink="#FFFFFF" />
 
-            <EditText
+            <com.santalu.maskedittext.MaskEditText
                 android:id="@+id/numeroCartaoId"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/White"
+                android:layout_height="61dp"
+                android:background="?attr/editTextBackground"
                 android:drawableLeft="@drawable/cartao_credito_frente"
                 android:hint="0000 0000 0000 0000"
+                android:imeOptions="actionNext"
                 android:inputType="number"
-                 />
+                android:textColorHighlight="@color/DarkBlue"
+                android:textColorLink="@color/DarkBlue"
+                app:met_mask="#### #### #### ####" />
 
             <Space
                 android:layout_width="match_parent"
@@ -106,32 +107,38 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <EditText
+                <com.santalu.maskedittext.MaskEditText
                     android:id="@+id/dataVencCartaoId"
                     android:layout_width="192dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="5dp"
-                    android:background="@color/White"
+                    android:background="?attr/editTextBackground"
                     android:ems="10"
                     android:hint="MM/AA"
+                    android:imeOptions="actionNext"
                     android:inputType="date"
-                    />
+                    android:textColorHighlight="@color/DarkBlue"
+                    android:textColorLink="@color/DarkBlue"
+                    app:met_mask="##/##" />
 
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="27dp"
                     android:layout_weight="1" />
 
-                <EditText
+                <com.santalu.maskedittext.MaskEditText
                     android:id="@+id/codigoCartaoId"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@color/White"
+                    android:background="?attr/editTextBackground"
                     android:ems="10"
                     android:hint="CVV"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textColorHighlight="@color/DarkBlue"
+                    android:textColorLink="@color/DarkBlue"
+                    app:met_mask="###" />
 
             </LinearLayout>
 
