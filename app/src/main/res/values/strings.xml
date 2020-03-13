@@ -70,4 +70,15 @@
         <item>Suíça</item>
     </string-array>
 
+    <!-- strings da lista de cartoes-->
+    <string name="config_credit_cards_tab_list">CARTÕES</string>
+
+    <string name="credit_card_removed">Cartão de crédito removido com sucesso.</string>
+
+    <string name="credit_card_number_label">Número:</string>
+
+    <string name="remove_item">Remover</string>
+    <string name="remove_item_going">Removendo&#8230;</string>
+    <!--fim das strings da lista de cartoes-->
+
 </resources>
