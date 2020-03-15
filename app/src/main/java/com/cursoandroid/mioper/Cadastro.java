@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class Cadastro extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-
+    ToggleButton toggleButton;
     //region Variáveis cadastro do usuário
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_address) EditText _addressText;
@@ -43,6 +45,7 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
+        toggleButton = findViewById(R.id.tbTipoUser);
 
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
@@ -75,6 +78,17 @@ public class Cadastro extends AppCompatActivity {
             }
         });
         //endregion
+
+    }
+
+    //Criar ação do botão motorista e user:
+    public void onToggleClick(View v){
+        if(toggleButton.isChecked()) {
+            Toast.makeText(this, "Motorista", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Cliente", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //region Método para criação de usuário e senha no Firebase pelo método de Authentication
@@ -129,6 +143,7 @@ public class Cadastro extends AppCompatActivity {
         String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
+        String tbTipoUser = toggleButton.getText().toString();
 
         //region Criando HashMap para criação de database
         HashMap<Object, String> hashMap = new HashMap<>();
@@ -139,6 +154,11 @@ public class Cadastro extends AppCompatActivity {
         hashMap.put("mobile",mobile);
         hashMap.put("password",password);
         hashMap.put("reEnterPassword",reEnterPassword);
+        if(toggleButton.isChecked())
+            hashMap.put("Tipo_User","M");
+        else{
+            hashMap.put("Tipo_User","P");
+        }
         //endregion
 
         //Criando instancia no DataBase Firebase Realtime

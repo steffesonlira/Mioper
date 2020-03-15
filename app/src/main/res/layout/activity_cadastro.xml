@@ -138,6 +138,16 @@
                 android:hint="Confirme a senha:"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ToggleButton
+            android:id="@+id/tbTipoUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="onToggleClick"
+            android:textOff="Passageiro"
+            android:textOn="Motorista"
+            ></ToggleButton>
+
         <!-- Signup Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_signup"
@@ -159,6 +169,8 @@
             android:textCursorDrawable="@color/design_default_color_primary_dark"
             android:gravity="center"
             android:textSize="16dip"/>
+
+
 
     </LinearLayout>
 </ScrollView>
