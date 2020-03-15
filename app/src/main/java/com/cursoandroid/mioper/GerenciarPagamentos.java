@@ -8,21 +8,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class GerenciarPagamentos extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class GerenciarPagamentos extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
-
-    private RecyclerView recyclerView;
     private Button botaoAdcionarCartao;
+
+    private String[] tst = new String[]{"AAAAAAAAAAAAAA","bbbbbbbbbbbb"};
+    //intancias da lista
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +35,6 @@ public class GerenciarPagamentos extends AppCompatActivity
         setContentView(R.layout.app_bar_gerenciar_pagamentos);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
 
         botaoAdcionarCartao = findViewById(R.id.adcionarCartaoID);
@@ -44,8 +47,9 @@ public class GerenciarPagamentos extends AppCompatActivity
         });
 
 
-
     }
+
+
 
     /*------------------------metodos padroes------------------------*/
     @Override

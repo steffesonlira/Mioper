@@ -103,7 +103,7 @@ public class Login extends AppCompatActivity {
         }
         //endregion
 
-        //region criação das views virtuais nomeando os nampos para m ligaçãpo das views com o codigo Java
+        //region criação das views virtuais nomeando os campos para m ligaçãpo das views com o codigo Java
         email = findViewById(R.id.edtUsuario);
         senha = findViewById(R.id.edtSenha);
         logar = findViewById(R.id.btnLogin);

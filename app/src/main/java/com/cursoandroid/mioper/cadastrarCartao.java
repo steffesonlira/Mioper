@@ -1,5 +1,6 @@
 package com.cursoandroid.mioper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,27 +15,37 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.ArrayDeque;
+import java.util.HashMap;
 
 public class cadastrarCartao extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
     private EditText numCartao;
     private EditText dataVencimentoCartao;
     private EditText codNumCartao;
     private Button confirmar;
     private Spinner paisesCadastrados;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_cadastrar_cartao);
 
         confirmar = findViewById(R.id.confirmaCadastroId);
-
 
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesId);
@@ -52,12 +63,14 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
                 dataVencimentoCartao = findViewById(R.id.dataVencCartaoId);
                 codNumCartao = findViewById(R.id.codigoCartaoId);
 
-                Toast.makeText(getApplicationContext(), numCartao.getText().toString(), Toast.LENGTH_LONG);
+
+
                 validate();
-
-
+                salvarNumCartaoFireBase(numCartao.getText().toString());
             }
         });
+
+
     }
 
     @Override
@@ -67,6 +80,20 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void salvarNumCartaoFireBase(String numCartao){
+        HashMap<Object, String> hashMap = new HashMap<>();
+        hashMap.put("numeroCartao",numCartao);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference();
+
+        String emailId = reference.child("Users").push().getKey();
+
+
+        reference.child("Users").child(emailId).setValue(hashMap);//comportamento esperado (2º child é onde vai a key
 
     }
 
@@ -89,22 +116,22 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
         }
 
         //validacao do campo da data de vencimento do cartao
-        String dateFormat = "MM/uu";
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);
-        LocalDate date = LocalDate.parse(dataCartaoValidacao, dateTimeFormatter);
-
-        if (dataCartaoValidacao.isEmpty()) {
-            dataVencimentoCartao.setError("Entre com a data");
-            valid = false;
-        } else if (date.equals(dataVencimentoCartao)){
-               dataVencimentoCartao.setError(null);
-        }else{
-            dataVencimentoCartao.setError("Data inválida");
-            valid = false;
-        }
+//        String dateFormat = "MM/uu";
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat).withResolverStyle(ResolverStyle.STRICT);
+//        LocalDate date = LocalDate.parse(dataCartaoValidacao, dateTimeFormatter);
+//
+//        if (dataCartaoValidacao.isEmpty()) {
+//            dataVencimentoCartao.setError("Entre com a data");
+//            valid = false;
+//        } else if (date.equals(dataVencimentoCartao)){
+//               dataVencimentoCartao.setError(null);
+//        }else{
+//            dataVencimentoCartao.setError("Data inválida");
+//            valid = false;
+//        }
 
         //validacao do codigo de seguranca da cartao
-        if (codNumCartaoValidacao.isEmpty() || codNumCartaoValidacao.length() < 3 || codNumCartaoValidacao.length() > 3 ) {
+        if (codNumCartaoValidacao.isEmpty() || codNumCartaoValidacao.length() < 3 ) {
             numCartao.setError("Entre com o código do cartão corretamente");
             valid = false;
         } else if (numCartaoValidacao.equals("111")){
