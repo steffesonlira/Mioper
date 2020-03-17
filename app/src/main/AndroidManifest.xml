@@ -27,7 +27,16 @@
         <activity
             android:name=".IndiqueGanhe"
             android:label="@string/title_activity_indique_ganhe"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="example.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
@@ -100,8 +109,9 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="@string/back4app_client_key" />
         <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+        android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" />
+
     </application>
 
 </manifest>
