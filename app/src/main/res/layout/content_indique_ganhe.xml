@@ -5,8 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".IndiqueGanhe"
-    >
+    tools:context=".IndiqueGanhe">
 
+    <TextView
+        android:id="@+id/txtCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="https://youtu.be/I_s36Tgt6Pg"
+        android:enabled="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/btnInvite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <AdapterViewFlipper
+        android:id="@+id/idAdapterVF"
+        android:layout_width="392dp"
+        android:layout_height="369dp"
+        android:layout_margin="16dp"
+        android:flipInterval="4000"
+        app:layout_constraintBottom_toTopOf="@+id/btnInvite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnInvite"
+        android:layout_width="141dp"
+        android:layout_height="74dp"
+        android:background="@drawable/button_selector"
+        android:text="Convidar Amigos"
+        android:textColor="@color/White"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.74" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left" />
 </androidx.constraintlayout.widget.ConstraintLayout>

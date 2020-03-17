@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1F44B6</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#ffcc00</color>
+    <color name="colorAccent">#333399</color>
     <color name="DarkBlue">#00008B</color>
     <color name="White">#FFFFFF</color>
     <color name="com_facebook_button_background_color_focused_disabled">#3C5A99</color>
@@ -14,4 +14,12 @@
     <color name="colorLightRed">#F85F62</color>
     <color name="colorText">#666666</color>
     <color name="colorLightGrey">#AAAAAA</color>
+
+    <!--Colors buttons custom -->
+    <color name="Shadow">#4747d1</color>
+    <color name="Shadow_1">#3333cc</color>
+    <color name="Shadow_2">#24248f</color>
+    <color name="Black">#000000</color>
+    <color name="Blue_escuro">#191966</color>
+
 </resources>

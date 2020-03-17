@@ -6,7 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +27,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -56,6 +60,7 @@ public class Login extends AppCompatActivity {
     private LoginButton logarFace;
     private TextView criarConta;
     private TextView esqueceuSenha;
+    View viewLayout;
     private TextView txtName, txtEmail;
     DatabaseReference databaseReference;
     static final int GOOGLE_SIGN = 101;
@@ -78,6 +83,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        LayoutInflater layoutInflater = getLayoutInflater();
+        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup)findViewById(R.id.custom_layout));
 
         //Configuration Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -88,6 +95,7 @@ public class Login extends AppCompatActivity {
 
         //region login with google+
         btn_login = findViewById(R.id.login_google);
+
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
                 .Builder()
@@ -117,26 +125,46 @@ public class Login extends AppCompatActivity {
       callbackManager = CallbackManager.Factory.create();
       logarFace.setPermissions(Arrays.asList("email", "public_profile"));
 
-        logarFace.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-
+                Intent intent = new Intent(Login.this, EsqueciSenha.class);
+                startActivity(intent);
             }
 
             @Override
             public void onCancel() {
-
-                Toast.makeText(getApplicationContext(),"Canceled", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Login.this, Jogo.class);
+                startActivity(intent);
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
             }
-
-
         });
+
+//        logarFace.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//                Toast.makeText(getApplicationContext(),"Canceled", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+//            }
+//
+//
+//        });
 
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
           @Override
@@ -182,7 +210,10 @@ public class Login extends AppCompatActivity {
                                         }
                                     }, 3000);
 
-
+                            Toast  toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
+                        toastCustom.setGravity(Gravity.CENTER,0,0);
+                        toastCustom.setView(viewLayout);
+                        toastCustom.show();
                             Intent intent = new Intent(Login.this, Principal.class);
                             startActivity(intent);
                         }else{

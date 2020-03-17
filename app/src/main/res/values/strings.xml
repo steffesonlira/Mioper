@@ -7,8 +7,10 @@
 
     <string name="app_name">Mioper</string>
     <string name="logoMarca">O mundo se abre com apenas um toque</string>
+    <!-- Strings para facebook login -->
     <string name="facebook_app_id">2388688338068853</string>
-    <string name="fb_login_protocol_scheme"></string>
+    <string name="fb_login_protocol_scheme">fb2388688338068853</string>
+    <!-- Strings para facebook login -->
     <string name="back4app_server_url">https://parseapi.back4app.com/</string>
     fb1983047995103716
     <!-- Change the following strings as required -->

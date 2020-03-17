@@ -53,6 +53,9 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.4.0" //animated images
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //biblioteca de listas
     implementation 'com.github.santalu:mask-edittext:1.1.1' //biblioteca de mascaras (utilizada no cadastro de cartoes)
+    implementation 'com.google.firebase:firebase-dynamic-links:19.0.0' //Adicionar links para convidar pessoas Frebase Dinamic Links
+
+
 
 
     // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
