@@ -12,9 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.cursoandroid.mioper.helper.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -29,7 +26,7 @@ import butterknife.ButterKnife;
 public class Cadastro extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    //region Componentes cadastro do usuário
+    //region Variáveis cadastro do usuário
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_address) EditText _addressText;
     @BindView(R.id.input_email) EditText _emailText;
@@ -125,7 +122,6 @@ public class Cadastro extends AppCompatActivity {
                 }, 3000);
     //endregion
 
-        //region atribuindo valores para variaveis e em seguida salvando no banco firebase
         String name = _nameText.getText().toString();
         String address = _addressText.getText().toString();
         String email_semreplace = _emailText.getText().toString();
@@ -134,17 +130,25 @@ public class Cadastro extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        Usuario usuario = new Usuario();
+        //region Criando HashMap para criação de database
+        HashMap<Object, String> hashMap = new HashMap<>();
 
-        usuario.setName(name);
-        usuario.setAddress(address);
-        usuario.setEmail_semreplace(email_semreplace);
-        usuario.setEmail(email);
-        usuario.setMobile(mobile);
-        usuario.setPassword(password);
-        usuario.setReEnterPassword(reEnterPassword);
+        hashMap.put("name",name);
+        hashMap.put("adress",address);
+        hashMap.put("email",email);
+        hashMap.put("mobile",mobile);
+        hashMap.put("password",password);
+        hashMap.put("reEnterPassword",reEnterPassword);
+        //endregion
 
-        usuario.salvar();
+        //Criando instancia no DataBase Firebase Realtime
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        //Atribuindo um relacionamento pai
+        DatabaseReference reference = database.getReference("Users");
+
+        //setando a chave primária
+        reference.child(email).setValue(hashMap);
 
     }
 

@@ -41,7 +41,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
@@ -51,15 +50,16 @@ import java.util.HashMap;
 //region CLASSE LOGIN
 public class Login extends AppCompatActivity {
     //region DECLARAÇÃO DE VARIÁVEIS
-    private EditText email;
-    private EditText senha;
+    public EditText email;
+    public EditText senha;
     private Button logar;
     private LoginButton logarFace;
     private TextView criarConta;
     private TextView esqueceuSenha;
     private TextView txtName, txtEmail;
     DatabaseReference databaseReference;
-    static final int GOOGLE_SIGN = 123;
+    static final int GOOGLE_SIGN = 101;
+    private static final String TAG = "GoogleActivity";
     FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     Button btn_login, btn_logout;
@@ -79,6 +79,12 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+        //Configuration Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        //End configuration Google Sign In
 
         //region login with google+
         btn_login = findViewById(R.id.login_google);
@@ -228,20 +234,18 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GOOGLE_SIGN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            Intent intent = new Intent(Login.this, Principal.class);
-            startActivity(intent);
 
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if (account != null) firebaseAuthWithGoogle(account);
-
+                firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
+                Log.w(TAG, "Google sign in failed", e);
+                Log.e("MYAPP", "exception", e);
                 e.printStackTrace();
             }
 
@@ -251,6 +255,8 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
         mAuth.addAuthStateListener(firebaseAuthListener);
     }
 
@@ -268,62 +274,48 @@ public class Login extends AppCompatActivity {
                 .getCredential(account.getIdToken(), null);
 
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    FirebaseUser user = mAuth.getCurrentUser();
 
-                        String email = txtEmail.getText().toString();
-                        String password = senha.getText().toString();
-
-                        //Criando HashMap para criação de database
-                        HashMap<Object, String> hashMap = new HashMap<>();
-                        hashMap.put("email",email);
-                        hashMap.put("password",password);
-
-                        //firebase database instance
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                        DatabaseReference reference = database.getReference("Users");
-
-                        reference.child(email).setValue(hashMap);
-
-                        Log.d("TAG", "Login realizado com sucesso");
-                        Intent intent = new Intent(Login.this, Principal.class);
-                        startActivity(intent);
-
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
-                    } else {
-                        Log.w("TAG", "Falha na realização do Login", task.getException());
-                        Toast.makeText(this, "Falha na Realização do Login", Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                        return;//k
-                    }
-
-                });
+                                    Intent i = new Intent(getApplicationContext(),Principal.class);
+                                    startActivity(i);
+                                    finish();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
+                                    updateUI(null);
+                                }
+                            }
+                        });
     }
     //endregion
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            email.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            senha.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            String photo = String.valueOf(user.getPhotoUrl());
-
-            text.append("Info : \n");
-            text.append(name + "\n");
-            text.append(email);
-
-            //Picasso.get().load(photo).into(image);
-            btn_login.setVisibility(View.INVISIBLE);
-            btn_logout.setVisibility(View.VISIBLE);
+//            String name = user.getDisplayName();
+//            String email = user.getEmail();
+//            String photo = String.valueOf(user.getPhotoUrl());
+//
+//            text.append("Info : \n");
+//            text.append(name + "\n");
+//            text.append(email);
+//
+//            //Picasso.get().load(photo).into(image);
+//            btn_login.setVisibility(View.INVISIBLE);
+//            btn_logout.setVisibility(View.VISIBLE);
 
         } else {
 
+            email.setText(R.string.signed_out);
+            senha.setText(null);
             text.setText("Firebase Login");
-            Picasso.get().load(R.drawable.ic_firebase_logo).into(image);
             btn_login.setVisibility(View.VISIBLE);
-            btn_logout.setVisibility(View.INVISIBLE);
+//            btn_logout.setVisibility(View.INVISIBLE);
 
         }
     }
