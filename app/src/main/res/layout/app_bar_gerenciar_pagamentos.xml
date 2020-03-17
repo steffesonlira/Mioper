@@ -82,15 +82,6 @@
             android:layout_width="match_parent"
             android:layout_height="25dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-
-            />
-
 
         <Space
             android:layout_width="wrap_content"

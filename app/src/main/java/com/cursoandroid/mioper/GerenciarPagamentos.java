@@ -20,14 +20,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class GerenciarPagamentos extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private FirebaseAuth mAuth;
     private Button botaoAdcionarCartao;
 
-    private String[] tst = new String[]{"AAAAAAAAAAAAAA","bbbbbbbbbbbb"};
-    //intancias da lista
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

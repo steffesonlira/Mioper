@@ -15,6 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cursoandroid.mioper.helper.ConfiguracaoFirebase;
+import com.cursoandroid.mioper.helper.UsuarioFirebase;
+import com.cursoandroid.mioper.modelo.Cartao;
+import com.cursoandroid.mioper.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +51,8 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
 
         confirmar = findViewById(R.id.confirmaCadastroId);
 
+        Cartao cartao = new Cartao();
+
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesId);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paises,android.R.layout.simple_spinner_item);
@@ -63,16 +69,19 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
                 dataVencimentoCartao = findViewById(R.id.dataVencCartaoId);
                 codNumCartao = findViewById(R.id.codigoCartaoId);
 
-
-
                 validate();
-                salvarNumCartaoFireBase(numCartao.getText().toString());
+
+                Cartao cartao = new Cartao();
+                cartao.setNumeroCartao(numCartao.getText().toString());
+
+                salvarCartao(cartao);
             }
         });
 
 
     }
 
+    //region lista de paises
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String paisSelecionado = parent.getItemAtPosition(position).toString(); //recebe o país selecionado
@@ -82,19 +91,14 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    //end region lista de paises
 
-    public void salvarNumCartaoFireBase(String numCartao){
-        HashMap<Object, String> hashMap = new HashMap<>();
-        hashMap.put("numeroCartao",numCartao);
+    private void salvarCartao(Cartao cartao){
+        Cartao catao = new Cartao();
+        cartao.setNumeroCartao(cartao.getNumeroCartao());
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference();
-
-        String emailId = reference.child("Users").push().getKey();
-
-
-        reference.child("Users").child(emailId).setValue(hashMap);//comportamento esperado (2º child é onde vai a key
-
+        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+        cartao.setDonoCartao(usuarioLogado.getEmail());
     }
 
     public boolean validate() {

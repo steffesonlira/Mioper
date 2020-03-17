@@ -105,7 +105,8 @@ public class MeusDados extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
+        Intent h= new Intent(MeusDados.this,Principal.class);
+        startActivity(h);
     }
 
     @Override
@@ -196,6 +197,5 @@ public class MeusDados extends AppCompatActivity
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-
 
 }
