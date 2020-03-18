@@ -1,8 +1,5 @@
 package com.cursoandroid.mioper;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,28 +9,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cursoandroid.mioper.helper.ConfiguracaoFirebase;
 import com.cursoandroid.mioper.helper.UsuarioFirebase;
 import com.cursoandroid.mioper.modelo.Cartao;
-import com.cursoandroid.mioper.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
-import java.util.ArrayDeque;
 import java.util.HashMap;
 
 public class cadastrarCartao extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -42,7 +26,7 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
     private EditText codNumCartao;
     private Button confirmar;
     private Spinner paisesCadastrados;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +78,22 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
     //end region lista de paises
 
     private void salvarCartao(Cartao cartao){
-        Cartao catao = new Cartao();
-        cartao.setNumeroCartao(cartao.getNumeroCartao());
+        //o código daqui pra baixo pode ser utilizado para inserir qualquer dado no banco
+        String email = UsuarioFirebase.getIdentificadorUsuario();        //coloca o email como indentificador
+        String emailID = email.replace(".","-");    //faz um replace no email identificador para buscar o ID
 
-        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-        cartao.setDonoCartao(usuarioLogado.getEmail());
+        HashMap<Object, String> hashMap = new HashMap<>();//declara o hashMpa
+        hashMap.put("numeroCartao",cartao.getNumeroCartao()); //insere o nome da informação no hashMap e o valor da variavel
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();//classe para iniciar o database
+        DatabaseReference cadastroDeCartao = firebaseRef.child( "Users" ).child( emailID ).child("MétodosDePagamentos");//caminho que sera salvo o dado
+
+        cadastroDeCartao.setValue(hashMap);//insere o conteudo do hashMap no banco a partir do caminho para inserir o dado
+
+
+        //final da inserção no banco
     }
+
 
     public boolean validate() {
         boolean valid = true;

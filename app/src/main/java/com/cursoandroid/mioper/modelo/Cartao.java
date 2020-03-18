@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class Cartao {
     private String numeroCartao;
-    private String donoCartao;
+
 
     public Cartao(){
 
@@ -30,11 +30,5 @@ public class Cartao {
         this.numeroCartao = numeroCartao;
     }
 
-    public String getDonoCartao() {
-        return donoCartao;
-    }
 
-    public void setDonoCartao(String donoCartao) {
-        this.donoCartao = donoCartao;
-    }
 }

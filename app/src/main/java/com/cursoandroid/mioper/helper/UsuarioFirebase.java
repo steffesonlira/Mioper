@@ -1,13 +1,11 @@
 package com.cursoandroid.mioper.helper;
 
-import com.cursoandroid.mioper.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by jamiltondamasceno
  */
-
 
 
 public class UsuarioFirebase {
@@ -17,17 +15,22 @@ public class UsuarioFirebase {
         return usuario.getCurrentUser();
     }
 
-    public static Usuario getDadosUsuarioLogado(){
-
-        FirebaseUser firebaseUser = getUsuarioAtual();
-
-        Usuario usuario = new Usuario();
-        usuario.setEmail( firebaseUser.getEmail() );
-        usuario.setName( firebaseUser.getDisplayName() );
-
-        return usuario;
-
+    public static String getIdentificadorUsuario(){
+        return getUsuarioAtual().getEmail();
     }
+
+//    public static Usuario getDadosUsuarioLogado(){
+//
+//        FirebaseUser firebaseUser = getUsuarioAtual();
+//
+//        Usuario usuario = new Usuario();
+//        usuario.setId( firebaseUser.getUid() );
+//        usuario.setEmail( firebaseUser.getEmail() );
+//        usuario.setNome( firebaseUser.getDisplayName() );
+//
+//        return usuario;
+//
+//    }
 
 //    public static boolean atualizarNomeUsuario(String nome){
 //
@@ -89,8 +92,6 @@ public class UsuarioFirebase {
 //
 //    }
 
-    public static String getIdentificadorUsuario(){
-        return getUsuarioAtual().getUid();
-    }
+
 
 }
