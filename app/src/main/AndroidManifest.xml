@@ -23,11 +23,15 @@
         <activity
             android:name=".Jogo"
             android:label="@string/title_activity_jogo"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".IndiqueGanhe"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_indique_ganhe"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -40,31 +44,47 @@
         <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".GerenciarPagamentos"
             android:label="@string/title_activity_gerenciar_pagamentos"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".MeusDados"
             android:label="@string/title_activity_meus_dados"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Principal"
             android:label="@string/title_activity_principal"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".EsqueciSenha"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Cadastro"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

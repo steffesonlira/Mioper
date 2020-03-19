@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +41,8 @@ public class Cadastro extends AppCompatActivity {
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
     private FirebaseAuth mAuth;
+    ToggleButton toggleButton;
+
     //endregion
 
     @Override
@@ -48,7 +50,7 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
-
+        toggleButton = findViewById(R.id.tbTipoUser);
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
 
@@ -58,11 +60,10 @@ public class Cadastro extends AppCompatActivity {
 
 
         //region Click botão cadastrar
-        _signupButton.setOnClickListener(new View.OnClickListener()
-        {
+        _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               validate();//método para realizar a validação dos campos
+                validate();//método para realizar a validação dos campos
                 signup(); //Realizar o cadastro
             }
         });
@@ -73,14 +74,22 @@ public class Cadastro extends AppCompatActivity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Login.class);
+                Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
-        //endregion
     }
+        //endregion
+        //Criar ação do botão motorista e user:
+        public void onToggleClick(View v){
+            if (toggleButton.isChecked()) {
+                Toast.makeText(this, "Motorista", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Cliente", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     //region Método para criação de usuário e senha no Firebase pelo método de Authentication
     private void CreateUserAccount(String email,String password) {
@@ -134,7 +143,7 @@ public class Cadastro extends AppCompatActivity {
         String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
-
+        String tbTipoUser = toggleButton.getText().toString();
         //region Criando HashMap para criação de database
         HashMap<Object, String> hashMap = new HashMap<>();
 
@@ -144,7 +153,11 @@ public class Cadastro extends AppCompatActivity {
         hashMap.put("mobile",mobile);
         hashMap.put("password",password);
         hashMap.put("reEnterPassword",reEnterPassword);
-
+        if(toggleButton.isChecked())
+            hashMap.put("Tipo_User","M");
+        else{
+            hashMap.put("Tipo_User","P");
+        }
         //endregion
 
         //Criando instancia no DataBase Firebase Realtime

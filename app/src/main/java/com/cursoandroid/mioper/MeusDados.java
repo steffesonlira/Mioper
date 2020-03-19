@@ -34,12 +34,20 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.facebook.appevents.AppEventsConstants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MeusDados extends AppCompatActivity
@@ -50,7 +58,7 @@ public class MeusDados extends AppCompatActivity
     private FirebaseAuth mAuth;
 
     //Variáveis Bind para alteração de cadastro do usuário
-    @BindView(R.id.profile_name) EditText PName;
+    @BindView(R.id.profile_name) TextView PName;
     @BindView(R.id.profile_adress) EditText PAdress;
     @BindView(R.id.profile_email) EditText PEmail;
     @BindView(R.id.profile_cpf) EditText PCPF;
@@ -58,6 +66,9 @@ public class MeusDados extends AppCompatActivity
     @BindView(R.id.profile_nascimento) EditText PNascimento;
     @BindView(R.id.btn_alterar_cadastro) Button btnAltera;
     @BindView(R.id.encerra_conta) TextView TxtEcerra;
+    public TextView name1;
+
+
     DrawerLayout drawer;
     //Fim da declaração das variáveis
 
@@ -68,8 +79,29 @@ public class MeusDados extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_dados);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        name1 = findViewById(R.id.name1);
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(toolbar);
+        //Criando instancia no DataBase Firebase Realtime
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //Atribuindo um relacionamento pai
+        DatabaseReference reference = database.getReference(mAuth.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+              name1.setText(userProfile.getName());
+               // PAdress.setText(userProfile.getAdress());
+              //  PEmail.setText(userProfile.getEmail());
+  //              PMobile.setText(userProfile.getMobile());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MeusDados.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -78,6 +110,7 @@ public class MeusDados extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        Cadastro cadastro = new Cadastro();
 
 
         spinner = findViewById(R.id.SPGenre);
@@ -98,6 +131,40 @@ public class MeusDados extends AppCompatActivity
         PMobile.addTextChangedListener(Mask.mask(PMobile, Mask.FORMAT_FONE));
         PCPF.addTextChangedListener(Mask.mask(PCPF, Mask.FORMAT_CPF));
         PNascimento.addTextChangedListener(Mask.mask(PNascimento, Mask.FORMAT_DATE));
+
+//        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(email_salvo);
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String name = dataSnapshot.child("name").getValue().toString();
+//                String email = dataSnapshot.child("email").getValue().toString();
+//                String adress = dataSnapshot.child("adress").getValue().toString();
+//                String mobile = dataSnapshot.child("mobile").getValue().toString();
+//
+//                PName.setText(name);
+//                PEmail.setText(email);
+//                PAdress.setText(adress);
+//                PMobile.setText(mobile);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        reference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
 
     }
     //endregion
