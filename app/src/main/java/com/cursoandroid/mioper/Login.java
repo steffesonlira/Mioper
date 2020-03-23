@@ -44,11 +44,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
-import java.util.HashMap;
 //endregion
 
 //region CLASSE LOGIN
@@ -134,7 +133,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Intent intent = new Intent(Login.this, Jogo.class);
+                Intent intent = new Intent(Login.this, SuporteUsuario.class);
                 startActivity(intent);
             }
 
@@ -216,6 +215,8 @@ public class Login extends AppCompatActivity {
                         toastCustom.show();
                             Intent intent = new Intent(Login.this, Principal.class);
                             startActivity(intent);
+
+
                         }else{
                             Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -310,6 +311,12 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    if(task.getResult().getAdditionalUserInfo().isNewUser()){
+
+
+                                    }
+
 
                                     Intent i = new Intent(getApplicationContext(),Principal.class);
                                     startActivity(i);

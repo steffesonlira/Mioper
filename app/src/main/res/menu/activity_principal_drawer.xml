@@ -26,8 +26,8 @@
             android:title="@string/menu_indicate" />
         <item
             android:id="@+id/nav_game"
-            android:icon="@drawable/game_ic"
-            android:title="@string/menu_game" />
+            android:icon="@drawable/ic_message_black"
+            android:title="@string/menu_usuario" />
     </group>
 
     <item android:title="Informações Adicionais">

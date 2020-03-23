@@ -54,6 +54,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0' //biblioteca de listas
     implementation 'com.github.santalu:mask-edittext:1.1.1' //biblioteca de mascaras (utilizada no cadastro de cartoes)
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0' //Adicionar links para convidar pessoas Frebase Dinamic Links
+    implementation files('libs/activation.jar') //Mensagem suporte
+    implementation files('libs/additionnal.jar') //Mensagem suporte
+    implementation files('libs/mail.jar') //Mensagem suporte
 
 
 

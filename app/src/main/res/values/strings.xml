@@ -43,7 +43,7 @@
     <string name="menu_payment">Gerenciar Pagamentos</string>
     <string name="menu_travel_history">Histórico de Viagens</string>
     <string name="menu_indicate">Indique e Ganhe</string>
-    <string name="menu_game">Jogue e ganhe Descontos</string>
+    <string name="menu_usuario">Suporte ao Usuário</string>
     <string name="menu_exit">Sair</string>
     <string name="menu_about_us">Sobre nós</string>
     <string name="title_activity_meus_dados">MeusDados</string>
@@ -88,5 +88,16 @@
     <string name="remove_item">Remover</string>
     <string name="remove_item_going">Removendo&#8230;</string>
     <!--fim das strings da lista de cartoes-->
+
+    <!-- Lista de Assuntos para mensagem de suporte ao usuário -->
+    <string-array name="assunto">
+        <item>Crítica</item>
+        <item>Elogio</item>
+        <item>Item Perdido</item>
+        <item>Problema</item>
+        <item>Problema com Viagem</item>
+        <item>Sugestão</item>
+        <item>Outros</item>
+    </string-array>
 
 </resources>

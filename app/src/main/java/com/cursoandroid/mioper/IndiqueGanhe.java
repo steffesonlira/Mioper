@@ -167,7 +167,7 @@ public class IndiqueGanhe extends AppCompatActivity
                 startActivity(t);
                 break;
             case R.id.nav_game:
-                Intent u = new Intent(IndiqueGanhe.this, Jogo.class);
+                Intent u = new Intent(IndiqueGanhe.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
             case R.id.nav_exit:

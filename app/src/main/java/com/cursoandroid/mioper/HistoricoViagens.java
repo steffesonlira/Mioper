@@ -3,8 +3,6 @@ package com.cursoandroid.mioper;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.view.View;
-
 import android.view.MenuItem;
 
 import android.view.Menu;
@@ -15,9 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HistoricoViagens extends AppCompatActivity
@@ -94,7 +90,7 @@ public class HistoricoViagens extends AppCompatActivity
                 startActivity(t);
                 break;
             case R.id.nav_game:
-                Intent u = new Intent(HistoricoViagens.this, Jogo.class);
+                Intent u = new Intent(HistoricoViagens.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
             case R.id.nav_exit:

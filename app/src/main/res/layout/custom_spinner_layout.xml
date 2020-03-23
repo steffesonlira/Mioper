@@ -30,7 +30,7 @@
             />
 
     </LinearLayout>
-    
+
     <ImageView
         android:id="@+id/customSpinnerIcon"
         android:layout_width="wrap_content"

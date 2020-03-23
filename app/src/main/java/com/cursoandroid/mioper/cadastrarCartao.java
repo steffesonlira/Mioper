@@ -39,7 +39,7 @@ public class cadastrarCartao extends AppCompatActivity implements AdapterView.On
 
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesId);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paises,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paises, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paisesCadastrados.setAdapter(adapter);
         paisesCadastrados.setOnItemSelectedListener(this);

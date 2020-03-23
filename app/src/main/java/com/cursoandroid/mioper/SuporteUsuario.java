@@ -1,14 +1,21 @@
 package com.cursoandroid.mioper;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
-
-import android.view.View;
 
 import android.view.MenuItem;
 
 
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,23 +23,34 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Jogo extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class SuporteUsuario extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,  AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
-
+    private EditText txtPara, txtMensagem;
+    private Spinner assunto;
+    private Button btnMensagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jogo);
+        setContentView(R.layout.activity_suporteusuario);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(toolbar);
+
+        //ComboBox de nome dos paises
+        txtPara = findViewById(R.id.idPara);
+        txtMensagem = findViewById(R.id.idMensagem);
+        btnMensagem = findViewById(R.id.btnEnviarMensagem);
+        assunto = findViewById(R.id.idAssunto);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.assunto, R.layout.simple_custom_spinner2);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        assunto.setAdapter(adapter);
+        assunto.setOnItemSelectedListener(this);
+        //end combobox action
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -42,6 +60,17 @@ public class Jogo extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        btnMensagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW
+                , Uri.parse("mailto:" + txtPara.getText().toString()));
+                intent.putExtra(Intent.EXTRA_SUBJECT, assunto.getSelectedItem().toString());
+                intent.putExtra(intent.EXTRA_TEXT,txtMensagem.getText().toString());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -76,26 +105,26 @@ public class Jogo extends AppCompatActivity
         switch (id){
 
             case R.id.nav_home:
-                Intent h= new Intent(Jogo.this,Principal.class);
+                Intent h= new Intent(SuporteUsuario.this,Principal.class);
                 startActivity(h);
                 break;
             case R.id.nav_data:
-                Intent i= new Intent(Jogo.this,MeusDados.class);
+                Intent i= new Intent(SuporteUsuario.this,MeusDados.class);
                 startActivity(i);
                 break;
             case R.id.nav_payment:
-                Intent g= new Intent(Jogo.this,GerenciarPagamentos.class);
+                Intent g= new Intent(SuporteUsuario.this,GerenciarPagamentos.class);
                 startActivity(g);
                 break;
             case R.id.nav_travel_history:
-                Intent s= new Intent(Jogo.this,HistoricoViagens.class);
+                Intent s= new Intent(SuporteUsuario.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(Jogo.this,IndiqueGanhe.class);
+                Intent t= new Intent(SuporteUsuario.this,IndiqueGanhe.class);
                 startActivity(t);
                 break;
             case R.id.nav_game:
-                Intent u = new Intent(Jogo.this, Jogo.class);
+                Intent u = new Intent(SuporteUsuario.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
             case R.id.nav_exit:
@@ -116,4 +145,13 @@ public class Jogo extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

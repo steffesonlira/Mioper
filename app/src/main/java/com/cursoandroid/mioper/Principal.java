@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,9 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -117,7 +114,7 @@ public class Principal extends AppCompatActivity
                 startActivity(t);
                 break;
             case R.id.nav_game:
-                Intent u = new Intent(Principal.this, Jogo.class);
+                Intent u = new Intent(Principal.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
             case R.id.nav_exit:

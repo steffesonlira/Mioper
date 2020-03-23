@@ -1,25 +1,19 @@
 package com.cursoandroid.mioper;
 
 import butterknife.BindView;
-import android.Manifest;
+
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,25 +23,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
+import com.google.firebase.database.DatabaseError;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.facebook.appevents.AppEventsConstants;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class MeusDados extends AppCompatActivity
@@ -65,8 +57,18 @@ public class MeusDados extends AppCompatActivity
     @BindView(R.id.profile_mobile) EditText PMobile;
     @BindView(R.id.profile_nascimento) EditText PNascimento;
     @BindView(R.id.btn_alterar_cadastro) Button btnAltera;
-    @BindView(R.id.encerra_conta) TextView TxtEcerra;
+   // @BindView(R.id.encerra_conta) TextView TxtEcerra;
+    Button txtEncerra;
+    ProgressBar progressBar;
     public TextView name1;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+    private static final String USER = "Users";
+    private final String TAG = this.getClass().getName().toUpperCase();
+    String email;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    //Resgatar dados firebase
 
 
     DrawerLayout drawer;
@@ -79,29 +81,73 @@ public class MeusDados extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_dados);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        progressBar = new ProgressBar(this);
+        txtEncerra = findViewById(R.id.encerra_conta);
         name1 = findViewById(R.id.name1);
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(toolbar);
-        //Criando instancia no DataBase Firebase Realtime
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //Atribuindo um relacionamento pai
-        DatabaseReference reference = database.getReference(mAuth.getUid());
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
+       //recuperar dados
+        //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        //DatabaseReference userRef = rootRef.child(USER);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Users");
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
+        Query query = reference.orderByChild("email").equalTo(user.getEmail());
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-              name1.setText(userProfile.getName());
-               // PAdress.setText(userProfile.getAdress());
-              //  PEmail.setText(userProfile.getEmail());
-  //              PMobile.setText(userProfile.getMobile());
+
+                //check until required data get
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    //get data
+                    String name =""+ds.child("name").getValue();
+                    String email =""+ds.child("email").getValue();
+                    String adress =""+ds.child("adress").getValue();
+                    String mobile =""+ds.child("mobile").getValue();
+
+                    //set data
+                    name1.setText(email);
+
+                    try{
+                        //Picasso.get().load()
+
+                    }catch (Exception e){
+
+                    }
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MeusDados.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+
             }
         });
+//        Log.v("Users", userRef.getKey());
+//        userRef.addValueEventListener(new ValueEventListener() {
+//            String mail;
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot keyId : dataSnapshot.getChildren()){
+//                    if(keyId.child("email").getValue().equals(email)){
+//                        mail = keyId.child("email").getValue(String.class);
+//                        break;
+//                    }
+//                }
+//                name1.setText(mail);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -167,8 +213,40 @@ public class MeusDados extends AppCompatActivity
 
 
     }
+
     //endregion
 
+    public void encerraConta(View v){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //Atribuindo um relacionamento pai
+        DatabaseReference reference = database.getReference(mAuth.getUid());
+        reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Conta desativada com sucesso!", Toast.LENGTH_LONG);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Não foi possível desativar sua conta.", Toast.LENGTH_LONG);
+
+                }
+            }
+        });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            final ProgressDialog progressDialog = new ProgressDialog(MeusDados.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Desativando sua Conta...");
+            progressDialog.show();
+            user.delete().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), "Conta desativada com sucesso!", Toast.LENGTH_LONG);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Não foi possível desativar sua conta.", Toast.LENGTH_LONG);
+
+                }
+            });
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -222,7 +300,7 @@ public class MeusDados extends AppCompatActivity
                 startActivity(t);
                 break;
             case R.id.nav_game:
-                Intent u = new Intent(MeusDados.this,Jogo.class);
+                Intent u = new Intent(MeusDados.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
             case R.id.nav_exit:
