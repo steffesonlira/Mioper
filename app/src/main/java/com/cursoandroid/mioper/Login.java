@@ -1,6 +1,7 @@
 package com.cursoandroid.mioper;
 
 //region IMPORTS
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,10 +17,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.request.RequestOptions;
+import com.cursoandroid.mioper.navigation.RequisitionActivity;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -43,16 +47,28 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.SQLOutput;
 import java.util.Arrays;
 //endregion
 
 //region CLASSE LOGIN
 public class Login extends AppCompatActivity {
-    //region DECLARAÇÃO DE VARIÁVEIS
+//region DECLARAÇÃO DE VARIÁVEIS
+
+    //VAR DENIS
+    public String Email_User, Tipo_User;
+//==================================
+
     public EditText email;
     public EditText senha;
     private Button logar;
@@ -74,7 +90,9 @@ public class Login extends AppCompatActivity {
     private CallbackManager callbackManager;
     public Toast backToast;
     private long backPressedTime;
-    //endregion
+
+//endregion
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -83,16 +101,16 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         LayoutInflater layoutInflater = getLayoutInflater();
-        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup)findViewById(R.id.custom_layout));
+        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
 
-        //Configuration Google Sign In
+//Configuration Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        //End configuration Google Sign In
+//End configuration Google Sign In
 
-        //region login with google+
+//region login with google+
         btn_login = findViewById(R.id.login_google);
 
         mAuth = FirebaseAuth.getInstance();
@@ -103,26 +121,26 @@ public class Login extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
         btn_login.setOnClickListener(v -> SignInGoogle());
-        //btn_logout.setOnClickListener(v -> Logout());
-        if(mAuth.getCurrentUser() != null){
+//btn_logout.setOnClickListener(v -> Logout());
+        if (mAuth.getCurrentUser() != null) {
             FirebaseUser user = mAuth.getCurrentUser();
             updateUI(user);
         }
-        //endregion
+//endregion
 
-        //region criação das views virtuais nomeando os campos para m ligaçãpo das views com o codigo Java
+//region criação das views virtuais nomeando os campos para m ligaçãpo das views com o codigo Java
         email = findViewById(R.id.edtUsuario);
         senha = findViewById(R.id.edtSenha);
         logar = findViewById(R.id.btnLogin);
         logarFace = findViewById(R.id.login_face);
         criarConta = findViewById(R.id.link_signup);
         esqueceuSenha = findViewById(R.id.txtEsqueciSenhaId);
-        //endregionregion
+//endregionregion
 
-        //region login with facebook
-      mAuth = FirebaseAuth.getInstance();
-      callbackManager = CallbackManager.Factory.create();
-      logarFace.setPermissions(Arrays.asList("email", "public_profile"));
+//region login with facebook
+        mAuth = FirebaseAuth.getInstance();
+        callbackManager = CallbackManager.Factory.create();
+        logarFace.setPermissions(Arrays.asList("email", "public_profile"));
 
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -166,24 +184,24 @@ public class Login extends AppCompatActivity {
 //        });
 
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-          @Override
-          public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
-                Intent intent = new Intent(Login.this, Principal.class);
-                startActivity(intent);
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(Login.this, Principal.class);
+                    startActivity(intent);
+                }
             }
-          }
-      };
+        };
 
-        //endregion
+//endregion
 
-        //region MÉTODO PARA LOGAR PADRÃO
+//region MÉTODO PARA LOGAR PADRÃO
         logar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(email.getText().toString().equals("")){
+                if (email.getText().toString().equals("")) {
                     Toast.makeText(Login.this, "Favor inserir um E-mail válido", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (senha.getText().toString().equals("")) {
@@ -193,41 +211,98 @@ public class Login extends AppCompatActivity {
                 }
                 mAuth.signInWithEmailAndPassword(email.getText().toString(), senha.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()){
-                            final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                            progressDialog.setIndeterminate(true);
-                            progressDialog.setMessage("Realizando o Login...");
-                            progressDialog.show();
 
-                            new android.os.Handler().postDelayed(
-                                    new Runnable() {
-                                        public void run() {
-                                            progressDialog.dismiss();
+                                //IF LOGIN IS OK
+                                if (task.isSuccessful()) {
+
+                                    //GET E-MAIL FROM LOGGED USER=============
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    Email_User = user.getEmail();
+                                    //=========================================
+
+                                    //GET INFORMATION IF "M OR "P" FROM FIREBASE"===================================================
+                                    String userEmail = email.getText().toString();
+                                    String userEmailReplaced = userEmail.replace('.', '-');
+
+                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference users = reference.child("Users").child(userEmailReplaced).child("Tipo_User");
+                                    //===============================================================================================
+
+                                    users.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            Tipo_User = dataSnapshot.getValue().toString();
+
+                                            //IF PASSENGER, ACCESS MAIN ACTIVITY
+                                            if (Tipo_User.equals("P")) {
+                                                System.out.println("EH IGUAL A P");
+                                                final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                                                progressDialog.setIndeterminate(true);
+                                                progressDialog.setMessage("Realizando o Login...");
+                                                progressDialog.show();
+
+                                                new android.os.Handler().postDelayed(
+                                                        new Runnable() {
+                                                            public void run() {
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        }, 3000);
+
+                                                Toast toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
+                                                toastCustom.setGravity(Gravity.CENTER, 0, 0);
+                                                toastCustom.setView(viewLayout);
+                                                toastCustom.show();
+
+                                                Intent intent = new Intent(Login.this, Principal.class);
+                                                startActivity(intent);
+
+                                                //IF DRIVER, ACCESS MAIN ACTIVITY
+                                            } else if (Tipo_User.equals("M")) {
+                                                System.out.println("EH IGUAL A M");
+                                                final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                                                progressDialog.setIndeterminate(true);
+                                                progressDialog.setMessage("Realizando o Login...");
+                                                progressDialog.show();
+
+                                                new android.os.Handler().postDelayed(
+                                                        new Runnable() {
+                                                            public void run() {
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        }, 3000);
+
+                                                Toast toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
+                                                toastCustom.setGravity(Gravity.CENTER, 0, 0);
+                                                toastCustom.setView(viewLayout);
+                                                toastCustom.show();
+
+                                                Intent intent = new Intent(Login.this, RequisitionActivity.class);
+                                                startActivity(intent);
+                                            }
                                         }
-                                    }, 3000);
 
-                            Toast  toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
-                        toastCustom.setGravity(Gravity.CENTER,0,0);
-                        toastCustom.setView(viewLayout);
-                        toastCustom.show();
-                            Intent intent = new Intent(Login.this, Principal.class);
-                            startActivity(intent);
+                                        //UNUSED
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
 
 
-                        }else{
-                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                                } else {
+                                    Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
             }
-
         });
-        //endregion
+//endregion
 
-        //region MÉTODO PARA CRIAR UMA NOVA SENHA
+//region MÉTODO PARA CRIAR UMA NOVA SENHA
         criarConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,20 +316,20 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(Login.this, EsqueciSenha.class));
             }
         });
-        //endregion
+//endregion
     }
 
     private void handleFacebookAccessToken(AccessToken accessToken) {
-            AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-            mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(!task.isSuccessful()){
-                        Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
-                    }
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
                 }
-            });
-        }
+            }
+        });
+    }
 
 
     //region signIn with google
@@ -283,9 +358,10 @@ public class Login extends AppCompatActivity {
 
         }
     }
+
     //endregion
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -293,12 +369,12 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 
-        //region Google+  Firebase
+    //region Google+  Firebase
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         Log.d("TAG", "firebaseAuthWithGoogle: " + account.getId());
 
@@ -307,28 +383,28 @@ public class Login extends AppCompatActivity {
 
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
 
-                                    if(task.getResult().getAdditionalUserInfo().isNewUser()){
-
-
-                                    }
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
 
 
-                                    Intent i = new Intent(getApplicationContext(),Principal.class);
-                                    startActivity(i);
-                                    finish();
-                                }else{
-                                    Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
-                                    updateUI(null);
-                                }
                             }
-                        });
+
+
+                            Intent i = new Intent(getApplicationContext(), Principal.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
+                            updateUI(null);
+                        }
+                    }
+                });
     }
-    //endregion
+//endregion
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -358,14 +434,13 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    void Logout(){
+    void Logout() {
 
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
                 task -> updateUI(null));
 
-                }
-
+    }
 
 
     AccessTokenTracker tokenTracker = new AccessTokenTracker() {
@@ -377,7 +452,7 @@ public class Login extends AppCompatActivity {
                 txtName.setText("");
                 txtEmail.setText("");
                 Toast.makeText(Login.this, "Usuário fez Logout", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 loaduserProfile(currentAccessToken);
             }
         }
@@ -401,7 +476,7 @@ public class Login extends AppCompatActivity {
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.dontAnimate();
 
-                    //Glide.with(MainActivity.this).load(image_url).into(circleImageView);
+//Glide.with(MainActivity.this).load(image_url).into(circleImageView);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -418,17 +493,16 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-           if(backPressedTime + 2000 > System.currentTimeMillis()){
-               // bbackToast.cancel();
-               super.onBackPressed();
-               finish();
-            }
-           else{
-               Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.",Toast.LENGTH_SHORT).show();
-           }
-            backPressedTime = System.currentTimeMillis();
-
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+// bbackToast.cancel();
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.", Toast.LENGTH_SHORT).show();
         }
+        backPressedTime = System.currentTimeMillis();
+
+    }
 
 
 }

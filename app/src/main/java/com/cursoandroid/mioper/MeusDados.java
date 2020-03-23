@@ -24,6 +24,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.cursoandroid.mioper.navigation.MapsActivity;
+import com.cursoandroid.mioper.navigation.RequisitionActivity;
 import com.google.firebase.database.DatabaseError;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -281,7 +283,7 @@ public class MeusDados extends AppCompatActivity
         switch (id){
 
             case R.id.nav_home:
-                Intent h= new Intent(MeusDados.this,Principal.class);
+                Intent h= new Intent(MeusDados.this, Principal.class);
                 startActivity(h);
                 break;
             case R.id.nav_data:
@@ -313,6 +315,7 @@ public class MeusDados extends AppCompatActivity
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 break;
+
 
         }
 

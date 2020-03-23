@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.cursoandroid.mioper.navigation.MapsActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,9 +95,8 @@ public class Principal extends AppCompatActivity
         switch (id){
 
             case R.id.nav_home:
-               // showFragment(new MapaFragment(), "MapsFragment");
-                //Intent h= new Intent(Principal.this,Principal.class);
-                //startActivity(h);
+                Intent m= new Intent(Principal.this, MapsActivity.class);
+                startActivity(m);
                 break;
             case R.id.nav_data:
                 Intent i= new Intent(Principal.this,MeusDados.class);
