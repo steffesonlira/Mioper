@@ -303,6 +303,10 @@ public class MeusDados extends AppCompatActivity
                 Intent u = new Intent(MeusDados.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
+            case R.id.nav_about_us:
+                Intent v = new Intent(MeusDados.this, Sobre.class);
+                startActivity(v);
+                break;
             case R.id.nav_exit:
 
                 if(item.getItemId() == R.id.nav_exit){

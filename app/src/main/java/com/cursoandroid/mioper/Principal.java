@@ -117,6 +117,10 @@ public class Principal extends AppCompatActivity
                 Intent u = new Intent(Principal.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
+            case R.id.nav_about_us:
+                Intent v = new Intent(Principal.this, Sobre.class);
+                startActivity(v);
+                break;
             case R.id.nav_exit:
 
                 if(item.getItemId() == R.id.nav_exit){

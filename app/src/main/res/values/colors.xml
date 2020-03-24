@@ -14,6 +14,7 @@
     <color name="colorLightRed">#F85F62</color>
     <color name="colorText">#666666</color>
     <color name="colorLightGrey">#AAAAAA</color>
+    <color name="transparent">#00000000</color>
 
     <!--Colors buttons custom -->
     <color name="Shadow">#4747d1</color>

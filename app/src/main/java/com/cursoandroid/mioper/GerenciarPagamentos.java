@@ -98,6 +98,10 @@ public class GerenciarPagamentos extends AppCompatActivity implements Navigation
                 Intent u = new Intent(GerenciarPagamentos.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
+            case R.id.nav_about_us:
+                Intent v = new Intent(GerenciarPagamentos.this, Sobre.class);
+                startActivity(v);
+                break;
             case R.id.nav_exit:
 
                 if(item.getItemId() == R.id.nav_exit){
