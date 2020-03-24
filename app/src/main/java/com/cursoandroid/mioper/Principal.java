@@ -1,6 +1,9 @@
 package com.cursoandroid.mioper;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,6 +11,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -16,13 +20,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
+import com.cursoandroid.mioper.helper.Permissoes;
 import com.cursoandroid.mioper.navigation.MapsActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Principal extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Principal extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //Declaração de variáveis
     private FragmentManager fragmentManager;
@@ -32,11 +37,48 @@ public class Principal extends AppCompatActivity
     private static final String TAG = "Principal";
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseAuth mAuth;
+    private String[] permissoes = new String[]{
 
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        for (int permissaoResultado : grantResults) {
+            if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
+                alertaValidacaoPermissao();
+            }
+
+        }
+
+    }
+
+    //ALERTA PARA USUÁRIO PERMITIR USO DA LOCALIZACAO NO APP
+    private void alertaValidacaoPermissao() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissões Negadas");
+        builder.setMessage("Para utilizar o app é necessário aceitar as permissões");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -53,6 +95,9 @@ public class Principal extends AppCompatActivity
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         //transaction.add(R.id.fragment_container, new MapaFragment(), "MapaFragment");
         transaction.commitNowAllowingStateLoss();
+
+        //CHAMA METODO VALIDAR PERMISSOES DA CLASSE PERMISSOES PARA PERMITIR ACESSO AO MAPA
+        Permissoes.validarPermissoes(permissoes, this, 1);
     }
 
     @Override
@@ -80,37 +125,37 @@ public class Principal extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
 
-    private void showFragment(Fragment fragment , String name)
-    {
+    private void showFragment(Fragment fragment, String name) {
         FragmentTransaction transaction;
         transaction = fragmentManager.beginTransaction();
 
         transaction.replace(R.id.fragment_container, fragment, name);
         transaction.commit();
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch (id){
+        int id = item.getItemId();
+        switch (id) {
 
             case R.id.nav_home:
-                Intent m= new Intent(Principal.this, MapsActivity.class);
+                Intent m = new Intent(Principal.this, MapsActivity.class);
                 startActivity(m);
                 break;
             case R.id.nav_data:
-                Intent i= new Intent(Principal.this,MeusDados.class);
+                Intent i = new Intent(Principal.this, MeusDados.class);
                 startActivity(i);
                 break;
             case R.id.nav_payment:
-                Intent g= new Intent(Principal.this,GerenciarPagamentos.class);
+                Intent g = new Intent(Principal.this, GerenciarPagamentos.class);
                 startActivity(g);
                 break;
             case R.id.nav_travel_history:
-                Intent s= new Intent(Principal.this,HistoricoViagens.class);
+                Intent s = new Intent(Principal.this, HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(Principal.this,IndiqueGanhe.class);
+                Intent t = new Intent(Principal.this, IndiqueGanhe.class);
                 startActivity(t);
                 break;
             case R.id.nav_game:
@@ -119,17 +164,17 @@ public class Principal extends AppCompatActivity
                 break;
             case R.id.nav_exit:
 
-                if(item.getItemId() == R.id.nav_exit){
+                if (item.getItemId() == R.id.nav_exit) {
 
                     FirebaseAuth.getInstance().signOut();
-                  finish();
+                    finish();
 
                 }
 
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
-                
-             break;
+
+                break;
 
         }
 
@@ -138,15 +183,15 @@ public class Principal extends AppCompatActivity
         return true;
     }
 
-    private void setupFirebaseListener(){
+    private void setupFirebaseListener() {
         Log.d(TAG, "setupFirebaseListener: listener up the auth state listener.");
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged signed_in: " + user.getUid());
-                }else{
+                } else {
                     Log.d(TAG, "onAuthStateChanged signed_out: ");
                     Intent intent = new Intent(Principal.this, Login.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
