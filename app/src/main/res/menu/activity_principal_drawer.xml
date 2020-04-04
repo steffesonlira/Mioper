@@ -17,17 +17,18 @@
             android:icon="@drawable/pagamento_ic"
             android:title="@string/menu_payment" />
         <item
-            android:id="@+id/nav_travel_history"
+            android:id="@+id/nav_historico"
             android:icon="@drawable/travelhistory_ic"
             android:title="@string/menu_travel_history" />
-        <item
-            android:id="@+id/nav_indication"
-            android:icon="@drawable/indicate"
-            android:title="@string/menu_indicate" />
+
         <item
             android:id="@+id/nav_game"
             android:icon="@drawable/ic_message_black"
             android:title="@string/menu_usuario" />
+        <item
+            android:id="@+id/nav_indication"
+            android:icon="@drawable/indicate"
+            android:title="@string/menu_indicate" />
     </group>
 
     <item android:title="Informações Adicionais">

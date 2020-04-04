@@ -16,8 +16,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class GerenciarPagamentos extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Button botaoAdcionarCartao;
+public class GerenciarPagamentos extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+    public Button botaoCadastrarCartao;
 
 
 
@@ -29,17 +29,23 @@ public class GerenciarPagamentos extends AppCompatActivity implements Navigation
         setSupportActionBar(toolbar);
 
 
-        botaoAdcionarCartao = findViewById(R.id.adcionarCartaoID);
-        botaoAdcionarCartao.setOnClickListener(new View.OnClickListener() {
+        botaoCadastrarCartao = findViewById(R.id.adcionarCartaoID);
+        botaoCadastrarCartao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(GerenciarPagamentos.this,cadastrarCartao.class);
-                startActivity(intent);
+                adicionarCartao();
             }
         });
 
-
     }
+
+    public void adicionarCartao(){
+        Intent intent = new Intent(this,CadastrarCartao.class);
+        startActivity(intent);
+    }
+
+
+
 
 
 
@@ -69,7 +75,6 @@ public class GerenciarPagamentos extends AppCompatActivity implements Navigation
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id=item.getItemId();
@@ -87,7 +92,7 @@ public class GerenciarPagamentos extends AppCompatActivity implements Navigation
                 Intent g= new Intent(GerenciarPagamentos.this,GerenciarPagamentos.class);
                 startActivity(g);
                 break;
-            case R.id.nav_travel_history:
+            case R.id.nav_historico:
                 Intent s= new Intent(GerenciarPagamentos.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:

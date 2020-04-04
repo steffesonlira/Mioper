@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".AlterarSenha"></activity>
+        <activity android:name=".CadastrarCartao"></activity>
+        <activity android:name=".AdapterHistoricoViagem" />
+        <activity android:name=".AlterarSenha" />
         <activity android:name=".Corrida" />
         <activity android:name=".RequisicoesAdapter" />
         <activity android:name=".Requisicoes" />
@@ -30,7 +32,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".cadastrarCartao" />
         <activity
             android:name=".SuporteUsuario"
             android:label="@string/title_activity_jogo"
@@ -42,18 +43,7 @@
             android:label="@string/title_activity_indique_ganhe"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"
-            tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="example.com"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
         <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
@@ -151,13 +141,13 @@
             android:authorities="com.facebook.app.FacebookContentProvider1983047995103716"
             android:exported="true" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

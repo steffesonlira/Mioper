@@ -79,7 +79,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
 
         //each new menu item must be added here
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_data, R.id.nav_payment, R.id.nav_travel_history,
+                R.id.nav_home, R.id.nav_data, R.id.nav_payment, R.id.nav_historico,
                 R.id.nav_indication, R.id.nav_game, R.id.nav_about_us, R.id.nav_exit)
                 .setDrawerLayout(drawer)
                 .build();
@@ -186,7 +186,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
                             Intent g = new Intent(Principal.this, GerenciarPagamentos.class);
                             startActivity(g);
                             break;
-                        case R.id.nav_travel_history:
+                        case R.id.nav_historico:
                             Intent s = new Intent(Principal.this, HistoricoViagens.class);
                             startActivity(s);
                         case R.id.nav_indication:

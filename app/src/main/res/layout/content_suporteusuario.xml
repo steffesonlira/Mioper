@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/cadastromioper"
+    android:background="@drawable/gradient"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -55,7 +55,7 @@
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"
                 android:textColorHint="#FFFFFF"
-                android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                android:textCursorDrawable="@color/Blue2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

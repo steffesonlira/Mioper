@@ -160,7 +160,7 @@ public class IndiqueGanhe extends AppCompatActivity
                 Intent g= new Intent(IndiqueGanhe.this,GerenciarPagamentos.class);
                 startActivity(g);
                 break;
-            case R.id.nav_travel_history:
+            case R.id.nav_historico:
                 Intent s= new Intent(IndiqueGanhe.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:

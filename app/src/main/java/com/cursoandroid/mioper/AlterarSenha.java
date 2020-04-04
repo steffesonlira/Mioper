@@ -80,7 +80,7 @@ public class AlterarSenha extends AppCompatActivity {
 
                 //ALTERA A SENHA NO FIREBASE DATABASE
                 DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-                DatabaseReference usuario = firebaseRef.child("Users").child(userID).child("senhaUsuario");
+                DatabaseReference usuario = firebaseRef.child("Users").child(userID).child("senha");
                 String senhaNovaUsuario = String.valueOf(senhaNova.getText());
                 usuario.setValue(senhaNovaUsuario);
 

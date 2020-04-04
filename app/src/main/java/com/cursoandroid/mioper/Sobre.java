@@ -1,21 +1,19 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -144,7 +142,7 @@ public class Sobre extends AppCompatActivity
                 Intent g= new Intent(Sobre.this,GerenciarPagamentos.class);
                 startActivity(g);
                 break;
-            case R.id.nav_travel_history:
+            case R.id.nav_historico:
                 Intent s= new Intent(Sobre.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:

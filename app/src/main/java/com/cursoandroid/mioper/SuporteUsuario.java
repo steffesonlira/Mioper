@@ -1,15 +1,10 @@
 package com.cursoandroid.mioper;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.view.MenuItem;
-
-
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -116,7 +111,7 @@ public class SuporteUsuario extends AppCompatActivity
                 Intent g= new Intent(SuporteUsuario.this,GerenciarPagamentos.class);
                 startActivity(g);
                 break;
-            case R.id.nav_travel_history:
+            case R.id.nav_historico:
                 Intent s= new Intent(SuporteUsuario.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
