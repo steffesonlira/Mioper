@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     mAuth = FirebaseAuth.getInstance();
                     FirebaseUser user = mAuth.getCurrentUser();
                     if(user != null){
-                       // Toast.makeText(getApplicationContext(), "Bem vindo de Volta ao Mioper " + user.getEmail() + "!",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, Principal.class);
+                        Intent intent = new Intent(MainActivity.this, Login.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                         startActivity(intent);
                     }else{
@@ -142,4 +141,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        finish();
+    }
 }

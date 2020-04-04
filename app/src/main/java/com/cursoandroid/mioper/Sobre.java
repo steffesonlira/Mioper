@@ -57,57 +57,45 @@ public class Sobre extends AppCompatActivity
         btn_manifesto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "Manifesto", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intent= new Intent(Sobre.this,Onboarding.class);
+                startActivity(intent);
             }
         });
         btn_design.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "Design Thinking", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intentDesign= new Intent(Sobre.this,DesignThinking.class);
+                startActivity(intentDesign);
             }
         });
         btn_historia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "História", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intentDesign= new Intent(Sobre.this,Historia.class);
+                startActivity(intentDesign);
 
             }
         });
         btn_missao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "Missão", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intentMissao= new Intent(Sobre.this,Missao.class);
+                startActivity(intentMissao);
             }
         });
         btn_visao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "Visão", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intentVisao= new Intent(Sobre.this,Visao.class);
+                startActivity(intentVisao);
 
             }
         });
         btn_valores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toastCustom = Toast.makeText(Sobre.this, "Valores", Toast.LENGTH_SHORT);
-                toastCustom.setGravity(Gravity.CENTER,0,0);
-                toastCustom.setView(viewLayout);
-                toastCustom.show();
+                Intent intentValores= new Intent(Sobre.this,Valores.class);
+                startActivity(intentValores);
 
             }
         });

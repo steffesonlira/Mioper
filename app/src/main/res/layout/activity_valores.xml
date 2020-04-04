@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bkgvalores"
+    tools:context=".Onboarding">
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/slideViewPagerValores"
+        android:layout_width="match_parent"
+        android:layout_height="648dp">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/dotsLayoutValores"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="20dp"></LinearLayout>
+
+    <Button
+        android:id="@+id/btnAnteriorValores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/White"
+        android:background="@color/transparent"
+        android:text="Anterior" />
+
+    <Button
+        android:id="@+id/btnProximoValores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/White"
+        android:background="@color/transparent"
+        android:text="Próximo" />
+
+
+</RelativeLayout>

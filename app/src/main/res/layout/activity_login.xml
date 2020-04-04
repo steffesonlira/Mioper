@@ -91,6 +91,7 @@
             android:textScaleX="1"
             android:textColor="@color/White"
             android:textAlignment="center"
+            android:onClick="validarLoginUsuario"
             android:textSize="24sp" />
 
 

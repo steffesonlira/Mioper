@@ -11,10 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.cursoandroid.mioper.helper.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.helper.UsuarioFirebase;
-import com.cursoandroid.mioper.modelo.Cartao;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 

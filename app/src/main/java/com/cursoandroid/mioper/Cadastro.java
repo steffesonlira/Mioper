@@ -9,20 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +27,7 @@ import butterknife.ButterKnife;
 public class Cadastro extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    //region Variáveis cadastro do usuário
+    //region Variáveis cadastro do usuário - Inicializando com BindView
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_address) EditText _addressText;
     @BindView(R.id.input_email) EditText _emailText;
@@ -41,7 +37,7 @@ public class Cadastro extends AppCompatActivity {
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
     private FirebaseAuth mAuth;
-    ToggleButton toggleButton;
+    private Switch switchTipoUsuario;
 
     //endregion
 
@@ -50,19 +46,21 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
-        toggleButton = findViewById(R.id.tbTipoUser);
+        switchTipoUsuario = findViewById(R.id.switchTipoUsuario);
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
-
         mAuth = FirebaseAuth.getInstance();
-
         _signupButton = findViewById(R.id.btn_signup);
+
+
 
 
         //region Click botão cadastrar
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 validate();//método para realizar a validação dos campos
                 signup(); //Realizar o cadastro
             }
@@ -81,33 +79,93 @@ public class Cadastro extends AppCompatActivity {
             }
         });
     }
-        //endregion
-        //Criar ação do botão motorista e user:
-        public void onToggleClick(View v){
-            if (toggleButton.isChecked()) {
-                Toast.makeText(this, "Motorista", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Cliente", Toast.LENGTH_SHORT).show();
-            }
-        }
+
 
     //region Método para criação de usuário e senha no Firebase pelo método de Authentication
-    private void CreateUserAccount(String email,String password) {
+    private void CreateUserAccount(final UserProfile usuario) {
+        String nome = _nameText.getText().toString();
+        String address = _addressText.getText().toString();
+        String mobile = _mobileText.getText().toString();
+        String email = _emailText.getText().toString();
+        String senha = _passwordText.getText().toString();
+        String repitasenha = _reEnterPasswordText.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
 
-                    //Processo de criação de conta no Firebase
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(Cadastro.this, "Conta criada com sucesso", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(Cadastro.this, "Falha na criação da conta" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
-                        }
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+        usuario.setName(nome);
+        usuario.setAdress(address);
+        usuario.setMobile(mobile);
+        usuario.setRepitasenha(repitasenha);
+        usuario.setTipouser(verificaTipoUsuario() );
+
+
+        mAuth =  ConfiguracaoFirebase.getFirebaseAutenticacao();
+        mAuth.createUserWithEmailAndPassword(
+                usuario.getEmail(),
+                usuario.getSenha()
+        ).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+
+                try {
+
+                    String idUsuario = task.getResult().getUser().getUid();
+                    usuario.setId(idUsuario);
+                    usuario.salvar();
+
+                    //Atualizar nome no UserProfile
+                    UsuarioFirebase.atualizarNomeUsuario(usuario.getName());
+
+                    // Redireciona o usuário com base no seu tipo
+                    // Se o usuário for passageiro chama a activity maps
+                    // senão chama a activity requisicoes
+                    if (verificaTipoUsuario() == "P") {
+                        startActivity(new Intent(Cadastro.this, Principal.class));
+                        finish();
+
+                        Toast.makeText(Cadastro.this,
+                                "Sucesso ao cadastrar Passageiro!",
+                                Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        startActivity(new Intent(Cadastro.this, Requisicoes.class));
+                        finish();
+
+                        Toast.makeText(Cadastro.this,
+                                "Sucesso ao cadastrar Motorista!",
+                                Toast.LENGTH_SHORT).show();
                     }
-                });
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+
+                String excecao = "";
+                try {
+                    throw task.getException();
+                } catch (FirebaseAuthWeakPasswordException e) {
+                    excecao = "Digite uma senha mais forte!";
+                } catch (FirebaseAuthInvalidCredentialsException e) {
+                    excecao = "Por favor, digite um e-mail válido";
+                } catch (FirebaseAuthUserCollisionException e) {
+                    excecao = "Este conta já foi cadastrada";
+                } catch (Exception e) {
+                    excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(Cadastro.this,
+                        excecao,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
 
     }
     //endregion
@@ -120,12 +178,13 @@ public class Cadastro extends AppCompatActivity {
             return;
         }
 
-        _signupButton.setEnabled(false);
-
         final ProgressDialog progressDialog = new ProgressDialog(Cadastro.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Criando sua conta...");
         progressDialog.show();
+
+
+    //endregion
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -134,51 +193,16 @@ public class Cadastro extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
-    //endregion
-
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
-        String email_semreplace = _emailText.getText().toString();
-        String email = email_semreplace.replace(".","-");
-        String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
-        String tbTipoUser = toggleButton.getText().toString();
-        //region Criando HashMap para criação de database
-        HashMap<Object, String> hashMap = new HashMap<>();
-
-        hashMap.put("name",name);
-        hashMap.put("adress",address);
-        hashMap.put("email",email);
-        hashMap.put("mobile",mobile);
-        hashMap.put("password",password);
-        hashMap.put("reEnterPassword",reEnterPassword);
-        if(toggleButton.isChecked())
-            hashMap.put("Tipo_User","M");
-        else{
-            hashMap.put("Tipo_User","P");
-        }
-        //endregion
-
-        //Criando instancia no DataBase Firebase Realtime
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        //Atribuindo um relacionamento pai
-        DatabaseReference reference = database.getReference("Users");
-
-        //setando a chave primária
-        reference.child(email).setValue(hashMap);
 
     }
 
     public void onSignupSuccess() {
         //registrar dados inseridos
-        final String email = _emailText.getText().toString();
-        final String password = _passwordText.getText().toString();
-        CreateUserAccount(email, password);
+        UserProfile usuario = new UserProfile();
+        CreateUserAccount(usuario);
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        startActivity(new Intent(Cadastro.this, Principal.class));
+
     }
 
     public void onSignupFailed() {
@@ -191,49 +215,54 @@ public class Cadastro extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
+        UserProfile usuarios = new UserProfile();
+        usuarios.setName(_nameText.getText().toString());
+        usuarios.setEmail(_emailText.getText().toString());
+        usuarios.setAdress(_addressText.getText().toString());
+        usuarios.setMobile(_mobileText.getText().toString());
+        usuarios.setSenha(_passwordText.getText().toString());
+        usuarios.setRepitasenha(_reEnterPasswordText.getText().toString());
+        usuarios.setTipouser( verificaTipoUsuario() );
+        usuarios.setNascimento("");
+        usuarios.setCpf("");
+        usuarios.setGenero("");
 
-        if (name.isEmpty() || name.length() < 3) {
+        if (usuarios.getName().isEmpty() || usuarios.getName().length() < 3) {
             _nameText.setError("Entre com pelo menos 3 caracteres");
             valid = false;
         } else {
             _nameText.setError(null);
         }
 
-        if (address.isEmpty()) {
+        if (usuarios.getAdress().isEmpty()) {
             _addressText.setError("Entre com um endereço válido");
             valid = false;
         } else {
             _addressText.setError(null);
         }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (usuarios.getEmail().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(usuarios.getEmail()).matches()) {
             _emailText.setError("Entre com um e-mail válido");
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
-        if (mobile.isEmpty() || mobile.length()<11) {
+        if (usuarios.getMobile().isEmpty() || usuarios.getMobile().length()<11) {
             _mobileText.setError("Entre com um número de telefone corretamente");
             valid = false;
         } else {
             _mobileText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (usuarios.getSenha().isEmpty() || usuarios.getSenha().length() < 4 || usuarios.getSenha().length() > 10) {
             _passwordText.setError("A senha deve ser entre 4 e 10 caracteres");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
 
-        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
+        if (usuarios.repitasenha.isEmpty() || usuarios.repitasenha.length() < 4 || usuarios.repitasenha.length() > 10 || !(usuarios.repitasenha.equals(usuarios.getSenha()))) {
             _reEnterPasswordText.setError("Senha não confere com a digitada acima");
             valid = false;
         } else {
@@ -249,6 +278,9 @@ public class Cadastro extends AppCompatActivity {
     public void onBackPressed() {
         Intent h= new Intent(Cadastro.this,Login.class);
         startActivity(h);
+    }
+    public String verificaTipoUsuario() {
+        return switchTipoUsuario.isChecked() ? "M" : "P";
     }
 
 }

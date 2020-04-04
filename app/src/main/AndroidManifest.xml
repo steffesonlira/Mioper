@@ -12,11 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".Sobre"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+        <activity android:name=".AlterarSenha"></activity>
+        <activity android:name=".Corrida" />
+        <activity android:name=".RequisicoesAdapter" />
+        <activity android:name=".Requisicoes" />
+        <activity android:name=".Passageiro" />
+        <activity android:name=".Valores" />
+        <activity android:name=".Visao" />
+        <activity android:name=".Missao" />
+        <activity android:name=".Historia" />
+        <activity android:name=".DesignThinking" />
+        <activity
+            android:name=".Onboarding"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Sobre"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".cadastrarCartao" />
         <activity
             android:name=".SuporteUsuario"
@@ -111,7 +124,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
             android:value="false" />
@@ -130,17 +142,22 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1983047995103716"
             android:exported="true" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

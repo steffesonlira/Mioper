@@ -1,6 +1,6 @@
-package com.cursoandroid.mioper.modelo;
+package com.cursoandroid.mioper;
 
-import com.cursoandroid.mioper.helper.ConfiguracaoFirebase;
+import com.cursoandroid.mioper.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 
 public class Cartao {

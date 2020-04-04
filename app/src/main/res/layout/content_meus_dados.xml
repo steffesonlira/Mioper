@@ -35,15 +35,6 @@
                 app:srcCompat="@drawable/profile" />
 
             <!-- Name Label -->
-
-            <TextView
-                android:id="@+id/name1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/White"
-                android:textSize="22dp"
-                android:text="TextView" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +43,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_name"
+                    android:id="@+id/txtNome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -66,7 +57,6 @@
 
             <!-- Address Label -->
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +65,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_adress"
+                    android:id="@+id/txtEndereco"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -96,7 +86,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_email"
+                    android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -107,33 +97,7 @@
                     android:textCursorDrawable="@color/design_default_color_primary_dark" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Genre -->
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gênero"
-                    android:textColor="@color/White"
-                    />
-
-                <Spinner
-                    android:id="@+id/SPGenre"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:backgroundTint="@color/White"
-                    android:gravity="center"></Spinner>
-
-            </LinearLayout>
-
-
-
-            <!-- mobile number -->
+           <!-- mobile number -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +106,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_mobile"
+                    android:id="@+id/txtCelular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -164,7 +128,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_nascimento"
+                    android:id="@+id/txtDataNascimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -184,7 +148,7 @@
                 android:textColorHint="#FFFFFF">
 
                 <EditText
-                    android:id="@+id/profile_cpf"
+                    android:id="@+id/txtCpf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
@@ -195,29 +159,60 @@
                     android:textCursorDrawable="@color/design_default_color_primary_dark" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Alterar cadastro Button -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_alterar_cadastro"
-                android:layout_width="fill_parent"
+            <!-- Gênero -->
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/White"
+                android:text="Masculino / Feminino" />
+
+            <Switch
+                android:id="@+id/switchGenero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_weight="1" />
+
+            <!-- Botão Salvar Alterações -->
+            <Button
+                android:id="@+id/btnSalvarAlteracoes"
+                android:layout_width="380dp"
                 android:background="@color/Blue"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:padding="12dp"
-                android:text="Salvar Alterações"/>
-
-            <Button android:id="@+id/encerra_conta"
-                android:layout_width="fill_parent"
-                android:onClick="encerraConta"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:hint="@android:color/white"
-                android:text="Encerrar Conta"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="salvarAlteracoes"
                 android:textColorHighlight="#C5C1C1"
                 android:textColor="@android:color/black"
                 android:textCursorDrawable="@color/design_default_color_primary_dark"
-                android:gravity="center"
-                android:textSize="16dip"/>
+                android:text="Salvar Alterações" />
+
+            <!-- Botão Alterar Senha -->
+            <Button
+                android:id="@+id/btnAlterarSenha"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/White"
+                android:onClick="alterarSenhaUsuario"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:background="@color/Blue_escuro"
+                android:text="Alterar Senha" />
+
+            <Button
+                android:id="@+id/btnExcluirConta"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="excluirUsuario"
+                android:background="@color/Red"
+                android:text="Excluir Conta" />
 
         </LinearLayout>
 

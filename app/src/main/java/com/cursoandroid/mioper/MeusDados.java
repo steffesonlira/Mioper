@@ -4,10 +4,12 @@ import butterknife.BindView;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +18,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -42,309 +46,258 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class MeusDados extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MeusDados extends AppCompatActivity {
 
-    Spinner spinner;
-    ArrayList<CustomItem> customList;
-    private FirebaseAuth mAuth;
-
-    //Variáveis Bind para alteração de cadastro do usuário
-    @BindView(R.id.profile_name) TextView PName;
-    @BindView(R.id.profile_adress) EditText PAdress;
-    @BindView(R.id.profile_email) EditText PEmail;
-    @BindView(R.id.profile_cpf) EditText PCPF;
-    @BindView(R.id.profile_mobile) EditText PMobile;
-    @BindView(R.id.profile_nascimento) EditText PNascimento;
-    @BindView(R.id.btn_alterar_cadastro) Button btnAltera;
-   // @BindView(R.id.encerra_conta) TextView TxtEcerra;
-    Button txtEncerra;
-    ProgressBar progressBar;
-    public TextView name1;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    private static final String USER = "Users";
-    private final String TAG = this.getClass().getName().toUpperCase();
+    EditText nomeUsuario;
+    EditText celularUsuario;
+    String senhaUsuario;
+    EditText emailUsuario;
+    EditText enderecoUsuario;
+    EditText dataNascimentoUsuario;
+    EditText cpfUsuario;
+    Switch generoUsuario;
+    String tipoUsuario;
+    String idUsuario;
     String email;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    //Resgatar dados firebase
-
-
-    DrawerLayout drawer;
-    //Fim da declaração das variáveis
+    private FirebaseAuth autenticacao;
 
 
     //region ONCREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meus_dados);
+        setContentView(R.layout.content_meus_dados);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        progressBar = new ProgressBar(this);
-        txtEncerra = findViewById(R.id.encerra_conta);
-        name1 = findViewById(R.id.name1);
-        mAuth = FirebaseAuth.getInstance();
-        setSupportActionBar(toolbar);
-        Intent intent = getIntent();
-        email = intent.getStringExtra("email");
-       //recuperar dados
-        //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        //DatabaseReference userRef = rootRef.child(USER);
-
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Users");
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-
-        Query query = reference.orderByChild("email").equalTo(user.getEmail());
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                //check until required data get
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    //get data
-                    String name =""+ds.child("name").getValue();
-                    String email =""+ds.child("email").getValue();
-                    String adress =""+ds.child("adress").getValue();
-                    String mobile =""+ds.child("mobile").getValue();
-
-                    //set data
-                    name1.setText(email);
-
-                    try{
-                        //Picasso.get().load()
-
-                    }catch (Exception e){
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-//        Log.v("Users", userRef.getKey());
-//        userRef.addValueEventListener(new ValueEventListener() {
-//            String mail;
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot keyId : dataSnapshot.getChildren()){
-//                    if(keyId.child("email").getValue().equals(email)){
-//                        mail = keyId.child("email").getValue(String.class);
-//                        break;
-//                    }
-//                }
-//                name1.setText(mail);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        Cadastro cadastro = new Cadastro();
+        //REFERENCIA OS TEXTVIEW
+        nomeUsuario = findViewById(R.id.txtNome);
+        celularUsuario = findViewById(R.id.txtCelular);
+        emailUsuario = findViewById(R.id.txtEmail);
+        enderecoUsuario = findViewById(R.id.txtEndereco);
+        dataNascimentoUsuario = findViewById(R.id.txtDataNascimento);
+        cpfUsuario = findViewById(R.id.txtCpf);
+        generoUsuario = findViewById(R.id.switchGenero);
+
+        //RECEBE DADOS DA TELA PRINCIPAL
+        Bundle dados = getIntent().getExtras();
+        String nome = dados.getString("name");
+        String celular = dados.getString("mobile");
+        email = dados.getString("email");
+        String endereco = dados.getString("adress");
+        senhaUsuario = dados.getString("senha");
+        String nascimento = dados.getString("nascimento");
+        String cpf = dados.getString("cpf");
+        String genero = dados.getString("genero");
+        tipoUsuario = dados.getString("tipouser");
+
+        //COLOCA DADOS RECEBIDOS NOS TEXTVIEW
+        nomeUsuario.setText(nome);
+        celularUsuario.setText(celular);
+        emailUsuario.setText(email);
+        enderecoUsuario.setText(endereco);
+        dataNascimentoUsuario.setText(nascimento);
+        cpfUsuario.setText(cpf);
+
+//        //CONFIGURA O SWITCH GENERO DE ACORDO COM O GENERO
+//        if (genero.equals("Masculino")) {
+//            generoUsuario.setChecked(false);
+//        } else {
+//            generoUsuario.setChecked(true);
+//        }
 
 
-        spinner = findViewById(R.id.SPGenre);
-        PMobile = findViewById(R.id.profile_mobile);
-        PCPF = findViewById(R.id.profile_cpf);
-        PNascimento = findViewById(R.id.profile_nascimento);
 
-        mAuth = FirebaseAuth.getInstance();
-        setSupportActionBar(toolbar);
-
-        //Realizando a inserção de dados dentro do Spinner
-       // customList = get
-        String[] generos = {"  ", "Feminino", "Masculino", "Outros"};
-
-
-
-        //Colocando máscaras no Input Text
-        PMobile.addTextChangedListener(Mask.mask(PMobile, Mask.FORMAT_FONE));
-        PCPF.addTextChangedListener(Mask.mask(PCPF, Mask.FORMAT_CPF));
-        PNascimento.addTextChangedListener(Mask.mask(PNascimento, Mask.FORMAT_DATE));
-
-//        reference = FirebaseDatabase.getInstance().getReference().child("Users").child(email_salvo);
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String name = dataSnapshot.child("name").getValue().toString();
-//                String email = dataSnapshot.child("email").getValue().toString();
-//                String adress = dataSnapshot.child("adress").getValue().toString();
-//                String mobile = dataSnapshot.child("mobile").getValue().toString();
-//
-//                PName.setText(name);
-//                PEmail.setText(email);
-//                PAdress.setText(adress);
-//                PMobile.setText(mobile);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        reference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
+//        //Colocando máscaras no Input Text
+//        PMobile.addTextChangedListener(Mask.mask(PMobile, Mask.FORMAT_FONE));
+//        PCPF.addTextChangedListener(Mask.mask(PCPF, Mask.FORMAT_CPF));
+//        PNascimento.addTextChangedListener(Mask.mask(PNascimento, Mask.FORMAT_DATE));
 
 
     }
+
+
+
 
     //endregion
 
-    public void encerraConta(View v){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //Atribuindo um relacionamento pai
-        DatabaseReference reference = database.getReference(mAuth.getUid());
-        reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Conta desativada com sucesso!", Toast.LENGTH_LONG);
-                }else{
-                    Toast.makeText(getApplicationContext(), "Não foi possível desativar sua conta.", Toast.LENGTH_LONG);
+    //BOTÃO SALVAR AS ALTERAÇÕES
+    public void salvarAlteracoes(View view) {
+
+        //RECUPERAR TEXTOS DOS CAMPOS
+        String textoNome = nomeUsuario.getText().toString();
+        String textoEmail = emailUsuario.getText().toString();
+        String textoEndereco = enderecoUsuario.getText().toString();
+        String textoCelular = celularUsuario.getText().toString();
+        String textoDataNascimento = dataNascimentoUsuario.getText().toString();
+        String textoCpf = cpfUsuario.getText().toString();
+
+
+        if (!textoNome.isEmpty()) {//verifica nome
+            if (!textoEndereco.isEmpty()) {//verifica endereco
+                if (!textoEmail.isEmpty()) {//verifica e-mail
+                    if (!textoCelular.isEmpty()) {//verifica celular
+                        if (!textoDataNascimento.isEmpty()) {//verifica data nascimento
+                            if (!textoCpf.isEmpty()) {//verifica o cpf
+
+
+                                UserProfile usuario = new UserProfile();
+                                usuario.setName(textoNome);
+                                usuario.setEmail(textoEmail);
+                                usuario.setAdress(textoEndereco);
+                                usuario.setMobile(textoCelular);
+                                usuario.setSenha(senhaUsuario);
+                                usuario.setNascimento(textoDataNascimento);
+                                usuario.setCpf(textoCpf);
+                                usuario.setGenero(verificaGeneroUsuario());
+                                usuario.setTipouser(tipoUsuario);
+
+                                //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
+                                cadastrarUsuario(usuario);
+
+
+                            } else {
+                                Toast.makeText(MeusDados.this,
+                                        "Preencha o Cpf!",
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
+                            Toast.makeText(MeusDados.this,
+                                    "Preencha a Data de Nascimento!",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+                    } else {
+                        Toast.makeText(MeusDados.this,
+                                "Preencha o Celular!",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(MeusDados.this,
+                            "Preencha o E-mail!",
+                            Toast.LENGTH_SHORT).show();
 
                 }
+            } else {
+                Toast.makeText(MeusDados.this,
+                        "Preencha o Endereço!",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        } else {
+            Toast.makeText(MeusDados.this,
+                    "Preencha o Nome!",
+                    Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
+
+
+    public void cadastrarUsuario(final UserProfile usuario) {
+
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        if (autenticacao.getCurrentUser() != null) {
+
+            try {
+
+                idUsuario = autenticacao.getCurrentUser().getUid();
+                usuario.setId(idUsuario);
+                usuario.salvar();
+
+                //Atualizar nome no UserProfile
+                UsuarioFirebase.atualizarNomeUsuario(usuario.getName());
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+    //CHAMA A TELA PARA ALTERAR A SENHA DO USUÁRIO
+    public void alterarSenhaUsuario(View view) {
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        idUsuario = autenticacao.getCurrentUser().getUid();
+
+        //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
+        Intent i = new Intent(this, AlterarSenha.class);
+        i.putExtra("idUsuario", idUsuario);
+        i.putExtra("senha", senhaUsuario);
+        i.putExtra("email", email);
+
+        startActivity(i);
+
+    }
+
+    public void excluirUsuario(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Aviso!")
+                .setMessage("Deseja realmente excluir sua conta ?")
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        excluirConta();
+
+
+                    }
+                }).setNegativeButton("cancelar", (dialog, which) -> {
+
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+
+    public void excluirConta() {
+
+        //REMOVE USUARIO DO FIREBASE AUTH (EMAIL E SENHA UTILIZADO PARA LOGAR)
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.delete().addOnCompleteListener(task ->{
+            if (task.isSuccessful()) {
+                Log.d("Aviso!", "Usuário Excluído");
+
+            } else {
+                Toast.makeText(MeusDados.this, task.getException().getMessage(),
+                        Toast.LENGTH_SHORT).show();
+
             }
         });
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            final ProgressDialog progressDialog = new ProgressDialog(MeusDados.this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Desativando sua Conta...");
-            progressDialog.show();
-            user.delete().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), "Conta desativada com sucesso!", Toast.LENGTH_LONG);
-                }else{
-                    Toast.makeText(getApplicationContext(), "Não foi possível desativar sua conta.", Toast.LENGTH_LONG);
 
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent h= new Intent(MeusDados.this,Principal.class);
-        startActivity(h);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch (id){
-
-            case R.id.nav_home:
-                Intent h= new Intent(MeusDados.this,Principal.class);
-                startActivity(h);
-                break;
-            case R.id.nav_data:
-                Intent i= new Intent(MeusDados.this,MeusDados.class);
-                startActivity(i);
-                break;
-            case R.id.nav_payment:
-                Intent g= new Intent(MeusDados.this,GerenciarPagamentos.class);
-                startActivity(g);
-                break;
-            case R.id.nav_travel_history:
-                Intent s= new Intent(MeusDados.this,HistoricoViagens.class);
-                startActivity(s);
-            case R.id.nav_indication:
-                Intent t= new Intent(MeusDados.this,IndiqueGanhe.class);
-                startActivity(t);
-                break;
-            case R.id.nav_game:
-                Intent u = new Intent(MeusDados.this, SuporteUsuario.class);
-                startActivity(u);
-                break;
-            case R.id.nav_about_us:
-                Intent v = new Intent(MeusDados.this, Sobre.class);
-                startActivity(v);
-                break;
-            case R.id.nav_exit:
-
-                if(item.getItemId() == R.id.nav_exit){
-
-                    FirebaseAuth.getInstance().signOut();
-                    finish();
-                }
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                break;
-
+        //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        try {
+            idUsuario = autenticacao.getCurrentUser().getUid();
+            UserProfile usuario = new UserProfile();
+            usuario.setId(idUsuario);
+            usuario.remover();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+        FirebaseAuth.getInstance().signOut();
+        Intent m = new Intent(this, MainActivity.class);
+        startActivity(m);
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int RequestCode, String permissions[], int[] grantResults){
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
-        }else{
-
-        }
-        return;
+    public String verificaGeneroUsuario() {
+        return generoUsuario.isChecked() ? "Feminino" : "Masculino";
     }
 
-    private String getFileExtension(Uri uri){
-
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
 
 }
