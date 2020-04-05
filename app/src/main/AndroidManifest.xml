@@ -45,12 +45,6 @@
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".IndiqueGanhe"
-            android:label="@string/title_activity_indique_ganhe"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
             android:screenOrientation="portrait"

@@ -146,8 +146,8 @@ public class Sobre extends AppCompatActivity
                 Intent s= new Intent(Sobre.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(Sobre.this,IndiqueGanhe.class);
-                startActivity(t);
+              //  Intent t= new Intent(Sobre.this,IndiqueGanhe.class);
+                //startActivity(t);
                 break;
             case R.id.nav_game:
                 Intent u = new Intent(Sobre.this, SuporteUsuario.class);

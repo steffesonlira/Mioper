@@ -96,8 +96,8 @@ public class GerenciarPagamentos extends AppCompatActivity implements Navigation
                 Intent s= new Intent(GerenciarPagamentos.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(GerenciarPagamentos.this,IndiqueGanhe.class);
-                startActivity(t);
+             //   Intent t= new Intent(GerenciarPagamentos.this,IndiqueGanhe.class);
+               // startActivity(t);
                 break;
             case R.id.nav_game:
                 Intent u = new Intent(GerenciarPagamentos.this, SuporteUsuario.class);

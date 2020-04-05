@@ -178,8 +178,8 @@ public class HistoricoViagens extends AppCompatActivity
                 Intent s= new Intent(HistoricoViagens.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(HistoricoViagens.this,IndiqueGanhe.class);
-                startActivity(t);
+              //  Intent t= new Intent(HistoricoViagens.this,IndiqueGanhe.class);
+                //startActivity(t);
                 break;
             case R.id.nav_game:
                 Intent u = new Intent(HistoricoViagens.this, SuporteUsuario.class);

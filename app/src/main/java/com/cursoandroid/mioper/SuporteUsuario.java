@@ -115,8 +115,8 @@ public class SuporteUsuario extends AppCompatActivity
                 Intent s= new Intent(SuporteUsuario.this,HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(SuporteUsuario.this,IndiqueGanhe.class);
-                startActivity(t);
+           //     Intent t= new Intent(SuporteUsuario.this,IndiqueGanhe.class);
+             //   startActivity(t);
                 break;
             case R.id.nav_game:
                 Intent u = new Intent(SuporteUsuario.this, SuporteUsuario.class);
