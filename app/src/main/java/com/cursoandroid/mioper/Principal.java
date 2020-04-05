@@ -189,7 +189,8 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
                         case R.id.nav_historico:
                             Intent s = new Intent(Principal.this, HistoricoViagens.class);
                             startActivity(s);
-                        case R.id.nav_indication:
+                            break;
+                            case R.id.nav_indication:
                             Intent t = new Intent(Principal.this, IndiqueGanhe.class);
                             startActivity(t);
                             break;

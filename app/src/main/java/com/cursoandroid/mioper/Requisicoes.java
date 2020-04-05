@@ -1,10 +1,5 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -69,7 +69,7 @@ public class Requisicoes extends AppCompatActivity {
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
 
         Query requisicoesPesquisa = requisicoes.orderByChild("motorista/id")
-                .equalTo( usuarioLogado.getEmail().replace('.', '-'));
+                .equalTo( usuarioLogado.getId());
 
         requisicoesPesquisa.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -183,6 +183,7 @@ public class Requisicoes extends AppCompatActivity {
 
     private void inicializarComponentes(){
 
+       // getSupportActionBar().setTitle("Requisições");
 
         //Configura componentes
         recyclerRequisicoes = findViewById(R.id.recyclerRequisicoes);

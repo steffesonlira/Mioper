@@ -119,13 +119,11 @@ public class UsuarioFirebase {
         geoFire.setLocation(
                 usuarioLogado.getId(),
                 new GeoLocation(lat, lon),
-                new GeoFire.CompletionListener() {
-                    @Override
-                    public void onComplete(String key, DatabaseError error) {
-                        if (error != null) {
-                            Log.d("Erro", "Erro ao salvar local!");
-                        }
+                (key, error) -> {
+                    if (error != null) {
+                        Log.d("Erro", "Erro ao salvar local!");
                     }
+
                 }
         );
 

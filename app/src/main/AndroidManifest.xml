@@ -15,7 +15,13 @@
         <activity android:name=".CadastrarCartao"></activity>
         <activity android:name=".AdapterHistoricoViagem" />
         <activity android:name=".AlterarSenha" />
-        <activity android:name=".Corrida" />
+        <activity android:name=".Corrida"
+            android:parentActivityName=".Corrida"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Requisicoes" />
+        </activity>
         <activity android:name=".RequisicoesAdapter" />
         <activity android:name=".Requisicoes" />
         <activity android:name=".Passageiro" />

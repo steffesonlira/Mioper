@@ -6,6 +6,22 @@
     <!-- Strings para google login -->
 
     <string name="app_name">Mioper</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="titulo_cadastro">Cadastrar uma conta</string>
+    <string name="titulo_login">Acessar minha conta</string>
+    <string name="title_activity_passageiro">PassageiroActivity</string>
+    <string name="title_activity_corrida">CorridaActivity</string>
+    <string name="menu_navegacao">Navegue com o Mioper</string>
+    <string name="menu_dados">Meus Dados</string>
+    <string name="menu_pagamentos">Gerenciar Pagamentos</string>
+    <string name="menu_historico_de_viagens">Histórico de Viagens</string>
+    <string name="menu_indique_e_ganhe">Indique e Ganhe</string>
+    <string name="menu_suporte_usuario">Suporte ao Usuário</string>
+    <string name="menu_sobre_nos">Sobre Nós</string>
+    <string name="menu_sair">Sair</string>
+
+
     <string name="logoMarca">O mundo se abre com apenas um toque</string>
     <!-- Strings para facebook login -->
     <string name="facebook_app_id">2388688338068853</string>
@@ -99,5 +115,8 @@
         <item>Sugestão</item>
         <item>Outros</item>
     </string-array>
+
+    <string name="home_second">Home Second</string>
+
 
 </resources>

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -54,7 +55,7 @@ public class HistoricoViagens extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_historico_viagens);
-
+        Toast.makeText(HistoricoViagens.this,"Passou aqui Historico", Toast.LENGTH_LONG).show();
 
         recyclerView = findViewById(R.id.recyclerView);
         //PESQUISA HISTORICO NO FIREBASE
@@ -134,7 +135,8 @@ public class HistoricoViagens extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
+        Intent m = new Intent(HistoricoViagens.this, Principal.class);
+        startActivity(m);
     }
 
     @Override

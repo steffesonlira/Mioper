@@ -7,6 +7,7 @@ public class Destino {
     private String cidade;
     private String bairro;
     private String cep;
+    private String data;
 
     private String latitude;
     private String longitude;
@@ -68,5 +69,13 @@ public class Destino {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

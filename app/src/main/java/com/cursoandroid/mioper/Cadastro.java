@@ -5,7 +5,6 @@ package com.cursoandroid.mioper;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ import butterknife.ButterKnife;
 //endregion
 
 public class Cadastro extends AppCompatActivity {
-    private static final String TAG = "SignupActivity";
 
     //region Variáveis cadastro do usuário - Inicializando com BindView
     @BindView(R.id.input_name) EditText _nameText;
@@ -49,14 +47,13 @@ public class Cadastro extends AppCompatActivity {
         switchTipoUsuario = findViewById(R.id.switchTipoUsuario);
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
-        mAuth = FirebaseAuth.getInstance();
         _signupButton = findViewById(R.id.btn_signup);
 
 
 
 
         //region Click botão cadastrar
-        _signupButton.setOnClickListener(new View.OnClickListener() {
+            _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -172,7 +169,7 @@ public class Cadastro extends AppCompatActivity {
 
     //Chamando função de validação de campos (Criação de ProgressDialog para redirecionar após realização de cadastro
     public void signup() {
-        Log.d(TAG, "Signup");
+
         if (!validate()) {
             onSignupFailed();
             return;
@@ -215,13 +212,20 @@ public class Cadastro extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
+        String textoNome = _nameText.getText().toString();
+        String textoEmail = _emailText.getText().toString();
+        String textoEndereco = _addressText.getText().toString();
+        String textoCelular = _mobileText.getText().toString();
+        String textoSenha = _passwordText.getText().toString();
+        String textoRepitaSenha = _reEnterPasswordText.getText().toString();
+
         UserProfile usuarios = new UserProfile();
-        usuarios.setName(_nameText.getText().toString());
-        usuarios.setEmail(_emailText.getText().toString());
-        usuarios.setAdress(_addressText.getText().toString());
-        usuarios.setMobile(_mobileText.getText().toString());
-        usuarios.setSenha(_passwordText.getText().toString());
-        usuarios.setRepitasenha(_reEnterPasswordText.getText().toString());
+        usuarios.setName(textoNome);
+        usuarios.setEmail(textoEmail);
+        usuarios.setAdress(textoEndereco);
+        usuarios.setMobile(textoCelular);
+        usuarios.setSenha(textoSenha);
+        usuarios.setRepitasenha(textoRepitaSenha);
         usuarios.setTipouser( verificaTipoUsuario() );
         usuarios.setNascimento("");
         usuarios.setCpf("");
