@@ -104,17 +104,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.commitNowAllowingStateLoss();
 
-        /*
-//        //RECEBE DADOS DA TELA DE LOGIN
-        nomeUsuario = findViewById(R.id.nomeUsuário);
-        Bundle dados = getIntent().getExtras();
-        String usuario = dados.getString("name");
-//
-        //COLOCAR NOME DO USUÁRIO NO NAV HEADER
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
-        navUsername.setText(usuario);
-*/
+
 
         //FAZ CONSULTA NO FIREBASE
         FirebaseUser user = getUsuarioAtual();
