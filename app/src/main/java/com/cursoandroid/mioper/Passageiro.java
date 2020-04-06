@@ -83,6 +83,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         //Adiciona listener para status da requisição
         verificaStatusRequisicao();
     }
+
     private void verificaStatusRequisicao() {
 
         UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
@@ -134,6 +135,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         });
 
     }
+
     private void alteraInterfaceStatusRequisicao(String status) {
 
         if (status != null && !status.isEmpty()) {
@@ -352,6 +354,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             //Cancelar a requisição
             requisicao.setStatus(Requisicao.STATUS_CANCELADA);
             requisicao.atualizarStatus();
+            requisicao.excluirHistorico();
 
         } else {
 
@@ -387,6 +390,10 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
                                     //salvar requisição
                                     salvarRequisicao(destino);
+
+                                    //SALVAR HISTORICO DO USUÁRIO
+                                    Requisicao requisicao1 = new Requisicao();
+                                    requisicao1.salvarHistorico(destino);
 
                                 }
                             }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
@@ -542,7 +549,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     private void inicializarComponentes() {
 
-        Toolbar toolbar =  findViewById(R.id.toolbarpassageiro);
+        Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
         toolbar.setTitle("Iniciar uma viagem");
         setSupportActionBar(toolbar);
 
