@@ -23,7 +23,8 @@
                 android:value=".Requisicoes" />
         </activity>
         <activity android:name=".RequisicoesAdapter" />
-        <activity android:name=".Requisicoes" />
+        <activity android:name=".Requisicoes"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".Passageiro" />
         <activity android:name=".Valores" />
         <activity android:name=".Visao" />

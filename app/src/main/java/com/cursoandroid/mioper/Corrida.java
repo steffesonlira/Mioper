@@ -1,9 +1,5 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,6 +14,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -336,7 +336,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.van))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.carro))
         );
 
     }
@@ -350,7 +350,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario2))
         );
 
     }
@@ -456,8 +456,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Iniciar corrida");
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setTitle("Iniciar corrida");
 
         buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida);
 
