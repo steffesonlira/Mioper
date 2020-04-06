@@ -20,9 +20,10 @@ public class UserProfile implements Serializable {
     private String genero;
 
 
-    public UserProfile(){}
+    public UserProfile() {
+    }
 
-public UserProfile(String id, String name, String adress, String email, String cpf, String mobile, String nascimento, String senha, String repitasenha, String tipouser, String latitude, String longitude, String genero){
+    public UserProfile(String id, String name, String adress, String email, String cpf, String mobile, String nascimento, String senha, String repitasenha, String tipouser, String latitude, String longitude, String genero) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -36,11 +37,12 @@ public UserProfile(String id, String name, String adress, String email, String c
         this.latitude = latitude;
         this.longitude = longitude;
         this.genero = genero;
-}
-    public void salvar(){
+    }
+
+    public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference usuarios = firebaseRef.child( "Users" ).child(getId());
+        DatabaseReference usuarios = firebaseRef.child("Users").child(getId());
         usuarios.setValue(this);
 
     }
