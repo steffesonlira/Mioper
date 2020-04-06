@@ -1,10 +1,5 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -277,7 +277,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario2))
         );
 
     }
@@ -291,7 +291,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.van))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.carro))
         );
 
     }
