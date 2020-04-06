@@ -8,7 +8,6 @@ public class Destino {
     private String bairro;
     private String cep;
     private String data;
-
     private String latitude;
     private String longitude;
 

@@ -42,8 +42,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -169,7 +171,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private void requisicaoCancelada() {
 
         linearLayoutDestino.setVisibility(View.VISIBLE);
-        buttonChamarUber.setText("Chamar Uber");
+        buttonChamarUber.setText("Chamar Mioper");
         cancelarUber = false;
 
     }
@@ -177,7 +179,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private void requisicaoAguardando() {
 
         linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("Cancelar Uber");
+        buttonChamarUber.setText("Cancelar Mioper");
         cancelarUber = true;
 
         //Adiciona marcador passageiro
@@ -362,10 +364,18 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
             if (!enderecoDestino.equals("")) {
 
+                //DATA E HORA ATUAL
+                SimpleDateFormat formataData = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+                Date data = new Date();
+                String dataFormatada = formataData.format(data);
+                //========
+
                 Address addressDestino = recuperarEndereco(enderecoDestino);
                 if (addressDestino != null) {
 
+
                     final Destino destino = new Destino();
+                    destino.setData(dataFormatada);
                     destino.setCidade(addressDestino.getSubAdminArea());
                     destino.setCep(addressDestino.getPostalCode());
                     destino.setBairro(addressDestino.getSubLocality());

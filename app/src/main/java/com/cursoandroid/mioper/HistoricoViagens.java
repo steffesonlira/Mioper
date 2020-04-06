@@ -55,7 +55,7 @@ public class HistoricoViagens extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_historico_viagens);
-        Toast.makeText(HistoricoViagens.this,"Passou aqui Historico", Toast.LENGTH_LONG).show();
+
 
         recyclerView = findViewById(R.id.recyclerView);
         //PESQUISA HISTORICO NO FIREBASE
@@ -149,15 +149,15 @@ public class HistoricoViagens extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch (id){
+        int id = item.getItemId();
+        switch (id) {
 
             case R.id.nav_home:
-                Intent h= new Intent(HistoricoViagens.this,Passageiro.class);
+                Intent h = new Intent(HistoricoViagens.this, Passageiro.class);
                 startActivity(h);
                 break;
             case R.id.nav_data:
-                Intent i= new Intent(HistoricoViagens.this,MeusDados.class);
+                Intent i = new Intent(HistoricoViagens.this, MeusDados.class);
                 //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
                 i.putExtra("name", nomeUsuario1);
                 i.putExtra("mobile", celularUsuario);
@@ -171,14 +171,14 @@ public class HistoricoViagens extends AppCompatActivity
                 startActivity(i);
                 break;
             case R.id.nav_payment:
-                Intent g= new Intent(HistoricoViagens.this,GerenciarPagamentos.class);
+                Intent g = new Intent(HistoricoViagens.this, GerenciarPagamentos.class);
                 startActivity(g);
                 break;
             case R.id.nav_historico:
-                Intent s= new Intent(HistoricoViagens.this,HistoricoViagens.class);
+                Intent s = new Intent(HistoricoViagens.this, HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-              //  Intent t= new Intent(HistoricoViagens.this,IndiqueGanhe.class);
+                //  Intent t= new Intent(HistoricoViagens.this,IndiqueGanhe.class);
                 //startActivity(t);
                 break;
             case R.id.nav_game:
@@ -191,7 +191,7 @@ public class HistoricoViagens extends AppCompatActivity
                 break;
             case R.id.nav_exit:
 
-                if(item.getItemId() == R.id.nav_exit){
+                if (item.getItemId() == R.id.nav_exit) {
 
                     FirebaseAuth.getInstance().signOut();
                     finish();
