@@ -29,10 +29,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class IndiqueGanhe extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "Mioper" ;
+    private static final String TAG = "Mioper";
     private AdapterViewFlipper adapterViewFlipper;
-    private static final String[] TEXT = {"Entre no App do Mioper","Procure pelo Mioper mais próximo","O Motorista aceitará sua solicitação","Partiu Viajar com o Mioper"};
-    private static final int[] IMAGES = {R.drawable.vanindique4, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
+    private static final String[] TEXT = {"Entre no App do Mioper", "Procure pelo Mioper mais próximo", "O Motorista aceitará sua solicitação", "Partiu Viajar com o Mioper"};
+    // private static final int[] IMAGES = {R.drawable.vanindique4, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
     private FirebaseAuth mAuth;
     private Button btnInvite;
     private FirebaseAnalytics analytics;
@@ -54,12 +54,12 @@ public class IndiqueGanhe extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //       drawer.addDrawerListener(toggle);
 //        toggle.syncState();
-  //      navigationView.setNavigationItemSelectedListener(this);
+        //      navigationView.setNavigationItemSelectedListener(this);
 
         //Criando objeto adapter
-       FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
-       adapterViewFlipper.setAdapter(adapter);
-       adapterViewFlipper.setAutoStart(true);
+        //FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
+        //adapterViewFlipper.setAdapter(adapter);
+        //adapterViewFlipper.setAutoStart(true);
 
         //click botão Invite
         btnInvite.setOnClickListener(v -> {
@@ -67,20 +67,21 @@ public class IndiqueGanhe extends AppCompatActivity
         });
     }
 
-    class FlipperAdapter extends BaseAdapter{
+    class FlipperAdapter extends BaseAdapter {
         Context ctx;
         int[] images;
         String[] text;
         LayoutInflater inflater;
 
-        public FlipperAdapter(Context context, String[] myText, int[] myImages){
+        public FlipperAdapter(Context context, String[] myText, int[] myImages) {
             this.ctx = context;
             this.images = myImages;
             this.text = myText;
             inflater = LayoutInflater.from(context);
         }
+
         @Override
-        public int getCount(){
+        public int getCount() {
             return text.length;
         }
 
@@ -96,17 +97,17 @@ public class IndiqueGanhe extends AppCompatActivity
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-           view = inflater.inflate(R.layout.sliderimages, null);
-           TextView txtName = view.findViewById(R.id.idTxtImageView);
-           ImageView txtImage = view.findViewById(R.id.idImgView);
-           txtName.setText(text[i]);
-           txtName.setTextSize(18);
-           txtImage.setImageResource(images[i]);
-           return view;
+            view = inflater.inflate(R.layout.sliderimages, null);
+            TextView txtName = view.findViewById(R.id.idTxtImageView);
+            ImageView txtImage = view.findViewById(R.id.idImgView);
+            txtName.setText(text[i]);
+            txtName.setTextSize(18);
+            txtImage.setImageResource(images[i]);
+            return view;
         }
     }
 
-    private void onInviteClicked(){
+    private void onInviteClicked() {
         //get text from blovetext1
         String text = txtCodigo.getText().toString();
         //Sharing intent
@@ -114,12 +115,12 @@ public class IndiqueGanhe extends AppCompatActivity
         mSharingIntent.setType("text/plain");
         mSharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Write your subject here");
         mSharingIntent.putExtra(Intent.EXTRA_TEXT, text);
-        startActivity(Intent.createChooser(mSharingIntent,"Share text via"));
+        startActivity(Intent.createChooser(mSharingIntent, "Share text via"));
     }
 
     @Override
     public void onBackPressed() {
-        Intent h= new Intent(IndiqueGanhe.this,Principal.class);
+        Intent h = new Intent(IndiqueGanhe.this, Principal.class);
         startActivity(h);
     }
 
@@ -144,26 +145,26 @@ public class IndiqueGanhe extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch (id){
+        int id = item.getItemId();
+        switch (id) {
 
             case R.id.nav_home:
-                Intent h= new Intent(IndiqueGanhe.this,Principal.class);
+                Intent h = new Intent(IndiqueGanhe.this, Principal.class);
                 startActivity(h);
                 break;
             case R.id.nav_data:
-                Intent i= new Intent(IndiqueGanhe.this,MeusDados.class);
+                Intent i = new Intent(IndiqueGanhe.this, MeusDados.class);
                 startActivity(i);
                 break;
             case R.id.nav_payment:
-                Intent g= new Intent(IndiqueGanhe.this,GerenciarPagamentos.class);
+                Intent g = new Intent(IndiqueGanhe.this, GerenciarPagamentos.class);
                 startActivity(g);
                 break;
             case R.id.nav_historico:
-                Intent s= new Intent(IndiqueGanhe.this,HistoricoViagens.class);
+                Intent s = new Intent(IndiqueGanhe.this, HistoricoViagens.class);
                 startActivity(s);
             case R.id.nav_indication:
-                Intent t= new Intent(IndiqueGanhe.this,IndiqueGanhe.class);
+                Intent t = new Intent(IndiqueGanhe.this, IndiqueGanhe.class);
                 startActivity(t);
                 break;
             case R.id.nav_game:
@@ -176,7 +177,7 @@ public class IndiqueGanhe extends AppCompatActivity
                 break;
             case R.id.nav_exit:
 
-                if(item.getItemId() == R.id.nav_exit){
+                if (item.getItemId() == R.id.nav_exit) {
 
                     FirebaseAuth.getInstance().signOut();
                     finish();
@@ -192,7 +193,6 @@ public class IndiqueGanhe extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,11 +46,11 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     String generoUsuario;
     Principal activity;
     String tipoUsuario;
+    String usuario;
+
     NavigationView navigationView;
     private static final String TAG = "Principal";
     private AppBarConfiguration mAppBarConfiguration;
-
-
 
 
     @Override
@@ -57,11 +58,14 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+        //RECEBE DADOS DA TELA DE LOGIN
+        nomeUsuario = findViewById(R.id.nomeUsuário);
+        Bundle dados = getIntent().getExtras();
+        if (dados != null) {
+            usuario = dados.getString("name");
 
-//        //RECEBE DADOS DA TELA DE LOGIN
-//        nomeUsuario = findViewById(R.id.nomeUsuário);
-//        Bundle dados = getIntent().getExtras();
-//        String usuario = dados.getString("name");
+        }
+
 
         //configure navigation bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,10 +76,11 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
 
-//        //COLOCAR NOME DO USUÁRIO NO NAV HEADER
-//        View headerView = navigationView.getHeaderView(0);
-//        TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
-//        navUsername.setText(usuario);
+
+        //COLOCAR NOME DO USUÁRIO NO NAV HEADER
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
+        navUsername.setText(usuario);
 
         //each new menu item must be added here
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -99,16 +104,17 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.commitNowAllowingStateLoss();
 
+        /*
 //        //RECEBE DADOS DA TELA DE LOGIN
-//        nomeUsuario = findViewById(R.id.nomeUsuário);
-//        Bundle dados = getIntent().getExtras();
-//        String usuario = dados.getString("name");
+        nomeUsuario = findViewById(R.id.nomeUsuário);
+        Bundle dados = getIntent().getExtras();
+        String usuario = dados.getString("name");
 //
-//        //COLOCAR NOME DO USUÁRIO NO NAV HEADER
-//        View headerView = navigationView.getHeaderView(0);
-//        TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
-//        navUsername.setText(usuario);
-
+        //COLOCAR NOME DO USUÁRIO NO NAV HEADER
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
+        navUsername.setText(usuario);
+*/
 
         //FAZ CONSULTA NO FIREBASE
         FirebaseUser user = getUsuarioAtual();
@@ -157,70 +163,70 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
 
     //CHAMA TELAS DE ACORDO COM O ITEM DE MENU  CLICADO
 
-                @Override
-                public boolean onNavigationItemSelected(MenuItem item) {
-                    int id = item.getItemId();
-                    switch (id) {
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
 
-                        case R.id.nav_home:
-                            Intent m = new Intent(Principal.this, Passageiro.class);
-                            startActivity(m);
-                            break;
-                        case R.id.nav_data:
+            case R.id.nav_home:
+                Intent m = new Intent(Principal.this, Passageiro.class);
+                startActivity(m);
+                break;
+            case R.id.nav_data:
 
-                            Intent i = new Intent(Principal.this, MeusDados.class);
+                Intent i = new Intent(Principal.this, MeusDados.class);
 
-                            //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
-                            i.putExtra("name", nomeUsuario1);
-                            i.putExtra("mobile", celularUsuario);
-                            i.putExtra("senha", senhaUsuario);
-                            i.putExtra("email", emailUsuario);
-                            i.putExtra("adress", enderecoUsuario);
-                            i.putExtra("nascimento", nascimentoUsuario);
-                            i.putExtra("cpf", cpfUsuario);
-                            i.putExtra("genero", generoUsuario);
-                            i.putExtra("tipouser", tipoUsuario);
-                            startActivity(i);
-                            break;
-                        case R.id.nav_payment:
-                            Intent g = new Intent(Principal.this, GerenciarPagamentos.class);
-                            startActivity(g);
-                            break;
-                        case R.id.nav_historico:
-                            Intent s = new Intent(Principal.this, HistoricoViagens.class);
-                            startActivity(s);
-                        case R.id.nav_indication:
-                       //     Intent t = new Intent(Principal.this, IndiqueGanhe.class);
-                         //   startActivity(t);
-                            break;
-                        case R.id.nav_game:
-                            Intent u = new Intent(Principal.this, SuporteUsuario.class);
-                            startActivity(u);
-                            break;
-                        case R.id.nav_about_us:
-                            Intent v = new Intent(Principal.this, Sobre.class);
-                            startActivity(v);
-                            break;
-                        case R.id.nav_exit:
+                //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
+                i.putExtra("name", nomeUsuario1);
+                i.putExtra("mobile", celularUsuario);
+                i.putExtra("senha", senhaUsuario);
+                i.putExtra("email", emailUsuario);
+                i.putExtra("adress", enderecoUsuario);
+                i.putExtra("nascimento", nascimentoUsuario);
+                i.putExtra("cpf", cpfUsuario);
+                i.putExtra("genero", generoUsuario);
+                i.putExtra("tipouser", tipoUsuario);
+                startActivity(i);
+                break;
+            case R.id.nav_payment:
+                Intent g = new Intent(Principal.this, GerenciarPagamentos.class);
+                startActivity(g);
+                break;
+            case R.id.nav_historico:
+                Intent s = new Intent(Principal.this, HistoricoViagens.class);
+                startActivity(s);
+            case R.id.nav_indication:
+                //     Intent t = new Intent(Principal.this, IndiqueGanhe.class);
+                //   startActivity(t);
+                break;
+            case R.id.nav_game:
+                Intent u = new Intent(Principal.this, SuporteUsuario.class);
+                startActivity(u);
+                break;
+            case R.id.nav_about_us:
+                Intent v = new Intent(Principal.this, Sobre.class);
+                startActivity(v);
+                break;
+            case R.id.nav_exit:
 
-                            if (item.getItemId() == R.id.nav_exit) {
+                if (item.getItemId() == R.id.nav_exit) {
 
-                                FirebaseAuth.getInstance().signOut();
-                                finish();
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
 
-                            }
-
-                            Intent intent = new Intent(getApplicationContext(), Login.class);
-                            startActivity(intent);
-
-                            break;
-
-                    }
-
-                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    return true;
                 }
 
-            }
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+
+                break;
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+}
 

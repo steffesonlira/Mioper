@@ -82,15 +82,13 @@ public class UsuarioFirebase {
 
                     String tipoUsuario = usuario.getTipouser();
                     String nomeUsuario = usuario.getName();
-
                     if (tipoUsuario.equals("M")) {
                         Intent i = new Intent(activity, Requisicoes.class);
                         activity.startActivity(i);
                     } else {
                         Intent i = new Intent(activity, Principal.class);
-
                         //Passa o nome de usuário para tela principal
-                        i.putExtra("nome", nomeUsuario);
+                        i.putExtra("name", nomeUsuario);
                         activity.startActivity(i);
                     }
 
