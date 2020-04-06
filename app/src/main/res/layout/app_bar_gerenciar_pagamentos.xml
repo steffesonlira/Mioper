@@ -93,11 +93,11 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:contextClickable="true"
-            android:text="Adicionar método de pagamento"
-            android:textAlignment="textStart"
+            android:focusable="true"
             android:gravity="center"
-            tools:ignore="MissingConstraints,RtlCompat"
-            android:focusable="true" />
+            android:text="Adicionar método de pagamento"
+            android:textAlignment="center"
+            tools:ignore="MissingConstraints,RtlCompat" />
 
 
 
