@@ -46,7 +46,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     String generoUsuario;
     Principal activity;
     String tipoUsuario;
-    String usuario;
+    static String usuario;
 
     NavigationView navigationView;
     private static final String TAG = "Principal";

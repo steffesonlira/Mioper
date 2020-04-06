@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +43,7 @@ public class HistoricoViagens extends AppCompatActivity
     String nascimentoUsuario;
     String cpfUsuario;
     String generoUsuario;
+    TextView historicoUser;
     Principal activity;
     String tipoUsuario;
     private ListView listLocais;
@@ -58,6 +61,9 @@ public class HistoricoViagens extends AppCompatActivity
 
 
         recyclerView = findViewById(R.id.recyclerView);
+        historicoUser = findViewById(R.id.textView_viagem);
+
+
         //PESQUISA HISTORICO NO FIREBASE
         retornaHistorico();
     }
@@ -79,8 +85,7 @@ public class HistoricoViagens extends AppCompatActivity
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
 
-
-                    mostrarHistorico(dataSnapshot);
+                        mostrarHistorico(dataSnapshot);
 
                 }
 
@@ -121,6 +126,9 @@ public class HistoricoViagens extends AppCompatActivity
 
     //ENVIA DADOS PARA O RECYCLERVIEW
     public void enviarDadosLista(ArrayList array2) {
+
+        historicoUser.setVisibility(View.INVISIBLE);
+
         //CONFIGURA ADAPTER
         AdapterHistoricoViagem adapter = new AdapterHistoricoViagem(array2);
 
