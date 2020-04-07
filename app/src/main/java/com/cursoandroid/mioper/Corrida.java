@@ -11,6 +11,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -270,8 +271,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
 
-                if( key.equals(uOrigem.getEmail().replace('.', '-')) ){
-                    //Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!");
+                if( key.equals(uOrigem.getId()) ){
+                    Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!");
 
                     //Altera status da requisicao
                     requisicao.setStatus(status);
