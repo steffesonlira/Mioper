@@ -8,17 +8,18 @@
     android:background="@drawable/esquecisenha"
     tools:context=".EsqueciSenha">
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="198dp"
         android:layout_height="206dp"
         android:layout_marginStart="85dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="85dp"
         android:layout_marginBottom="492dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.233"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.32"
@@ -26,18 +27,17 @@
         tools:layout_conversion_wrapHeight="641"
         tools:layout_conversion_wrapWidth="599" />
 
-
     <TextView
         android:id="@+id/textView3"
         android:layout_width="317dp"
         android:layout_height="83dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:text="@string/description"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="24dip"
+        android:textSize="20dip"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +70,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="#7E97E3"
         android:text="Recuperar Senha"
-        android:background="@color/Blue2"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
