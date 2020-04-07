@@ -3,71 +3,41 @@ package com.cursoandroid.mioper;
 //region IMPORTS
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.request.RequestOptions;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.SQLOutput;
-import java.util.Arrays;
 //endregion
 
-//region CLASSE LOGIN
+//CLASSE LOGIN
 public class Login extends AppCompatActivity {
+
 //region DECLARAÇÃO DE VARIÁVEIS
 
     //VAR DENIS
@@ -87,92 +57,117 @@ public class Login extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
     FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-    Button btn_login, btn_logout;
-    TextView text;
-    ImageView image;
     ProgressBar progressBar;
     GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
-    public Toast backToast;
     private long backPressedTime;
-
     private String[] permissoes = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION
     };
 
 //endregion
 
-
+//region Método ONCREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        //getSupportActionBar().hide();
-
         LayoutInflater layoutInflater = getLayoutInflater();
+
+//region criação das views virtuais
         viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
-
-//Configuration Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-//End configuration Google Sign In
-
-//region login with google+
-        btn_login = findViewById(R.id.login_google);
-
-        mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
-                .Builder()
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-        btn_login.setOnClickListener(v -> SignInGoogle());
-//btn_logout.setOnClickListener(v -> Logout());
-        if (mAuth.getCurrentUser() != null) {
-            FirebaseUser user = mAuth.getCurrentUser();
-        }
-//endregion
-
-//region criação das views virtuais nomeando os campos para m ligaçãpo das views com o codigo Java
         email = findViewById(R.id.edtUsuario);
         senha = findViewById(R.id.edtSenha);
         logar = findViewById(R.id.btnLogin);
-        logarFace = findViewById(R.id.login_face);
         criarConta = findViewById(R.id.link_signup);
         esqueceuSenha = findViewById(R.id.txtEsqueciSenhaId);
-//endregionregion
-
-//region login with facebook
+        // btn_login = findViewById(R.id.login_google); NÂO UTILIZADO
+        //  logarFace = findViewById(R.id.login_face); NÂO UTILIZADO
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            FirebaseUser user = mAuth.getCurrentUser();
+        }
         mAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
-        logarFace.setPermissions(Arrays.asList("email", "public_profile"));
+//endregionregion
 
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//region Método validarPermissoes()
+        Permissoes.validarPermissoes(permissoes, this, 1);
+        //endregion
+
+//region FIREBASE LISTENER
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(Login.this, EsqueciSenha.class);
-                startActivity(intent);
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(Login.this, Principal.class);
+                    startActivity(intent);
+                }
             }
+        };
+        //endregion FIREBASE LISTENER
 
+//region LABEL PARA CRIAR UMA NOVA CONTA no MIOPER
+        criarConta.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancel() {
-                Intent intent = new Intent(Login.this, SuporteUsuario.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                startActivity(new Intent(Login.this, Cadastro.class));
             }
         });
+//endregion
 
-        //validar permissões para uso da localizacao
-        Permissoes.validarPermissoes(permissoes, this, 1);
+//region LABEL ESQUECI a SENHA
+        esqueceuSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this, EsqueciSenha.class));
+            }
+        });
+//endregion
+
+//region Configuration Google Sign In NÂO UTILIZADO
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//endregion configuration Google Sign In
+
+//region login with google+ NÂO UTILIZADO
+//        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+//                .Builder()
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+//        btn_login.setOnClickListener(v -> SignInGoogle());
+//btn_logout.setOnClickListener(v -> Logout());
+
+//endregion
+
+//region login with facebook NÂO UTILIZADO
+
+//        logarFace.setPermissions(Arrays.asList("email", "public_profile"));
+
+//        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Intent intent = new Intent(Login.this, EsqueciSenha.class);
+//                startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                Intent intent = new Intent(Login.this, SuporteUsuario.class);
+//                startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                Intent intent = new Intent(Login.this, MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 //        logarFace.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 //            @Override
@@ -194,26 +189,9 @@ public class Login extends AppCompatActivity {
 //
 //
 //        });
+//endregion NÂO UTILIZADO
 
-        //validar permissões para uso da localizacao
-        Permissoes.validarPermissoes(permissoes, this, 1);
-
-        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Intent intent = new Intent(Login.this, Principal.class);
-                    startActivity(intent);
-                }
-            }
-        };
-
-
-
-//endregion
-
-////region MÉTODO PARA LOGAR PADRÃO
+////region MÉTODO PARA LOGAR PADRÃO NÂO UTILIZADO
 //        logar.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -319,67 +297,55 @@ public class Login extends AppCompatActivity {
 //        });
 ////endregion
 
-//region MÉTODO PARA CRIAR UMA NOVA SENHA
-        criarConta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Login.this, Cadastro.class));
-            }
-        });
-
-        esqueceuSenha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Login.this, EsqueciSenha.class));
-            }
-        });
+    }
 //endregion
-    }
 
 
+//region HANDLE FACEBOOK NÂO UTILIZADO
+//    private void handleFacebookAccessToken(AccessToken accessToken) {
+//        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+//        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if (!task.isSuccessful()) {
+//                    Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
+//                }
+//            }
+//        });
+//    }
+//endregion
 
-
-    private void handleFacebookAccessToken(AccessToken accessToken) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
-                }
-            }
-        });
-    }
-
-
-    //region signIn with google
+//region METODO signIn with google NÂO UTILIZADO
     void SignInGoogle() {
 
         Intent signIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signIntent, GOOGLE_SIGN);
 
     }
+//endregion
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//region METODO onActivityResult GOOGLE NÂO UTILIZADO
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == GOOGLE_SIGN) {
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//
+//            try {
+//                GoogleSignInAccount account = task.getResult(ApiException.class);
+//                firebaseAuthWithGoogle(account);
+//            } catch (ApiException e) {
+//                Log.w(TAG, "Google sign in failed", e);
+//                Log.e("MYAPP", "exception", e);
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
+//endregion
 
-        if (requestCode == GOOGLE_SIGN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                Log.w(TAG, "Google sign in failed", e);
-                Log.e("MYAPP", "exception", e);
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    //endregion
+//region METODO onStart()
     @Override
     protected void onStart() {
         super.onStart();
@@ -389,7 +355,9 @@ public class Login extends AppCompatActivity {
 
         UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
     }
+//endregion
 
+//region METODO onRequestPermissionsResult()
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -401,7 +369,9 @@ public class Login extends AppCompatActivity {
         }
 
     }
+//endregion
 
+//region METODO alertaValidacaoPermissao()
     private void alertaValidacaoPermissao(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -419,7 +389,9 @@ public class Login extends AppCompatActivity {
         dialog.show();
 
     }
+//endregion
 
+//region METODO validarLoginUsuario()
     public void validarLoginUsuario(View view) {
 
         //Recuperar textos dos campos
@@ -446,7 +418,9 @@ public class Login extends AppCompatActivity {
         }
 
     }
+//endregion
 
+//region METODO logarUsuario()
     public void logarUsuario( UserProfile usuario ){
 
         mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();
@@ -457,10 +431,27 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if( task.isSuccessful() ){
 
+                    final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                                                progressDialog.setIndeterminate(true);
+                                                progressDialog.setMessage("Realizando o Login...");
+                                                progressDialog.show();
+
+                                                new android.os.Handler().postDelayed(
+                                                        new Runnable() {
+                                                            public void run() {
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        }, 3000);
+
                     //Verificar o tipo de usuário logado
                     // "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
 
+                    //Toast de Boas vindas
+                    Toast toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
+                    toastCustom.setGravity(Gravity.CENTER, 0, 0);
+                    toastCustom.setView(viewLayout);
+                    toastCustom.show();
                 }else {
 
                     String excecao = "";
@@ -481,51 +472,51 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+//endregion
 
-
+//region METODO onStop()
     @Override
     protected void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
-
-    //region Google+  Firebase
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        Log.d("TAG", "firebaseAuthWithGoogle: " + account.getId());
-
-        AuthCredential credential = GoogleAuthProvider
-                .getCredential(account.getIdToken(), null);
-
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
-
-
-                            }
-
-
-                            Intent i = new Intent(getApplicationContext(), Principal.class);
-                            startActivity(i);
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
-                        }
-                    }
-                });
-    }
 //endregion
 
+//region Google+  Firebase NÂO UTILIZADO
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+//        Log.d("TAG", "firebaseAuthWithGoogle: " + account.getId());
+//
+//        AuthCredential credential = GoogleAuthProvider
+//                .getCredential(account.getIdToken(), null);
+//
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//
+//                            if (task.getResult().getAdditionalUserInfo().isNewUser()) {
+//
+//
+//                            }
+//
+//
+//                            Intent i = new Intent(getApplicationContext(), Principal.class);
+//                            startActivity(i);
+//                            finish();
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), R.string.error_invalid_email, Toast.LENGTH_LONG);
+//                        }
+//                    }
+//                });
+//    }
+//endregion
 
-
+//region METODO onBackPressed()
     @Override
     public void onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
-// bbackToast.cancel();
             super.onBackPressed();
             finish();
         } else {
@@ -534,6 +525,6 @@ public class Login extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
 
     }
-
+//endregion
 
 }
