@@ -189,7 +189,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Total da viagem")
-                .setMessage("A viagem ficou em: R$ " + resultado)
+                .setMessage("O valor a ser recebido é de: R$ " + resultado)
                 .setCancelable(false)
                 .setNegativeButton("Encerrar viagem", new DialogInterface.OnClickListener() {
                     @Override
