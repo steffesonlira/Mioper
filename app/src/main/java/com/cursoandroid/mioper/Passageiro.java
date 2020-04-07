@@ -125,9 +125,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                             alteraInterfaceStatusRequisicao(statusRequisicao);
                         }
                     }
-
                 }
-
             }
 
             @Override
@@ -258,8 +256,9 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                         requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                         requisicao.atualizarStatus();
 
+                        //VOLTA PARA A TELA DE LOGIN
                         finish();
-                        startActivity(new Intent(getIntent()));
+
 
                     }
                 });
