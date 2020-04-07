@@ -2,11 +2,14 @@ package com.cursoandroid.mioper;
 
 //region IMPORTs
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -26,16 +29,27 @@ import butterknife.ButterKnife;
 public class Cadastro extends AppCompatActivity {
 
     //region Variáveis cadastro do usuário - Inicializando com BindView
-    @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_mobile) EditText _mobileText;
-    @BindView(R.id.input_password) EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
-    @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
+    @BindView(R.id.input_name)
+    EditText _nameText;
+    @BindView(R.id.input_address)
+    EditText _addressText;
+    @BindView(R.id.input_email)
+    EditText _emailText;
+    @BindView(R.id.input_mobile)
+    EditText _mobileText;
+    @BindView(R.id.input_password)
+    EditText _passwordText;
+    @BindView(R.id.input_reEnterPassword)
+    EditText _reEnterPasswordText;
+    @BindView(R.id.btn_signup)
+    Button _signupButton;
+    @BindView(R.id.link_login)
+    TextView _loginLink;
     private FirebaseAuth mAuth;
     private Switch switchTipoUsuario;
+    TextView passageiro;
+    TextView motorista;
+
 
     //endregion
 
@@ -44,16 +58,37 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
+
+
         switchTipoUsuario = findViewById(R.id.switchTipoUsuario);
+        passageiro = findViewById(R.id.nomeUsuário);
+        motorista = findViewById(R.id.txtCadastrar);
+
+
+        //AO CLICAR, ALTERA A COR DO SWITCH PASSGEIRO/MOTORISTA
+        switchTipoUsuario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (switchTipoUsuario.isChecked()) {
+                    passageiro.setTextColor(Color.parseColor("#009688"));
+                    motorista.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+                } else {
+                    motorista.setTextColor(Color.parseColor("#009688"));
+                    passageiro.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+                }
+            }
+        });
+
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
         _signupButton = findViewById(R.id.btn_signup);
 
 
-
-
         //region Click botão cadastrar
-            _signupButton.setOnClickListener(new View.OnClickListener() {
+        _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -88,17 +123,16 @@ public class Cadastro extends AppCompatActivity {
         String repitasenha = _reEnterPasswordText.getText().toString();
 
 
-
         usuario.setEmail(email);
         usuario.setSenha(senha);
         usuario.setName(nome);
         usuario.setAdress(address);
         usuario.setMobile(mobile);
         usuario.setRepitasenha(repitasenha);
-        usuario.setTipouser(verificaTipoUsuario() );
+        usuario.setTipouser(verificaTipoUsuario());
 
 
-        mAuth =  ConfiguracaoFirebase.getFirebaseAutenticacao();
+        mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();
         mAuth.createUserWithEmailAndPassword(
                 usuario.getEmail(),
                 usuario.getSenha()
@@ -181,7 +215,7 @@ public class Cadastro extends AppCompatActivity {
         progressDialog.show();
 
 
-    //endregion
+        //endregion
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -226,7 +260,7 @@ public class Cadastro extends AppCompatActivity {
         usuarios.setMobile(textoCelular);
         usuarios.setSenha(textoSenha);
         usuarios.setRepitasenha(textoRepitaSenha);
-        usuarios.setTipouser( verificaTipoUsuario() );
+        usuarios.setTipouser(verificaTipoUsuario());
         usuarios.setNascimento("");
         usuarios.setCpf("");
         usuarios.setGenero("");
@@ -252,7 +286,7 @@ public class Cadastro extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (usuarios.getMobile().isEmpty() || usuarios.getMobile().length()<11) {
+        if (usuarios.getMobile().isEmpty() || usuarios.getMobile().length() < 11) {
             _mobileText.setError("Entre com um número de telefone corretamente");
             valid = false;
         } else {
@@ -275,16 +309,18 @@ public class Cadastro extends AppCompatActivity {
         return valid;
 
 
-
     }
+
     //endregion
     @Override
     public void onBackPressed() {
-        Intent h= new Intent(Cadastro.this,Login.class);
+        Intent h = new Intent(Cadastro.this, Login.class);
         startActivity(h);
     }
+
     public String verificaTipoUsuario() {
         return switchTipoUsuario.isChecked() ? "M" : "P";
     }
+
 
 }
