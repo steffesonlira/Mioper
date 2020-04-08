@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
 
 //endregion
 
-//region Método ONCREATE
+    //region Método ONCREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -315,7 +315,7 @@ public class Login extends AppCompatActivity {
 //    }
 //endregion
 
-//region METODO signIn with google NÂO UTILIZADO
+    //region METODO signIn with google NÂO UTILIZADO
     void SignInGoogle() {
 
         Intent signIntent = mGoogleSignInClient.getSignInIntent();
@@ -345,7 +345,7 @@ public class Login extends AppCompatActivity {
 //    }
 //endregion
 
-//region METODO onStart()
+    //region METODO onStart()
     @Override
     protected void onStart() {
         super.onStart();
@@ -357,13 +357,13 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
-//region METODO onRequestPermissionsResult()
+    //region METODO onRequestPermissionsResult()
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        for(int permissaoResultado : grantResults){
-            if( permissaoResultado == PackageManager.PERMISSION_DENIED){
+        for (int permissaoResultado : grantResults) {
+            if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
                 alertaValidacaoPermissao();
             }
         }
@@ -371,8 +371,8 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
-//region METODO alertaValidacaoPermissao()
-    private void alertaValidacaoPermissao(){
+    //region METODO alertaValidacaoPermissao()
+    private void alertaValidacaoPermissao() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permissões Negadas");
@@ -391,7 +391,7 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
-//region METODO validarLoginUsuario()
+    //region METODO validarLoginUsuario()
     public void validarLoginUsuario(View view) {
 
         //Recuperar textos dos campos
@@ -420,8 +420,8 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
-//region METODO logarUsuario()
-    public void logarUsuario( UserProfile usuario ){
+    //region METODO logarUsuario()
+    public void logarUsuario(UserProfile usuario) {
 
         mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();
         mAuth.signInWithEmailAndPassword(
@@ -429,19 +429,19 @@ public class Login extends AppCompatActivity {
         ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if( task.isSuccessful() ){
+                if (task.isSuccessful()) {
 
                     final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                                                progressDialog.setIndeterminate(true);
-                                                progressDialog.setMessage("Realizando o Login...");
-                                                progressDialog.show();
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Realizando o Login...");
+                    progressDialog.show();
 
-                                                new android.os.Handler().postDelayed(
-                                                        new Runnable() {
-                                                            public void run() {
-                                                                progressDialog.dismiss();
-                                                            }
-                                                        }, 3000);
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    progressDialog.dismiss();
+                                }
+                            }, 3000);
 
                     //Verificar o tipo de usuário logado
                     // "Motorista" / "Passageiro"
@@ -452,17 +452,17 @@ public class Login extends AppCompatActivity {
                     toastCustom.setGravity(Gravity.CENTER, 0, 0);
                     toastCustom.setView(viewLayout);
                     toastCustom.show();
-                }else {
+                } else {
 
                     String excecao = "";
                     try {
                         throw task.getException();
-                    }catch ( FirebaseAuthInvalidUserException e ) {
+                    } catch (FirebaseAuthInvalidUserException e) {
                         excecao = "Usuário não está cadastrado.";
-                    }catch ( FirebaseAuthInvalidCredentialsException e ){
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         excecao = "E-mail e senha não correspondem a um usuário cadastrado";
-                    }catch (Exception e){
-                        excecao = "Erro ao cadastrar usuário: "  + e.getMessage();
+                    } catch (Exception e) {
+                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
                         e.printStackTrace();
                     }
                     Toast.makeText(Login.this,
@@ -474,7 +474,7 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
-//region METODO onStop()
+    //region METODO onStop()
     @Override
     protected void onStop() {
         super.onStop();
@@ -513,7 +513,7 @@ public class Login extends AppCompatActivity {
 //    }
 //endregion
 
-//region METODO onBackPressed()
+    //region METODO onBackPressed()
     @Override
     public void onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {

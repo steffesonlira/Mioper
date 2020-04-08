@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout de Scroll para rolagem de tela -->
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,24 +7,25 @@
     android:background="@drawable/cadastromioper"
     android:fitsSystemWindows="true">
 
-    <!--Layout Linear para organizar Edit Texts -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
+
         android:paddingRight="24dp">
 
-        <!-- Logo Mioper -->
         <ImageView
-            android:layout_width="126dp"
-            android:layout_height="72dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:src="@drawable/logo" />
 
-        <!-- Label Nome -->
+        <!-- Name Label -->
+
+        <!-- Address Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,6 @@
             android:layout_marginBottom="8dp"
             android:textColorHint="#FFFFFF">
 
-            <!-- EditText Nome -->
             <EditText
                 android:id="@+id/input_name"
                 android:layout_width="match_parent"
@@ -47,15 +46,12 @@
                 android:textCursorDrawable="@color/design_default_color_primary_dark" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Label Endereço -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
-            <!-- EditText Endereço -->
             <EditText android:id="@+id/input_address"
                 android:layout_width="match_parent"
                 android:textColorHighlight="#C5C1C1"
@@ -69,15 +65,13 @@
 
 
 
-        <!-- Label Email -->
+        <!--  Email Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
-            <!-- EditText E-mail -->
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:textColorHighlight="#C5C1C1"
@@ -90,15 +84,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <!-- Label Celular -->
+        <!-- mobile number -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
-            <!-- EditText Celular -->
             <EditText android:id="@+id/input_mobile"
                 android:layout_width="match_parent"
                 android:backgroundTint="@android:color/white"
@@ -110,15 +102,13 @@
                 android:hint="Celular:" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Label Senha -->
+        <!-- Password Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
-            <!-- EditText Senha -->
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,15 +120,13 @@
                 android:hint="Senha:"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Label RepitaSenha -->
+        <!-- Password Re-enter Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-
-            <!-- EditText RepitaSenha -->
             <EditText android:id="@+id/input_reEnterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,54 +138,56 @@
                 android:hint="Confirme a senha:"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--Linear Layout para organizar label + switch -->
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+<!--        <ToggleButton-->
+<!--            android:id="@+id/tbTipoUser"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:onClick="onToggleClick"-->
+<!--            android:textOff="Passageiro"-->
+<!--            android:textOn="Motorista"-->
+<!--            ></ToggleButton>-->
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-        <!-- Label Passageiro-->
-        <TextView
-            android:id="@+id/txtCadastrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="10dp"
-            android:text="Passageiro"
-            android:textColor="@color/White" />
 
-        <!--Switch para trocar opção Motorista ou Passageiro -->
-        <Switch
+    <TextView
+        android:id="@+id/txtCadastrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="10dp"
+        android:text="Passageiro"
+        android:textColor="#009688" />
+    <Switch
         android:id="@+id/switchTipoUsuario"
+        android:thumbTint="#009688"
+        android:trackTint="@color/White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:splitTrack="false" />
 
-        <!-- Label Motorista -->
         <TextView
             android:id="@+id/nomeUsuário"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:textColor="@color/White"
             android:text="Motorista"
            />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <!-- Botão Cadastrar -->
+</androidx.appcompat.widget.LinearLayoutCompat>
+        <!-- Signup Button -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:textColor="@color/White"
-            android:background="@drawable/botao"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="Criar conta"/>
 
-        <!-- Label Realizar Login -->
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -209,6 +199,8 @@
             android:textCursorDrawable="@color/design_default_color_primary_dark"
             android:gravity="center"
             android:textSize="16dip"/>
+
+
 
     </LinearLayout>
 </ScrollView>
