@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
         <activity android:name=".CadastrarCartao"></activity>
+        <activity android:name=".IndiqueGanhe"></activity>
         <activity android:name=".AdapterHistoricoViagem" />
         <activity android:name=".AlterarSenha" />
         <activity android:name=".Corrida"
@@ -61,7 +62,7 @@
             android:name=".MeusDados"
             android:label="@string/title_activity_meus_dados"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Principal"

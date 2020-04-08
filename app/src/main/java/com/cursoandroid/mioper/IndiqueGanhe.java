@@ -152,32 +152,32 @@ public class IndiqueGanhe extends AppCompatActivity
                 Intent h = new Intent(IndiqueGanhe.this, Principal.class);
                 startActivity(h);
                 break;
-            case R.id.nav_data:
+            case R.id.nav_dados:
                 Intent i = new Intent(IndiqueGanhe.this, MeusDados.class);
                 startActivity(i);
                 break;
-            case R.id.nav_payment:
+            case R.id.nav_pagamento:
                 Intent g = new Intent(IndiqueGanhe.this, GerenciarPagamentos.class);
                 startActivity(g);
                 break;
             case R.id.nav_historico:
                 Intent s = new Intent(IndiqueGanhe.this, HistoricoViagens.class);
                 startActivity(s);
-            case R.id.nav_indication:
+            case R.id.nav_indicacao:
                 Intent t = new Intent(IndiqueGanhe.this, IndiqueGanhe.class);
                 startActivity(t);
                 break;
-            case R.id.nav_game:
+            case R.id.nav_suporte:
                 Intent u = new Intent(IndiqueGanhe.this, SuporteUsuario.class);
                 startActivity(u);
                 break;
-            case R.id.nav_about_us:
+            case R.id.nav_sobre:
                 Intent v = new Intent(IndiqueGanhe.this, Sobre.class);
                 startActivity(v);
                 break;
-            case R.id.nav_exit:
+            case R.id.nav_sair:
 
-                if (item.getItemId() == R.id.nav_exit) {
+                if (item.getItemId() == R.id.nav_sair) {
 
                     FirebaseAuth.getInstance().signOut();
                     finish();

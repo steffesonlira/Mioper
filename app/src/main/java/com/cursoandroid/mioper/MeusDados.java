@@ -1,12 +1,18 @@
 package com.cursoandroid.mioper;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,6 +38,7 @@ public class MeusDados extends AppCompatActivity {
     Switch generoUsuario;
     String tipoUsuario;
     String idUsuario;
+    TextView txtMasculino, txtFeminino;
     String email;
     private FirebaseAuth autenticacao;
 
@@ -50,11 +57,38 @@ public class MeusDados extends AppCompatActivity {
         //REFERENCIA OS TEXTVIEW
         nomeUsuario = findViewById(R.id.txtNome);
         celularUsuario = findViewById(R.id.txtCelular);
+        txtFeminino = findViewById(R.id.txtFeminino);
+        txtMasculino = findViewById(R.id.txtFeminino);
         emailUsuario = findViewById(R.id.txtEmail);
         enderecoUsuario = findViewById(R.id.txtEndereco);
         dataNascimentoUsuario = findViewById(R.id.txtDataNascimento);
         cpfUsuario = findViewById(R.id.txtCpf);
         generoUsuario = findViewById(R.id.switchGenero);
+
+
+
+        //AO CLICAR, ALTERA A COR DO SWITCH PASSGEIRO/MOTORISTA
+        generoUsuario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (generoUsuario.isChecked()) {
+                    txtFeminino.setTextColor(Color.parseColor("#009688"));
+                    txtMasculino.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+                } else {
+                    txtMasculino.setTextColor(Color.parseColor("#009688"));
+                    txtFeminino.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+                }
+            }
+        });
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Meus Dados");
+        //endregion
 
         //RECEBE DADOS DA TELA PRINCIPAL
         Bundle dados = getIntent().getExtras();
@@ -85,10 +119,10 @@ public class MeusDados extends AppCompatActivity {
 
 
 
-//        //Colocando máscaras no Input Text
-//        PMobile.addTextChangedListener(Mask.mask(PMobile, Mask.FORMAT_FONE));
-//        PCPF.addTextChangedListener(Mask.mask(PCPF, Mask.FORMAT_CPF));
-//        PNascimento.addTextChangedListener(Mask.mask(PNascimento, Mask.FORMAT_DATE));
+        //Colocando máscaras no Input Text
+        celularUsuario.addTextChangedListener(Mask.mask(celularUsuario, Mask.FORMAT_FONE));
+        cpfUsuario.addTextChangedListener(Mask.mask(cpfUsuario, Mask.FORMAT_CPF));
+        dataNascimentoUsuario.addTextChangedListener(Mask.mask(dataNascimentoUsuario, Mask.FORMAT_DATE));
 
 
     }
@@ -272,5 +306,27 @@ public class MeusDados extends AppCompatActivity {
         return generoUsuario.isChecked() ? "Feminino" : "Masculino";
     }
 
+    //region Criação do Menu Toolbar XML
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
+        return true;
+    }
+    //endregion
+
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
 }

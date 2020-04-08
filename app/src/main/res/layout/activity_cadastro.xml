@@ -186,6 +186,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
+            android:textColor="@color/White"
+            android:background="@drawable/botao"
             android:text="Criar conta"/>
 
         <TextView android:id="@+id/link_login"

@@ -9,11 +9,11 @@
             android:icon="@drawable/van"
             android:title="@string/menu_navegue_mioper" />
         <item
-            android:id="@+id/nav_data"
+            android:id="@+id/nav_dados"
             android:icon="@drawable/data_icon"
             android:title="@string/menu_meus_dados" />
         <item
-            android:id="@+id/nav_payment"
+            android:id="@+id/nav_pagamento"
             android:icon="@drawable/pagamento_ic"
             android:title="@string/menu_payment" />
         <item
@@ -22,11 +22,11 @@
             android:title="@string/menu_travel_history" />
 
         <item
-            android:id="@+id/nav_game"
+            android:id="@+id/nav_suporte"
             android:icon="@drawable/ic_message_black"
             android:title="@string/menu_usuario" />
         <item
-            android:id="@+id/nav_indication"
+            android:id="@+id/nav_indicacao"
             android:icon="@drawable/indicate"
             android:title="@string/menu_indicate" />
     </group>
@@ -35,11 +35,11 @@
         <menu>
 
             <item
-                android:id="@+id/nav_about_us"
+                android:id="@+id/nav_sobre"
                 android:icon="@drawable/logo"
                 android:title="@string/menu_about_us" />
             <item
-                android:id="@+id/nav_exit"
+                android:id="@+id/nav_sair"
                 android:icon="@drawable/exit_ic"
                 android:title="@string/menu_exit" />
         </menu>

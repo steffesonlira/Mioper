@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cadastromioper"
+    android:background="@drawable/gradient"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MeusDados">
 
@@ -28,10 +28,10 @@
             android:orientation="vertical" >
             <ImageView
                 android:id="@+id/imageView3"
-                android:layout_width="147dp"
+                android:layout_width="120dp"
                 android:layout_height="168dp"
-                android:layout_marginLeft="110dp"
                 android:layout_marginTop="20dp"
+                android:layout_gravity="center"
                 app:srcCompat="@drawable/profile" />
 
             <!-- Name Label -->
@@ -52,7 +52,7 @@
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
                     android:textColorHint="#FFFFFF"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Address Label -->
@@ -73,7 +73,7 @@
                     android:inputType="textPostalAddress"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -89,12 +89,14 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:backgroundTint="@android:color/white"
                     android:hint="E-mail"
+                    android:editable="false"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
            <!-- mobile number -->
@@ -114,7 +116,7 @@
                     android:inputType="number"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -136,7 +138,7 @@
                     android:inputType="date"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- CPF -->
@@ -156,38 +158,56 @@
                     android:inputType="number"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
-                    android:textCursorDrawable="@color/design_default_color_primary_dark" />
+                    android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Gênero -->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/txtFeminino"
                 android:layout_width="wrap_content"
+                android:textColor="#009688"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/White"
-                android:text="Masculino / Feminino" />
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="10dp"
+                android:text="Feminino"/>
 
             <Switch
                 android:id="@+id/switchGenero"
+                android:thumbTint="#009688"
+                android:trackTint="@color/White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_weight="1" />
+                android:splitTrack="false"/>
+
+                <TextView
+                    android:id="@+id/txtMasculino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/White"
+                    android:text="Masculino"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <!-- Botão Salvar Alterações -->
             <Button
                 android:id="@+id/btnSalvarAlteracoes"
                 android:layout_width="380dp"
-                android:background="@color/Blue"
+                android:background="@drawable/botao"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_salvar_alteracoes"
+                android:padding="15dp"
                 android:onClick="salvarAlteracoes"
                 android:textColorHighlight="#C5C1C1"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@color/design_default_color_primary_dark"
+                android:textColor="@android:color/white"
                 android:text="Salvar Alterações" />
 
             <!-- Botão Alterar Senha -->
@@ -196,22 +216,29 @@
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/White"
                 android:onClick="alterarSenhaUsuario"
                 android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:background="@color/Blue_escuro"
+                android:padding="15dp"
+                android:drawableLeft="@drawable/ic_altera_senha"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/botao"
                 android:text="Alterar Senha" />
 
             <Button
                 android:id="@+id/btnExcluirConta"
                 android:layout_width="380dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_gravity="center"
+                android:padding="15dp"
+                android:drawableLeft="@drawable/ic_deleta_conta"
                 android:layout_weight="1"
+                android:textStyle="bold"
+                android:textColor="@color/White"
                 android:onClick="excluirUsuario"
-                android:background="@color/Red"
+                android:background="@drawable/botao"
                 android:text="Excluir Conta" />
 
         </LinearLayout>

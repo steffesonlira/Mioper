@@ -2,10 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- pressionado -->
-    <item android:drawable="@color/DarkBlue" android:state_pressed="true"/>
+    <item android:drawable="@color/DarkCyan" android:state_pressed="true"/>
 
     <!-- focalisado-->
-    <item android:drawable="@color/com_facebook_blue" android:state_focused="true"/>
+    <item android:drawable="@color/DarkCyan" android:state_focused="true"/>
 
     <!-- normal-->
     <item android:drawable="@color/White"/>
