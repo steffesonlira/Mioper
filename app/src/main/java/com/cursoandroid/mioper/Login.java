@@ -519,6 +519,7 @@ public class Login extends AppCompatActivity {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             finish();
+            onStop();
         } else {
             Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.", Toast.LENGTH_SHORT).show();
         }
@@ -526,5 +527,6 @@ public class Login extends AppCompatActivity {
 
     }
 //endregion
+
 
 }

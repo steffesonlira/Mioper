@@ -87,11 +87,12 @@
         <!-- Botão Login -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnLogin"
-            android:layout_width="352dp"
+            android:layout_width="250dp"
+            android:layout_gravity="center"
             android:layout_height="56dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:background="#6366"
+            android:background="@drawable/botao"
             android:padding="8dp"
             android:text="Acessar"
             android:textScaleX="1"

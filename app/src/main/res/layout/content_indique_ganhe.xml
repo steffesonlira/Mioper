@@ -34,7 +34,7 @@
         android:id="@+id/btnInvite"
         android:layout_width="141dp"
         android:layout_height="74dp"
-        android:background="@drawable/button_selector"
+        android:background="@drawable/botao"
         android:text="Convidar Amigos"
         android:textColor="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"

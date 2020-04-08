@@ -1,7 +1,6 @@
 package com.cursoandroid.mioper;
 
-//region Imports
-
+//region IMPORT
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 //endregion
 
+//region CLASSE EsqueciSenha
 public class EsqueciSenha extends AppCompatActivity {
 
     //region declaração de variáveis
@@ -30,12 +29,16 @@ public class EsqueciSenha extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Button buttonEsqueciSenha;
     private EditText userEmail;
-
     //endregion
+
+    //region ONCREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_esqueci_senha);
+        firebaseAuth = FirebaseAuth.getInstance();
+        email = findViewById(R.id.edtEsqueciSenhaId);
+        buttonEsqueciSenha = findViewById(R.id.btnRecuperarSenhaId);
 
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,11 +46,9 @@ public class EsqueciSenha extends AppCompatActivity {
         getSupportActionBar().setTitle("Retornar ao Login");
         //endregion
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        email = findViewById(R.id.edtEsqueciSenhaId);
-        buttonEsqueciSenha = findViewById(R.id.btnRecuperarSenhaId);
 
-        // region Ao clicar no botão esqueci senha
+
+        // region click botão esqueci senha
         buttonEsqueciSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,21 +99,25 @@ public class EsqueciSenha extends AppCompatActivity {
         });
         //endregion
     }
+    //endregion
 
-    //Criar requisição de Senha esquecida
+    //region METODO Criar requisição de Senha esquecida
     @Override
     protected void onResume() {
         super.onResume();
     }
+    //endregion
 
-
+    //region METODO onCreateOptionsMenu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.principal
                 , menu);
         return true;
     }
+    //endregion
 
+    //region METODO onOptionsItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -125,4 +130,5 @@ public class EsqueciSenha extends AppCompatActivity {
         }
         return true;
     }
+    //endregion
 }

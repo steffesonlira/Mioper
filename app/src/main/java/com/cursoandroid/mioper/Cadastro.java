@@ -1,24 +1,22 @@
 package com.cursoandroid.mioper;
 
-//region IMPORTs
-
+//region IMPORT
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 //endregion
@@ -36,14 +34,22 @@ public class Cadastro extends AppCompatActivity {
     @BindView(R.id.link_login) TextView _loginLink;
     private FirebaseAuth mAuth;
     private Switch switchTipoUsuario;
-
     //endregion
 
+    //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Retornar ao Login");
+        //endregion
+
+        //region atribuindo às variáveis, características virtuais da activity
         switchTipoUsuario = findViewById(R.id.switchTipoUsuario);
         //Inserindo máscara ao campo de digitação Celular
         _mobileText.addTextChangedListener(Mask.mask(_mobileText, Mask.FORMAT_FONE));
@@ -76,9 +82,9 @@ public class Cadastro extends AppCompatActivity {
             }
         });
     }
+    //endregion
 
-
-    //region Método para criação de usuário e senha no Firebase pelo método de Authentication
+    //region Método CreateUserAccount()
     private void CreateUserAccount(final UserProfile usuario) {
         String nome = _nameText.getText().toString();
         String address = _addressText.getText().toString();
@@ -87,8 +93,6 @@ public class Cadastro extends AppCompatActivity {
         String senha = _passwordText.getText().toString();
         String repitasenha = _reEnterPasswordText.getText().toString();
 
-
-
         usuario.setEmail(email);
         usuario.setSenha(senha);
         usuario.setName(nome);
@@ -96,7 +100,6 @@ public class Cadastro extends AppCompatActivity {
         usuario.setMobile(mobile);
         usuario.setRepitasenha(repitasenha);
         usuario.setTipouser(verificaTipoUsuario() );
-
 
         mAuth =  ConfiguracaoFirebase.getFirebaseAutenticacao();
         mAuth.createUserWithEmailAndPassword(
@@ -110,30 +113,24 @@ public class Cadastro extends AppCompatActivity {
                     String idUsuario = task.getResult().getUser().getUid();
                     usuario.setId(idUsuario);
                     usuario.salvar();
-
                     //Atualizar nome no UserProfile
                     UsuarioFirebase.atualizarNomeUsuario(usuario.getName());
-
                     // Redireciona o usuário com base no seu tipo
                     // Se o usuário for passageiro chama a activity maps
                     // senão chama a activity requisicoes
                     if (verificaTipoUsuario() == "P") {
                         startActivity(new Intent(Cadastro.this, Principal.class));
                         finish();
-
                         Toast.makeText(Cadastro.this,
                                 "Sucesso ao cadastrar Passageiro!",
                                 Toast.LENGTH_SHORT).show();
-
                     } else {
                         startActivity(new Intent(Cadastro.this, Requisicoes.class));
                         finish();
-
                         Toast.makeText(Cadastro.this,
                                 "Sucesso ao cadastrar Motorista!",
                                 Toast.LENGTH_SHORT).show();
                     }
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -158,16 +155,14 @@ public class Cadastro extends AppCompatActivity {
                 Toast.makeText(Cadastro.this,
                         excecao,
                         Toast.LENGTH_SHORT).show();
-
             }
 
         });
 
-
     }
     //endregion
 
-    //Chamando função de validação de campos (Criação de ProgressDialog para redirecionar após realização de cadastro
+    //region validação de campos Criação de ProgressDialog para redirecionar após realização de cadastro signup()
     public void signup() {
 
         if (!validate()) {
@@ -180,9 +175,6 @@ public class Cadastro extends AppCompatActivity {
         progressDialog.setMessage("Criando sua conta...");
         progressDialog.show();
 
-
-    //endregion
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -190,9 +182,10 @@ public class Cadastro extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
-
     }
+//endregion
 
+    //region Metodo onSignupSuccess()
     public void onSignupSuccess() {
         //registrar dados inseridos
         UserProfile usuario = new UserProfile();
@@ -201,14 +194,17 @@ public class Cadastro extends AppCompatActivity {
         setResult(RESULT_OK, null);
 
     }
+//endregion
 
+    //region Metodo onSignupFailed()
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Falha na criação do cadastro", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
         return;
     }
+    //endregion
 
-    //region Validação de dados
+    //region Validação de dados validate()
     public boolean validate() {
         boolean valid = true;
 
@@ -274,17 +270,44 @@ public class Cadastro extends AppCompatActivity {
         }
         return valid;
 
-
-
     }
     //endregion
+
+    //region Voltar botão Android
     @Override
     public void onBackPressed() {
         Intent h= new Intent(Cadastro.this,Login.class);
         startActivity(h);
     }
+    //endregion
+
+    //region Criação do Menu Toolbar XML
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
+        return true;
+    }
+    //endregion
+
+    //region verificaTipoUser()
     public String verificaTipoUsuario() {
         return switchTipoUsuario.isChecked() ? "M" : "P";
     }
+    //endregion
 
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+    //endregion
 }

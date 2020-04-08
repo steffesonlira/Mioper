@@ -77,7 +77,7 @@
         <activity
             android:name=".Cadastro"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Login"

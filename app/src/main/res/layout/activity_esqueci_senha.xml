@@ -12,7 +12,7 @@
         android:id="@+id/imageView"
         android:layout_width="198dp"
         android:layout_height="206dp"
-        android:layout_marginStart="85dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="492dp"
@@ -24,6 +24,7 @@
         app:layout_constraintVertical_bias="0.32"
         app:srcCompat="@drawable/esquecisenhalogo"
         tools:layout_conversion_wrapHeight="641"
+        android:foregroundGravity="center"
         tools:layout_conversion_wrapWidth="599" />
 
 
@@ -70,7 +71,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Recuperar Senha"
-        android:background="@color/Blue2"
+        android:textColor="@color/White"
+        android:background="@drawable/botao"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
