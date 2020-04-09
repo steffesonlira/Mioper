@@ -6,23 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Passageiro">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarpassageiro"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
-        app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" >
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="25dp"
-            app:srcCompat="@drawable/logo" />
-
-
-    </androidx.appcompat.widget.Toolbar>
 
 
 
@@ -75,6 +58,7 @@
         android:id="@+id/buttonChamarUber"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="@drawable/botao"
         android:layout_gravity="bottom"
         android:text="Solicitar Mioper"
         android:onClick="chamarUber"

@@ -27,6 +27,7 @@
         android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:text="Aceitar corrida"
+        android:background="@drawable/botao"
         android:onClick="aceitarCorrida"
         android:theme="@style/botaoPadrao" />
 
@@ -37,9 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
+        android:backgroundTint="@color/DarkCyan"
         android:layout_marginBottom="66dp"
         android:layout_marginRight="16dp"
-        app:backgroundTint="@android:color/holo_orange_dark"
+
         app:fabSize="normal"
         app:srcCompat="@drawable/rota"
         android:visibility="gone"

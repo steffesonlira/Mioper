@@ -48,7 +48,13 @@
             android:name=".SuporteUsuario"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <data android:scheme="mailto" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"

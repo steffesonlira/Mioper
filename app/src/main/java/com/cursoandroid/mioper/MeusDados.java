@@ -151,19 +151,38 @@ public class MeusDados extends AppCompatActivity {
                         if (!textoDataNascimento.isEmpty()) {//verifica data nascimento
                             if (!textoCpf.isEmpty()) {//verifica o cpf
 
+                                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                        .setTitle("confirmação")
+                                        .setMessage("Deseja confirmar as alterações ?")
+                                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
 
-                                UserProfile usuario = new UserProfile();
-                                usuario.setName(textoNome);
-                                usuario.setEmail(textoEmail);
-                                usuario.setAdress(textoEndereco);
-                                usuario.setMobile(textoCelular);
-                                usuario.setNascimento(textoDataNascimento);
-                                usuario.setCpf(textoCpf);
-                                usuario.setGenero(verificaGeneroUsuario());
-                                usuario.setTipouser(tipoUsuario);
+                                                UserProfile usuario = new UserProfile();
+                                                usuario.setName(textoNome);
+                                                usuario.setEmail(textoEmail);
+                                                usuario.setAdress(textoEndereco);
+                                                usuario.setMobile(textoCelular);
+                                                usuario.setNascimento(textoDataNascimento);
+                                                usuario.setCpf(textoCpf);
+                                                usuario.setGenero(verificaGeneroUsuario());
+                                                usuario.setTipouser(tipoUsuario);
 
-                                //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
-                                cadastrarUsuario(usuario);
+                                                //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
+                                                cadastrarUsuario(usuario);
+                                                Toast.makeText(MeusDados.this,
+                                                        "Dados gravados com sucesso!",
+                                                        Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
 
 
                             } else {

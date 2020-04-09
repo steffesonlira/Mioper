@@ -32,7 +32,7 @@
                 android:layout_height="168dp"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/profile" />
+                app:srcCompat="@drawable/logo" />
 
             <!-- Name Label -->
             <com.google.android.material.textfield.TextInputLayout
@@ -196,7 +196,7 @@
             <!-- Botão Salvar Alterações -->
             <Button
                 android:id="@+id/btnSalvarAlteracoes"
-                android:layout_width="380dp"
+                android:layout_width="300dp"
                 android:background="@drawable/botao"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
             <!-- Botão Alterar Senha -->
             <Button
                 android:id="@+id/btnAlterarSenha"
-                android:layout_width="380dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textStyle="bold"
@@ -228,7 +228,7 @@
 
             <Button
                 android:id="@+id/btnExcluirConta"
-                android:layout_width="380dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="center"
