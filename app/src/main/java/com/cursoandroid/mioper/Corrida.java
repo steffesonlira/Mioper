@@ -13,13 +13,13 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.firebase.geofire.GeoFire;
@@ -74,6 +74,13 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_corrida);
 
         inicializarComponentes();
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Sobre o Mioper");
+        //endregion
+
 
         //Recupera dados do usuário
         if (getIntent().getExtras().containsKey("idRequisicao")
@@ -475,8 +482,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
     private void inicializarComponentes() {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //getSupportActionBar().setTitle("Iniciar corrida");
@@ -548,4 +555,19 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
         return false;
     }
+
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
 }

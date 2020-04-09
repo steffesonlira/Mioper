@@ -49,6 +49,12 @@ public class Requisicoes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requisicoes);
 
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Requisições");
+        //endregion
+
         inicializarComponentes();
 
         //Recuperar localizacao do usuário
@@ -160,18 +166,7 @@ public class Requisicoes extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-            case R.id.menuSair :
-                autenticacao.signOut();
-                finish();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void abrirTelaCorrida(String idRequisicao, UserProfile motorista, boolean requisicaoAtiva){
         Intent i = new Intent(Requisicoes.this, Corrida.class );
@@ -270,4 +265,21 @@ public class Requisicoes extends AppCompatActivity {
         });
 
     }
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                autenticacao.signOut();
+                startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+
 }
