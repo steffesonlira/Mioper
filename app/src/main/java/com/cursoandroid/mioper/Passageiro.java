@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -77,8 +76,12 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passageiro);
-        //Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
-        //setSupportActionBar(toolbar);
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Navegue com o Mioper");
+        //endregion
 
         inicializarComponentes();
 
@@ -537,30 +540,26 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.menuSair:
-                autenticacao.signOut();
-                finish();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.menuSair:
+//                autenticacao.signOut();
+//                finish();
+//                break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void inicializarComponentes() {
 
-        Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
-        toolbar.setTitle("Iniciar uma viagem");
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
+       // toolbar.setTitle("Iniciar uma viagem");
+//        setSupportActionBar(toolbar);
 
         //Inicializar componentes
         editDestino = findViewById(R.id.editDestino);
@@ -576,6 +575,31 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+
+
+    //region Criação do Menu Toolbar XML
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
+        return true;
+    }
+    //endregion
+
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
 

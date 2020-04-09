@@ -73,12 +73,12 @@ public class MeusDados extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (generoUsuario.isChecked()) {
-                    txtFeminino.setTextColor(Color.parseColor("#009688"));
-                    txtMasculino.setTextColor(Color.parseColor("#FFFFFFFF"));
-
-                } else {
                     txtMasculino.setTextColor(Color.parseColor("#009688"));
                     txtFeminino.setTextColor(Color.parseColor("#FFFFFFFF"));
+
+                } else {
+                    txtFeminino.setTextColor(Color.parseColor("#009688"));
+                    txtMasculino.setTextColor(Color.parseColor("#FFFFFFFF"));
 
                 }
             }

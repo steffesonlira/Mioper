@@ -12,13 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,8 +26,7 @@ import java.util.ArrayList;
 import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 
-public class HistoricoViagens extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HistoricoViagens extends AppCompatActivity{
 
     String nomeUsuario1;
     String celularUsuario;
@@ -62,6 +57,11 @@ public class HistoricoViagens extends AppCompatActivity
         recyclerView = findViewById(R.id.recyclerView);
         historicoUser = findViewById(R.id.textView_viagem);
 
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Histórico de Viagens");
+        //endregion
 
         //PESQUISA HISTORICO NO FIREBASE
         retornaHistorico();
@@ -146,70 +146,28 @@ public class HistoricoViagens extends AppCompatActivity
         startActivity(m);
     }
 
+    //region Criação do Menu Toolbar XML
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
         return true;
     }
+    //endregion
 
-
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-
-            case R.id.nav_home:
-                Intent h = new Intent(HistoricoViagens.this, Passageiro.class);
-                startActivity(h);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
-            case R.id.nav_dados:
-                Intent i = new Intent(HistoricoViagens.this, MeusDados.class);
-                //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
-                i.putExtra("name", nomeUsuario1);
-                i.putExtra("mobile", celularUsuario);
-                i.putExtra("senha", senhaUsuario);
-                i.putExtra("email", emailUsuario);
-                i.putExtra("adress", enderecoUsuario);
-                i.putExtra("nascimento", nascimentoUsuario);
-                i.putExtra("cpf", cpfUsuario);
-                i.putExtra("genero", generoUsuario);
-                i.putExtra("tipouser", tipoUsuario);
-                startActivity(i);
+            default:
                 break;
-            case R.id.nav_pagamento:
-                Intent g = new Intent(HistoricoViagens.this, GerenciarPagamentos.class);
-                startActivity(g);
-                break;
-            case R.id.nav_historico:
-                Intent s = new Intent(HistoricoViagens.this, HistoricoViagens.class);
-                startActivity(s);
-            case R.id.nav_indicacao:
-                //  Intent t= new Intent(HistoricoViagens.this,IndiqueGanhe.class);
-                //startActivity(t);
-                break;
-            case R.id.nav_suporte:
-                Intent u = new Intent(HistoricoViagens.this, SuporteUsuario.class);
-                startActivity(u);
-                break;
-            case R.id.nav_sobre:
-                Intent v = new Intent(HistoricoViagens.this, Sobre.class);
-                startActivity(v);
-                break;
-            case R.id.nav_sair:
-
-                if (item.getItemId() == R.id.nav_sair) {
-
-                    FirebaseAuth.getInstance().signOut();
-                    finish();
-                }
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                break;
-
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

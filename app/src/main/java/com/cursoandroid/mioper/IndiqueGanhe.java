@@ -3,13 +3,10 @@ package com.cursoandroid.mioper;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
-import android.view.View;
-
-import android.view.MenuItem;
-
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterViewFlipper;
 import android.widget.BaseAdapter;
@@ -17,22 +14,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class IndiqueGanhe extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class IndiqueGanhe extends AppCompatActivity {
     private static final String TAG = "Mioper";
     private AdapterViewFlipper adapterViewFlipper;
     private static final String[] TEXT = {"Entre no App do Mioper", "Procure pelo Mioper mais próximo", "O Motorista aceitará sua solicitação", "Partiu Viajar com o Mioper"};
-    // private static final int[] IMAGES = {R.drawable.vanindique4, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
+    private static final int[] IMAGES = {R.drawable.vanindique4, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
     private FirebaseAuth mAuth;
     private Button btnInvite;
     private FirebaseAnalytics analytics;
@@ -46,20 +38,19 @@ public class IndiqueGanhe extends AppCompatActivity
         btnInvite = findViewById(R.id.btnInvite);
         mAuth = FirebaseAuth.getInstance();
         adapterViewFlipper = findViewById(R.id.idAdapterVF);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         txtCodigo = findViewById(R.id.txtCodigo);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//       drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-        //      navigationView.setNavigationItemSelectedListener(this);
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Indique e Ganhe");
+        //endregion
 
         //Criando objeto adapter
-        //FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
-        //adapterViewFlipper.setAdapter(adapter);
-        //adapterViewFlipper.setAutoStart(true);
+        FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
+        adapterViewFlipper.setAdapter(adapter);
+        adapterViewFlipper.setAutoStart(true);
 
         //click botão Invite
         btnInvite.setOnClickListener(v -> {
@@ -124,75 +115,29 @@ public class IndiqueGanhe extends AppCompatActivity
         startActivity(h);
     }
 
+
+
+    //region Criação do Menu Toolbar XML
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
         return true;
     }
+    //endregion
 
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-
-            case R.id.nav_home:
-                Intent h = new Intent(IndiqueGanhe.this, Principal.class);
-                startActivity(h);
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
-            case R.id.nav_dados:
-                Intent i = new Intent(IndiqueGanhe.this, MeusDados.class);
-                startActivity(i);
+            default:
                 break;
-            case R.id.nav_pagamento:
-                Intent g = new Intent(IndiqueGanhe.this, GerenciarPagamentos.class);
-                startActivity(g);
-                break;
-            case R.id.nav_historico:
-                Intent s = new Intent(IndiqueGanhe.this, HistoricoViagens.class);
-                startActivity(s);
-            case R.id.nav_indicacao:
-                Intent t = new Intent(IndiqueGanhe.this, IndiqueGanhe.class);
-                startActivity(t);
-                break;
-            case R.id.nav_suporte:
-                Intent u = new Intent(IndiqueGanhe.this, SuporteUsuario.class);
-                startActivity(u);
-                break;
-            case R.id.nav_sobre:
-                Intent v = new Intent(IndiqueGanhe.this, Sobre.class);
-                startActivity(v);
-                break;
-            case R.id.nav_sair:
-
-                if (item.getItemId() == R.id.nav_sair) {
-
-                    FirebaseAuth.getInstance().signOut();
-                    finish();
-                }
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                break;
-
-
         }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }
