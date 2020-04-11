@@ -573,14 +573,6 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                 startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
-            case R.id.sair:
-                //VOLTA PARA A TELA DE LOGIN
-                FirebaseAuth.getInstance().signOut();
-                Intent i = new Intent(Corrida.this, Login.class);
-                finish();
-
-            default:
-                break;
         }
         return true;
     }

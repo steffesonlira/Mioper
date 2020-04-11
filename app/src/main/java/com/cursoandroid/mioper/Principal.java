@@ -54,7 +54,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     private static final String TAG = "Principal";
     private AppBarConfiguration mAppBarConfiguration;
     //endregion
-
+    
     //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
