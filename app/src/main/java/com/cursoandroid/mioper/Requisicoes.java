@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,10 +65,11 @@ public class Requisicoes extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         verificaStatusRequisicao();
     }
 
-    private void verificaStatusRequisicao(){
+    private void verificaStatusRequisicao() {
 
         UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -75,18 +77,18 @@ public class Requisicoes extends AppCompatActivity {
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
 
         Query requisicoesPesquisa = requisicoes.orderByChild("motorista/id")
-                .equalTo( usuarioLogado.getId());
+                .equalTo(usuarioLogado.getId());
 
         requisicoesPesquisa.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for( DataSnapshot ds: dataSnapshot.getChildren() ){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    Requisicao requisicao = ds.getValue( Requisicao.class );
+                    Requisicao requisicao = ds.getValue(Requisicao.class);
 
-                    if( requisicao.getStatus().equals(Requisicao.STATUS_A_CAMINHO)
+                    if (requisicao.getStatus().equals(Requisicao.STATUS_A_CAMINHO)
                             || requisicao.getStatus().equals(Requisicao.STATUS_VIAGEM)
-                            || requisicao.getStatus().equals(Requisicao.STATUS_FINALIZADA)){
+                            || requisicao.getStatus().equals(Requisicao.STATUS_FINALIZADA)) {
                         motorista = requisicao.getMotorista();
                         abrirTelaCorrida(requisicao.getId(), motorista, true);
                     }
@@ -120,7 +122,7 @@ public class Requisicoes extends AppCompatActivity {
                         location.getLongitude()
                 );
 
-                if( !latitude.isEmpty() && !longitude.isEmpty() ){
+                if (!latitude.isEmpty() && !longitude.isEmpty()) {
                     motorista.setLatitude(latitude);
                     motorista.setLongitude(longitude);
 
@@ -148,7 +150,7 @@ public class Requisicoes extends AppCompatActivity {
         };
 
         //Solicitar atualizações de localização
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     0,
@@ -167,18 +169,17 @@ public class Requisicoes extends AppCompatActivity {
     }
 
 
-
-    private void abrirTelaCorrida(String idRequisicao, UserProfile motorista, boolean requisicaoAtiva){
-        Intent i = new Intent(Requisicoes.this, Corrida.class );
-        i.putExtra("idRequisicao", idRequisicao );
-        i.putExtra("motorista", motorista );
-        i.putExtra("requisicaoAtiva", requisicaoAtiva );
-        startActivity( i );
+    private void abrirTelaCorrida(String idRequisicao, UserProfile motorista, boolean requisicaoAtiva) {
+        Intent i = new Intent(Requisicoes.this, Corrida.class);
+        i.putExtra("idRequisicao", idRequisicao);
+        i.putExtra("motorista", motorista);
+        i.putExtra("requisicaoAtiva", requisicaoAtiva);
+        startActivity(i);
     }
 
-    private void inicializarComponentes(){
+    private void inicializarComponentes() {
 
-       // getSupportActionBar().setTitle("Requisições");
+        // getSupportActionBar().setTitle("Requisições");
 
         //Configura componentes
         recyclerRequisicoes = findViewById(R.id.recyclerRequisicoes);
@@ -190,17 +191,17 @@ public class Requisicoes extends AppCompatActivity {
         firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
         //Configurar RecyclerView
-        adapter = new RequisicoesAdapter(listaRequisicoes, getApplicationContext(), motorista );
+        adapter = new RequisicoesAdapter(listaRequisicoes, getApplicationContext(), motorista);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerRequisicoes.setLayoutManager( layoutManager );
+        recyclerRequisicoes.setLayoutManager(layoutManager);
         recyclerRequisicoes.setHasFixedSize(true);
-        recyclerRequisicoes.setAdapter( adapter );
+        recyclerRequisicoes.setAdapter(adapter);
 
         recuperarRequisicoes();
 
     }
 
-    private void adicionaEventoCliqueRecyclerView(){
+    private void adicionaEventoCliqueRecyclerView() {
 
         //Adiciona evento de clique no recycler
         recyclerRequisicoes.addOnItemTouchListener(
@@ -229,7 +230,7 @@ public class Requisicoes extends AppCompatActivity {
 
     }
 
-    private void recuperarRequisicoes(){
+    private void recuperarRequisicoes() {
 
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
 
@@ -240,18 +241,18 @@ public class Requisicoes extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if( dataSnapshot.getChildrenCount() > 0 ){
-                    textResultado.setVisibility( View.GONE );
-                    recyclerRequisicoes.setVisibility( View.VISIBLE );
-                }else {
-                    textResultado.setVisibility( View.VISIBLE );
-                    recyclerRequisicoes.setVisibility( View.GONE );
+                if (dataSnapshot.getChildrenCount() > 0) {
+                    textResultado.setVisibility(View.GONE);
+                    recyclerRequisicoes.setVisibility(View.VISIBLE);
+                } else {
+                    textResultado.setVisibility(View.VISIBLE);
+                    recyclerRequisicoes.setVisibility(View.GONE);
                 }
 
                 listaRequisicoes.clear();
-                for ( DataSnapshot ds: dataSnapshot.getChildren() ){
-                    Requisicao requisicao = ds.getValue( Requisicao.class );
-                    listaRequisicoes.add( requisicao );
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Requisicao requisicao = ds.getValue(Requisicao.class);
+                    listaRequisicoes.add(requisicao);
                 }
 
                 adapter.notifyDataSetChanged();
@@ -265,21 +266,51 @@ public class Requisicoes extends AppCompatActivity {
         });
 
     }
+
     //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 autenticacao.signOut();
                 startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
-
                 break;
-            default:
+            case R.id.menuSair:
+                autenticacao.signOut();
+                startActivity(new Intent(this, Login.class));
+                finishAffinity();
+                break;
+            case R.id.gerenciarDados:
+                //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
+                Intent i = new Intent(Requisicoes.this, MeusDados.class);
+                i.putExtra("name", Principal.nomeUsuario1);
+                i.putExtra("mobile", Principal.celularUsuario);
+                i.putExtra("senha", Principal.senhaUsuario);
+                i.putExtra("email", Principal.emailUsuario);
+                i.putExtra("adress", Principal.enderecoUsuario);
+                i.putExtra("nascimento", Principal.nascimentoUsuario);
+                i.putExtra("cpf", Principal.cpfUsuario);
+                i.putExtra("genero", Principal.generoUsuario);
+                i.putExtra("tipouser", Principal.tipoUsuario);
+
+                startActivity(i);
                 break;
         }
         return true;
     }
 
+    //BOTÃO INFERIOR ESQUERDO DE VOLTAR DO SISTEMA ANDROID
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        autenticacao.signOut();
+        startActivity(new Intent(this, Login.class));
+        finishAffinity();
+
+    }
 
 }

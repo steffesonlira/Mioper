@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/sair"
             android:icon="@drawable/van"
             android:title="@string/menu_navegue_mioper" />
         <item

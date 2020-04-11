@@ -58,13 +58,12 @@ public class MeusDados extends AppCompatActivity {
         nomeUsuario = findViewById(R.id.txtNome);
         celularUsuario = findViewById(R.id.txtCelular);
         txtFeminino = findViewById(R.id.txtFeminino);
-        txtMasculino = findViewById(R.id.txtFeminino);
+        txtMasculino = findViewById(R.id.txtMasculino);
         emailUsuario = findViewById(R.id.txtEmail);
         enderecoUsuario = findViewById(R.id.txtEndereco);
         dataNascimentoUsuario = findViewById(R.id.txtDataNascimento);
         cpfUsuario = findViewById(R.id.txtCpf);
         generoUsuario = findViewById(R.id.switchGenero);
-
 
 
         //AO CLICAR, ALTERA A COR DO SWITCH PASSGEIRO/MOTORISTA
@@ -118,7 +117,6 @@ public class MeusDados extends AppCompatActivity {
 //        }
 
 
-
         //Colocando máscaras no Input Text
         celularUsuario.addTextChangedListener(Mask.mask(celularUsuario, Mask.FORMAT_FONE));
         cpfUsuario.addTextChangedListener(Mask.mask(cpfUsuario, Mask.FORMAT_CPF));
@@ -126,8 +124,6 @@ public class MeusDados extends AppCompatActivity {
 
 
     }
-
-
 
 
     //endregion
@@ -292,7 +288,7 @@ public class MeusDados extends AppCompatActivity {
 
         //REMOVE USUARIO DO FIREBASE AUTH (EMAIL E SENHA UTILIZADO PARA LOGAR)
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.delete().addOnCompleteListener(task ->{
+        user.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.d("Aviso!", "Usuário Excluído");
 
@@ -339,8 +335,13 @@ public class MeusDados extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                if (tipoUsuario.equals("M")) {
+                    startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                } else {
+                    startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                    finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+
+                }
                 break;
             default:
                 break;

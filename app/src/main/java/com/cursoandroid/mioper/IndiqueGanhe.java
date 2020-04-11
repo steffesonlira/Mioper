@@ -24,7 +24,7 @@ public class IndiqueGanhe extends AppCompatActivity {
     private static final String TAG = "Mioper";
     private AdapterViewFlipper adapterViewFlipper;
     private static final String[] TEXT = {"Entre no App do Mioper", "Procure pelo Mioper mais próximo", "O Motorista aceitará sua solicitação", "Partiu Viajar com o Mioper"};
-    private static final int[] IMAGES = {R.drawable.indique1, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
+    //private static final int[] IMAGES = {R.drawable.indique1, R.drawable.vanindique1,R.drawable.vanindique2,R.drawable.mioperviagem};
     private FirebaseAuth mAuth;
     private Button btnInvite;
     private FirebaseAnalytics analytics;
@@ -48,9 +48,9 @@ public class IndiqueGanhe extends AppCompatActivity {
         //endregion
 
         //Criando objeto adapter
-        FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
-        adapterViewFlipper.setAdapter(adapter);
-        adapterViewFlipper.setAutoStart(true);
+        //FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
+        //adapterViewFlipper.setAdapter(adapter);
+        //adapterViewFlipper.setAutoStart(true);
 
         //click botão Invite
         btnInvite.setOnClickListener(v -> {

@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -76,9 +78,9 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         inicializarComponentes();
 
         //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Sobre o Mioper");
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setTitle("Sobre o Mioper");
         //endregion
 
 
@@ -157,7 +159,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     private void requisicaoCancelada() {
 
         Toast.makeText(this,
-                "Requisição foi cancelada pelo passageiro!",
+                "Requisição foi cancelada!",
                 Toast.LENGTH_SHORT).show();
 
         startActivity(new Intent(Corrida.this, Requisicoes.class));
@@ -202,7 +204,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        //VOLTA PARA A TELA DE LOGIN
+                        //VOLTA PARA A TELA DE REQUISIÇÃO
                         requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                         requisicao.atualizarStatus();
                         finish();
@@ -556,14 +558,27 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         return false;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_profile_nav, menu);
+        return true;
+    }
+
+
     //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
+            case R.id.sair:
+                //VOLTA PARA A TELA DE LOGIN
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(Corrida.this, Login.class);
+                finish();
+
             default:
                 break;
         }

@@ -1,6 +1,7 @@
 package com.cursoandroid.mioper;
 
 //region IMPORT
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
 import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 //endregion
@@ -34,17 +38,17 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     private FragmentManager fragmentManager;
     DrawerLayout drawer;
     TextView nomeUsuario;
-    String nomeUsuario1;
-    String celularUsuario;
-    String senhaUsuario;
-    String repitasenha;
-    String emailUsuario;
-    String enderecoUsuario;
-    String nascimentoUsuario;
-    String cpfUsuario;
-    String generoUsuario;
+    static String nomeUsuario1;
+    static String celularUsuario;
+    static String senhaUsuario;
+    static String repitasenha;
+    static String emailUsuario;
+    static String enderecoUsuario;
+    static String nascimentoUsuario;
+    static String cpfUsuario;
+    static String generoUsuario;
     Principal activity;
-    String tipoUsuario;
+    static String tipoUsuario;
     static String usuario;
     NavigationView navigationView;
     private static final String TAG = "Principal";
@@ -83,10 +87,11 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
 
         //region Menu Item
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_dados, R.id.nav_pagamento, R.id.nav_historico,
+                R.id.sair, R.id.nav_dados, R.id.nav_pagamento, R.id.nav_historico,
                 R.id.nav_indicacao, R.id.nav_suporte, R.id.nav_sobre, R.id.nav_sair)
                 .setDrawerLayout(drawer)
                 .build();
+
         nomeUsuario = findViewById(R.id.nomeUsuário);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
@@ -156,7 +161,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.nav_home:
+            case R.id.sair:
                 Intent m = new Intent(Principal.this, Passageiro.class);
                 startActivity(m);
                 break;
