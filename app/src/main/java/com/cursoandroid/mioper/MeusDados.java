@@ -66,7 +66,7 @@ public class MeusDados extends AppCompatActivity {
         generoUsuario = findViewById(R.id.switchGenero);
 
 
-        //AO CLICAR, ALTERA A COR DO SWITCH PASSGEIRO/MOTORISTA
+        //AO CLICAR, ALTERA A COR DO SWITCH MASCULINO/FEMININO
         generoUsuario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -109,13 +109,6 @@ public class MeusDados extends AppCompatActivity {
         dataNascimentoUsuario.setText(nascimento);
         cpfUsuario.setText(cpf);
 
-//        //CONFIGURA O SWITCH GENERO DE ACORDO COM O GENERO
-//        if (genero.equals("Masculino")) {
-//            generoUsuario.setChecked(false);
-//        } else {
-//            generoUsuario.setChecked(true);
-//        }
-
 
         //Colocando máscaras no Input Text
         celularUsuario.addTextChangedListener(Mask.mask(celularUsuario, Mask.FORMAT_FONE));
@@ -144,8 +137,8 @@ public class MeusDados extends AppCompatActivity {
             if (!textoEndereco.isEmpty()) {//verifica endereco
                 if (!textoEmail.isEmpty()) {//verifica e-mail
                     if (!textoCelular.isEmpty()) {//verifica celular
-                        if (!textoDataNascimento.isEmpty()) {//verifica data nascimento
-                            if (!textoCpf.isEmpty()) {//verifica o cpf
+
+
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                         .setTitle("confirmação")
@@ -181,18 +174,6 @@ public class MeusDados extends AppCompatActivity {
                                 dialog.show();
 
 
-                            } else {
-                                Toast.makeText(MeusDados.this,
-                                        "Preencha o Cpf!",
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-                        } else {
-                            Toast.makeText(MeusDados.this,
-                                    "Preencha a Data de Nascimento!",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
                     } else {
                         Toast.makeText(MeusDados.this,
                                 "Preencha o Celular!",

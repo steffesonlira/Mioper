@@ -89,12 +89,12 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:backgroundTint="@android:color/white"
-                    android:hint="E-mail"
                     android:editable="false"
+                    android:enabled="false"
+                    android:hint="E-mail"
                     android:inputType="textEmailAddress"
-                    android:textColor="@color/White"
+                    android:textColor="#9A9A9A"
                     android:textColorHighlight="#C5C1C1"
                     android:textCursorDrawable="@color/DarkCyan" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -167,14 +167,14 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtFeminino"
-                android:layout_width="wrap_content"
-                android:textColor="#009688"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_marginRight="10dp"
-                android:text="Feminino"/>
+                <TextView
+                    android:id="@+id/txtFeminino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Masculino"
+                    android:textColor="#009688" />
 
             <Switch
                 android:id="@+id/switchGenero"
@@ -188,9 +188,8 @@
                     android:id="@+id/txtMasculino"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/White"
-                    android:text="Masculino"
-                    />
+                    android:text="Feminino"
+                    android:textColor="@color/White" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <!-- Botão Salvar Alterações -->
