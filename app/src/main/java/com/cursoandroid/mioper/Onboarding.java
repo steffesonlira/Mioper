@@ -1,8 +1,5 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -10,7 +7,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 public class Onboarding extends AppCompatActivity {
 
@@ -59,7 +57,7 @@ public class Onboarding extends AppCompatActivity {
 
     }
     public void addDotsIndicator(int position){
-        mDots = new TextView[4];
+        mDots = new TextView[5];
         lDotLayout.removeAllViews();
 
         for(int i = 0; i < mDots.length; i++){
@@ -71,7 +69,7 @@ public class Onboarding extends AppCompatActivity {
             lDotLayout.addView(mDots[i]);
         }
         if(mDots.length > 0){
-            mDots[position].setTextColor(getResources().getColor(R.color.Blue));
+            mDots[position].setTextColor(getResources().getColor(R.color.DarkCyan));
         }
     }
 

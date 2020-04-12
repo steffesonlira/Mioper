@@ -20,7 +20,7 @@
         android:textColor="@color/White"
         android:text="Manifesto 1"
         android:textAlignment="center"
-        android:textSize="28sp"
+        android:textSize="34sp"
         android:textStyle="bold" />
 
     <TextView
@@ -29,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="420dp"
         android:textColor="@color/White"
+        android:gravity="center"
+        android:textSize="25dp"
         android:layout_centerHorizontal="true"
         android:inputType="textMultiLine"
         android:text="" />

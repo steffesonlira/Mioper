@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 public class SliderAdapterManifesto extends PagerAdapter {
@@ -21,32 +20,29 @@ public class SliderAdapterManifesto extends PagerAdapter {
 
     //Arrays
     public int[] slide_images = {
-            R.drawable.manifesto1,
-            R.drawable.manifesto2,
-            R.drawable.manifesto3,
-            R.drawable.manifesto4
+            R.drawable.manifesto6,
+            R.drawable.manifesto7,
+            R.drawable.manifesto8,
+            R.drawable.manifesto9,
+            R.drawable.logo
     };
 
     public String[] slide_headings = {
 
-            "Manifesto1",
-            "Manifesto2",
-            "Manifesto3",
-            "Manifesto4"
+            "A Cooperatividade",
+            "Levantar Ideias",
+            "Utilização de Recursos",
+            "Aprimoramento",
+            "Mioper"
     };
 
     public String[] slide_descs = {
 
-            "Loremdhsfhjdjkfdjifhjksfhsjfkjeskfkljdshfjdhfdthhdhgdhghgfhghhghdfbhgdxgfxcbfghfdghdfgfdhfdgsddfwarfesg  "+
-                    "jjgfdkjg",
-            "sdfhdugyesijfsdlifjaijfsdiursjehgkdshjdhgkjjjkgdgjfdlkigudkljglixfjgksjgilu jfksdjvjikdsjgk jlkdfjgl jjig"+
-                    "fdjgkfhgh",
-            "zuxhfdskjaeolkjdzlfjsekh jdjkashk hkejeji fdji jjij khjikh khu hhidishfkdnvksdhfjebvj hhwekjh khnjkhjhbjm"+
-                    "kjxfbhkjfg" +
-                    "rd",
-            "zuxhfdskjaeolkjdzlfjsekh jdjkashk hkejeji fdji jjij khjikh khu hhidishfkdnvksdhfjebvj hhwekjh khnjkhjhbjm"+
-                    "kjxfbhkjfg" +
-                    "rd"
+            "A nossa metodologia surgiu-se na cooperatividade de uma equipe que estava aprendendo.",
+            "A partir de levantamentos de ideias para um projeto acadêmico onde experiências no dia a dia amadureceu a ideia.",
+            "Utilizando recursos que auxiliaram na resolução e na iniciação das atividades.",
+            "Que foi sendo aprimorada a cada semestre estudantil.",
+            "Daí surgiu uma ideia inovadora visando um futuro próximo no modo de deslocar-se de forma compartilhada."
     };
 
     @Override
