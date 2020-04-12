@@ -293,7 +293,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.carro))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.van3))
         );
 
     }
