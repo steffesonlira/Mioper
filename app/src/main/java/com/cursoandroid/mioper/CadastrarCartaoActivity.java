@@ -15,7 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 
-public class CadastrarCartao extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CadastrarCartaoActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private EditText numCartao;
     private EditText dataVencimentoCartao;
     private EditText codNumCartao;
@@ -26,9 +26,10 @@ public class CadastrarCartao extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_cartao);
+
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesCadastradosID);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paises,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.paises, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paisesCadastrados.setAdapter(adapter);
         paisesCadastrados.setOnItemSelectedListener(this);
@@ -63,47 +64,7 @@ public class CadastrarCartao extends AppCompatActivity implements AdapterView.On
 
     public void ValidaCartao(String numeroCartao) {
 
-//        int soma = 0;
-//        String numCartao = numeroCartao;
-//        String numString;
-//
-//        //Cartão com seqüências de caracteres menor ou igual a 15 dígitos
-//        if (numCartao.length() <= 15) {
-//            for (int i = 0; i <= numCartao.length(); i++) {
-//                numString = (numCartao.substring(i, i + 1));
-//
-//                if (i % 2 == 0) {
-//                    soma += (Integer.parseInt(numString) * 1);
-//                } else {
-//                    if ((Integer.parseInt(numString) * 2) > 9) {
-//                        soma += ((Integer.parseInt(numString) * 2) - 9);
-//                    } else {
-//                        soma += ((Integer.parseInt(numString) * 2));
-//                    }
-//                }
-//            }
-//        }
-//
-//        //Cartão com seqüências de caracteres maior ou igual a 16 dígitos
-//        if(numCartao.length()>=16){
-//            for(int i = 0; i <=numCartao.length();i++){
-//                numString = (numCartao.substring(i,i+1));
-//                if (i%2 == 0){
-//                    if((Integer.parseInt(numString)*2)>9){
-//                        soma += ((Integer.parseInt(numString) * 2) - 9);
-//                    }else{
-//                        soma +=((Integer.parseInt(numString) * 2));
-//                    }
-//                }else{
-//                    soma +=(Integer.parseInt(numString) * 1);
-//                }
-//            }
-//        }
-//        if (soma % 10 == 0){
-//            Toast.makeText(this, "Cartão Cadastrado",Toast.LENGTH_SHORT).show();
-//        }else{
-//            Toast.makeText(this, "Cartão Invalido",Toast.LENGTH_LONG).show();
-//        }
+
     }
 
     @Override
