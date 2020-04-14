@@ -80,8 +80,8 @@ public class UsuarioFirebase {
                     Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
                     UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
 
-                    String tipoUsuario = usuario.getTipouser();
                     String nomeUsuario = usuario.getName();
+                    String tipoUsuario = usuario.getTipouser();
                     if (tipoUsuario.equals("M")) {
                         Intent i = new Intent(activity, Requisicoes.class);
                         activity.startActivity(i);

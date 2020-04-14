@@ -180,7 +180,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
                 startActivity(i);
                 break;
             case R.id.nav_pagamento:
-                Intent g = new Intent(Principal.this, GerenciarPagamentos.class);
+                Intent g = new Intent(Principal.this, MetodosDePagamentoActivity.class);
                 startActivity(g);
                 break;
             case R.id.nav_historico:

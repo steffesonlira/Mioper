@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".CadastrarCartao"></activity>
+        <activity android:name=".CadastrarCartaoActivity"></activity>
+        <activity android:name=".MetodosDePagamentoActivity">android</activity>
         <activity
             android:name=".IndiqueGanhe"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
@@ -63,12 +64,6 @@
         <activity
             android:name=".HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".GerenciarPagamentos"
-            android:label="@string/title_activity_gerenciar_pagamentos"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
