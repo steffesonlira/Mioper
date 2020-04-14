@@ -352,7 +352,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
         int largura = getResources().getDisplayMetrics().widthPixels;
         int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.20);
+        int espacoInterno = (int) (largura * 0.30);
 
         mMap.moveCamera(
                 CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)
@@ -571,7 +571,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
         }
         return true;

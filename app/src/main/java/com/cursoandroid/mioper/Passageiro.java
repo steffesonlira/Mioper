@@ -1,6 +1,7 @@
 package com.cursoandroid.mioper;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -266,7 +267,14 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     }
                 });
         AlertDialog dialog = builder.create();
-        dialog.show();
+        try {
+            dialog.show();
+        }catch (Exception e){
+            System.out.println("ERRO"+e.getMessage());
+
+        }
+
+
 
     }
 
@@ -332,7 +340,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
         int largura = getResources().getDisplayMetrics().widthPixels;
         int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.20);
+        int espacoInterno = (int) (largura * 0.30);
 
         mMap.moveCamera(
                 CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)

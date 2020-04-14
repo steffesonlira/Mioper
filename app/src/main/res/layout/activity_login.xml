@@ -21,8 +21,8 @@
         <!-- Logo Mioper -->
         <ImageView
             android:id="@+id/imgLogoId"
-            android:layout_width="205dp"
-            android:layout_height="105dp"
+            android:layout_width="258dp"
+            android:layout_height="129dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:background="@drawable/esquecisenhalogo"

@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="198dp"
-        android:layout_height="206dp"
-        android:layout_marginStart="85dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="492dp"

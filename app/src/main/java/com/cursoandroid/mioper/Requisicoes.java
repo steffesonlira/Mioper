@@ -42,13 +42,52 @@ public class Requisicoes extends AppCompatActivity {
     private RequisicoesAdapter adapter;
     private UserProfile motorista;
 
+    String nomeUsuario1;
+    String celularUsuario;
+    String senhaUsuario;
+    String emailUsuario;
+    String enderecoUsuario;
+    String nascimentoUsuario;
+    String cpfUsuario;
+    String generoUsuario;
+    String tipoUsuario;
+
+
     private LocationManager locationManager;
     private LocationListener locationListener;
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //RECEDE DADOS SEMPRE QUE A ACTIVITY É RECARREGADA
+        nomeUsuario1 = Principal.nomeUsuario1;
+        celularUsuario = Principal.celularUsuario;
+        senhaUsuario = Principal.senhaUsuario;
+        emailUsuario = Principal.emailUsuario;
+        enderecoUsuario = Principal.enderecoUsuario;
+        nascimentoUsuario = Principal.enderecoUsuario;
+        cpfUsuario = Principal.cpfUsuario;
+        generoUsuario = Principal.generoUsuario;
+        tipoUsuario = Principal.tipoUsuario;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requisicoes);
+
+        //RECEDE DADOS DO MOTORISTA DA CLASSE PRINCIPAL
+         nomeUsuario1 = Principal.nomeUsuario1;
+         celularUsuario = Principal.celularUsuario;
+         senhaUsuario = Principal.senhaUsuario;
+         emailUsuario = Principal.emailUsuario;
+         enderecoUsuario = Principal.enderecoUsuario;
+         nascimentoUsuario = Principal.enderecoUsuario;
+         cpfUsuario = Principal.cpfUsuario;
+         generoUsuario = Principal.generoUsuario;
+         tipoUsuario = Principal.tipoUsuario;
+
 
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -286,15 +325,15 @@ public class Requisicoes extends AppCompatActivity {
             case R.id.gerenciarDados:
                 //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
                 Intent i = new Intent(Requisicoes.this, MeusDados.class);
-                i.putExtra("name", Principal.nomeUsuario1);
-                i.putExtra("mobile", Principal.celularUsuario);
-                i.putExtra("senha", Principal.senhaUsuario);
-                i.putExtra("email", Principal.emailUsuario);
-                i.putExtra("adress", Principal.enderecoUsuario);
-                i.putExtra("nascimento", Principal.nascimentoUsuario);
-                i.putExtra("cpf", Principal.cpfUsuario);
-                i.putExtra("genero", Principal.generoUsuario);
-                i.putExtra("tipouser", Principal.tipoUsuario);
+                i.putExtra("name", nomeUsuario1);
+                i.putExtra("mobile", celularUsuario);
+                i.putExtra("senha", senhaUsuario);
+                i.putExtra("email", emailUsuario);
+                i.putExtra("adress", enderecoUsuario);
+                i.putExtra("nascimento", nascimentoUsuario);
+                i.putExtra("cpf", cpfUsuario);
+                i.putExtra("genero", generoUsuario);
+                i.putExtra("tipouser", tipoUsuario);
 
                 startActivity(i);
                 break;
@@ -304,8 +343,7 @@ public class Requisicoes extends AppCompatActivity {
 
     //BOTÃO INFERIOR ESQUERDO DE VOLTAR DO SISTEMA ANDROID
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
         autenticacao.signOut();
         startActivity(new Intent(this, Login.class));
