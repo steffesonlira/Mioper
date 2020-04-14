@@ -34,7 +34,7 @@ public class SliderAdapterVisao extends PagerAdapter {
     public String[] slide_descs = {
 
             "Ser a empresa líder no segmento de transporte coletivo",
-            "Ser uma empresa que seja refer~encia na entrega de valores ao cliente"
+            "Ser uma empresa que seja referência na entrega de valores ao cliente"
     };
 
     @Override

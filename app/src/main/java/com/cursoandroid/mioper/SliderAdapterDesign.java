@@ -20,32 +20,34 @@ public class SliderAdapterDesign extends PagerAdapter {
 
     //Arrays
     public int[] slide_images = {
-            R.drawable.design1,
-            R.drawable.design2,
-            R.drawable.design3,
-            R.drawable.design4
+            R.drawable.design5,
+            R.drawable.design6,
+            R.drawable.design7,
+            R.drawable.design8,
+            R.drawable.design9,
+            R.drawable.design10
     };
 
     public String[] slide_headings = {
 
-            "Design Thinking 1",
-            "Design Thinking 2",
-            "Design Thinking 3",
-            "Design Thinking 4"
+            "O Design Thinking",
+            "Adaptando-se ao Mioper",
+            "Imersão",
+            "Ideação",
+            "Prototipação",
+            "Implementação"
     };
 
     public String[] slide_descs = {
 
-            "Loremdhsfhjdjkfdjifhjksfhsjfkjeskfkljdshfjdhfdthhdhgdhghgfhghhghdfbhgdxgfxcbfghfdghdfgfdhfdgsddfwarfesg  "+
-                    "jjgfdkjg",
-            "sdfhdugyesijfsdlifjaijfsdiursjehgkdshjdhgkjjjkgdgjfdlkigudkljglixfjgksjgilu jfksdjvjikdsjgk jlkdfjgl jjig"+
-                    "fdjgkfhgh",
-            "zuxhfdskjaeolkjdzlfjsekh jdjkashk hkejeji fdji jjij khjikh khu hhidishfkdnvksdhfjebvj hhwekjh khnjkhjhbjm"+
-                    "kjxfbhkjfg" +
-                    "rd",
-            "zuxhfdskjaeolkjdzlfjsekh jdjkashk hkejeji fdji jjij khjikh khu hhidishfkdnvksdhfjebvj hhwekjh khnjkhjhbjm"+
-                    "kjxfbhkjfg" +
-                    "rd"
+            "O Design Thinking está associado pela forma como resolvemos problemas, para desenvolver uma solução que" +
+                    " atenda uma problemática natural",
+            "Nós Miopers, seguimos essa metodologia, trazendo uma experiência  por meio de dificuldades estudantis, para a " +
+                    "locomoção de pessoas de forma compartilhada",
+            "Para seguir a metodologia, inciamos com a Imersão, onde conhecemos os problemas de um público alvo.",
+            "Depois, usamos a Ideação, realizando reuniões, para levantar ideias, pensando em atingir os objetivos.",
+            "Depois partindo para a Prototipação, realizando uma construção de cronogramas e tecnologias para desenvolvimento.",
+            "E por fim, utilizamos a Implementação, para colocar tudo o que foi visto na palma da mão dos nossos usuários."
     };
 
     @Override

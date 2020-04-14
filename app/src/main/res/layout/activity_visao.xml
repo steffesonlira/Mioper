@@ -21,8 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="20dp"></LinearLayout>
+        android:padding="10dp"></LinearLayout>
 
     <Button
         android:id="@+id/btnAnteriorVisao"

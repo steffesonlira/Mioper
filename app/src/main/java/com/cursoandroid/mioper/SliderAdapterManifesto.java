@@ -39,8 +39,8 @@ public class SliderAdapterManifesto extends PagerAdapter {
     public String[] slide_descs = {
 
             "A nossa metodologia surgiu-se na cooperatividade de uma equipe que estava aprendendo.",
-            "A partir de levantamentos de ideias para um projeto acadêmico onde experiências no dia a dia amadureceu a ideia.",
-            "Utilizando recursos que auxiliaram na resolução e na iniciação das atividades.",
+            "A partir do levantamento de ideias para um projeto acadêmico, adaptando-se ao dia-a-dia.",
+            "Utilizou-se recursos que auxiliaram na resolução e na iniciação das atividades.",
             "Que foi sendo aprimorada a cada semestre estudantil.",
             "Daí surgiu uma ideia inovadora visando um futuro próximo no modo de deslocar-se de forma compartilhada."
     };

@@ -1,14 +1,14 @@
 package com.cursoandroid.mioper;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 public class Historia extends AppCompatActivity {
 
@@ -57,19 +57,19 @@ public class Historia extends AppCompatActivity {
 
     }
     public void addDotsIndicator(int position){
-        mDots = new TextView[4];
+        mDots = new TextView[6];
         lDotLayout.removeAllViews();
 
         for(int i = 0; i < mDots.length; i++){
             mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
-            mDots[i].setTextSize(35);
+            mDots[i].setTextSize(45);
             mDots[i].setTextColor(getResources().getColor(R.color.transparent2));
 
             lDotLayout.addView(mDots[i]);
         }
         if(mDots.length > 0){
-            mDots[position].setTextColor(getResources().getColor(R.color.Blue));
+            mDots[position].setTextColor(getResources().getColor(R.color.DarkCyan));
         }
     }
 

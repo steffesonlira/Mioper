@@ -7,7 +7,7 @@
         android:id="@+id/imgManifesto1"
         android:layout_width="190dp"
         android:layout_height="245dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/manifesto1" />
 
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="280dp"
         android:textColor="@color/White"
         android:text="Manifesto 1"
         android:textAlignment="center"
@@ -27,7 +27,7 @@
         android:id="@+id/txtManifesto1Desc1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="370dp"
         android:textColor="@color/White"
         android:gravity="center"
         android:textSize="25dp"

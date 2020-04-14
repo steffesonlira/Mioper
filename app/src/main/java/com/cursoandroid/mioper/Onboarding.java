@@ -63,7 +63,7 @@ public class Onboarding extends AppCompatActivity {
         for(int i = 0; i < mDots.length; i++){
             mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
-            mDots[i].setTextSize(35);
+            mDots[i].setTextSize(45);
             mDots[i].setTextColor(getResources().getColor(R.color.transparent2));
 
             lDotLayout.addView(mDots[i]);

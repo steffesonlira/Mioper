@@ -19,10 +19,11 @@
         android:id="@+id/dotsLayoutValores"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:padding="20dp"></LinearLayout>
+        android:padding="10dp"></LinearLayout>
 
     <Button
         android:id="@+id/btnAnteriorValores"
