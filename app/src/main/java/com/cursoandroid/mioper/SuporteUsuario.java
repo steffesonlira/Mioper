@@ -65,7 +65,8 @@ public class SuporteUsuario extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
+        Intent intent = new Intent(SuporteUsuario.this, Principal.class);
+        startActivity(intent);
     }
 
 

@@ -12,9 +12,9 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="382dp"
+        android:layout_width="332dp"
         android:layout_height="53dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/botao"
 
         android:text="Alterar"
         android:textColor="#FFFFFF"
@@ -44,7 +44,7 @@
             android:inputType="textPassword"
             android:textColor="@color/Black"
             android:textColorHighlight="@color/Black"
-            android:textCursorDrawable="@color/design_default_color_primary_dark" />
+            android:textCursorDrawable="@color/DarkCyan" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Data de Nascimento -->

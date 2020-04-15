@@ -63,7 +63,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     public void salvarCartaoCadastrado(String numeroDoCartao) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("confirmação")
-                .setMessage("Deseja confirmar as alterações ?")
+                .setMessage("Deseja confirmar a operação?")
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
