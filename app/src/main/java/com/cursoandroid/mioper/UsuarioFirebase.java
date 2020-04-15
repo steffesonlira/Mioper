@@ -91,7 +91,6 @@ public class UsuarioFirebase {
                         i.putExtra("name", nomeUsuario);
                         activity.startActivity(i);
                     }
-
                 }
 
                 @Override

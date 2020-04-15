@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -60,6 +61,9 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         ButterKnife.bind(this);
+
+        //ESCONDE O TECLADO AO INICIAR A ACTIVITY
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -294,21 +298,21 @@ public class Cadastro extends AppCompatActivity {
         }
 
         if (usuarios.getMobile().isEmpty() || usuarios.getMobile().length() < 11) {
-            _mobileText.setError("Entre com um número de telefone corretamente");
+            _mobileText.setError("Entre com um número de telefone válido");
             valid = false;
         } else {
             _mobileText.setError(null);
         }
 
         if (usuarios.getSenha().isEmpty() || usuarios.getSenha().length() < 4 || usuarios.getSenha().length() > 10) {
-            _passwordText.setError("A senha deve ser entre 4 e 10 caracteres");
+            _passwordText.setError("A senha deve possuir entre 4 e 10 caracteres");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
 
         if (usuarios.repitasenha.isEmpty() || usuarios.repitasenha.length() < 4 || usuarios.repitasenha.length() > 10 || !(usuarios.repitasenha.equals(usuarios.getSenha()))) {
-            _reEnterPasswordText.setError("Senha não confere com a digitada acima");
+            _reEnterPasswordText.setError("A senha não confere com a digitada acima");
             valid = false;
         } else {
             _reEnterPasswordText.setError(null);
