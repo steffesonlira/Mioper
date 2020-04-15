@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +33,9 @@ public class SuporteUsuario extends AppCompatActivity
         setContentView(R.layout.activity_suporteusuario);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mAuth = FirebaseAuth.getInstance();
+
+        //ESCONDE O TECLADO AO INICIAR A ACTIVITY
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         //ComboBox de nome dos paises
         txtPara = findViewById(R.id.idPara);

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -120,7 +122,6 @@ public class AlterarSenha extends AppCompatActivity {
                 dialog.show();
 
 
-
             } else {
                 Toast.makeText(AlterarSenha.this,
                         "Senha antiga invalida!",
@@ -154,8 +155,9 @@ public class AlterarSenha extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, MeusDados.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                //startActivity(new Intent(this, MeusDados.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
             default:
                 break;

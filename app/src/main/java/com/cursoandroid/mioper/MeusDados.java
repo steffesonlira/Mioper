@@ -5,10 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -43,12 +46,16 @@ public class MeusDados extends AppCompatActivity {
     private FirebaseAuth autenticacao;
 
 
+
     //region ONCREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_meus_dados);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        //ESCONDE O TECLADO AO INICIAR A ACTIVITY
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -64,6 +71,8 @@ public class MeusDados extends AppCompatActivity {
         dataNascimentoUsuario = findViewById(R.id.txtDataNascimento);
         cpfUsuario = findViewById(R.id.txtCpf);
         generoUsuario = findViewById(R.id.switchGenero);
+
+
 
 
         //AO CLICAR, ALTERA A COR DO SWITCH MASCULINO/FEMININO
