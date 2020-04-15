@@ -266,14 +266,14 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
                     }
                 });
-        AlertDialog dialog = builder.create();
+
         try {
+            AlertDialog dialog = builder.create();
             dialog.show();
-        }catch (Exception e){
-            System.out.println("ERRO"+e.getMessage());
+        } catch (Exception e) {
+            System.out.println("ERRO" + e.getMessage());
 
         }
-
 
 
     }
@@ -550,7 +550,6 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     }
 
 
-
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //
@@ -566,8 +565,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     private void inicializarComponentes() {
 
-       // Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
-       // toolbar.setTitle("Iniciar uma viagem");
+        // Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
+        // toolbar.setTitle("Iniciar uma viagem");
 //        setSupportActionBar(toolbar);
 
         //Inicializar componentes

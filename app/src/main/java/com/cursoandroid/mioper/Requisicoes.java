@@ -57,10 +57,10 @@ public class Requisicoes extends AppCompatActivity {
     private LocationListener locationListener;
 
 
+    //RECEDE DADOS SEMPRE QUE A ACTIVITY É RECARREGADA
     @Override
     protected void onResume() {
         super.onResume();
-        //RECEDE DADOS SEMPRE QUE A ACTIVITY É RECARREGADA
         nomeUsuario1 = Principal.nomeUsuario1;
         celularUsuario = Principal.celularUsuario;
         senhaUsuario = Principal.senhaUsuario;
@@ -72,21 +72,20 @@ public class Requisicoes extends AppCompatActivity {
         tipoUsuario = Principal.tipoUsuario;
     }
 
+    //RECEDE DADOS DO MOTORISTA DA CLASSE PRINCIPAL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requisicoes);
-
-        //RECEDE DADOS DO MOTORISTA DA CLASSE PRINCIPAL
-         nomeUsuario1 = Principal.nomeUsuario1;
-         celularUsuario = Principal.celularUsuario;
-         senhaUsuario = Principal.senhaUsuario;
-         emailUsuario = Principal.emailUsuario;
-         enderecoUsuario = Principal.enderecoUsuario;
-         nascimentoUsuario = Principal.enderecoUsuario;
-         cpfUsuario = Principal.cpfUsuario;
-         generoUsuario = Principal.generoUsuario;
-         tipoUsuario = Principal.tipoUsuario;
+        nomeUsuario1 = Principal.nomeUsuario1;
+        celularUsuario = Principal.celularUsuario;
+        senhaUsuario = Principal.senhaUsuario;
+        emailUsuario = Principal.emailUsuario;
+        enderecoUsuario = Principal.enderecoUsuario;
+        nascimentoUsuario = Principal.enderecoUsuario;
+        cpfUsuario = Principal.cpfUsuario;
+        generoUsuario = Principal.generoUsuario;
+        tipoUsuario = Principal.tipoUsuario;
 
 
         //region Criando botão de voltar no toolbar
