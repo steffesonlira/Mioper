@@ -33,6 +33,8 @@ public class AlterarSenha extends AppCompatActivity {
         senhaNova = findViewById(R.id.txtSenhaNova);
         confirmarSenha = findViewById(R.id.txtConfirmarSenha);
 
+        senhaAntiga.requestFocus();
+
         //RECEBE DADOS DA TELA DE MEUS DADOS
         Bundle dados = getIntent().getExtras();
         userID = dados.getString("idUsuario");
