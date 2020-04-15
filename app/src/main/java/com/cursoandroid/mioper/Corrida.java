@@ -467,8 +467,6 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                     locationListener
             );
         }
-
-
     }
 
     public void aceitarCorrida(View view) {
@@ -478,7 +476,6 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         requisicao.setId(idRequisicao);
         requisicao.setMotorista(motorista);
         requisicao.setStatus(Requisicao.STATUS_A_CAMINHO);
-
         requisicao.atualizar();
 
     }
@@ -524,7 +521,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                             break;
                     }
 
-                    //Abrir rota
+                    //ABRE ROTA NO GOOGLE MAPS
                     String latLong = lat + "," + lon;
                     Uri uri = Uri.parse("google.navigation:q=" + latLong + "&mode=d");
                     Intent i = new Intent(Intent.ACTION_VIEW, uri);
@@ -532,11 +529,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                     startActivity(i);
 
                 }
-
             }
         });
-
-
     }
 
     @Override
@@ -572,7 +566,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
         }
         return true;
