@@ -18,7 +18,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="16dp"
-        android:background="#EFEFEF"
+        android:background="#F1F1F1"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -26,30 +26,30 @@
             android:id="@+id/editLocal"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#EFEFEF"
+            android:background="#F1F1F1"
             android:drawableLeft="@drawable/circulo_verde"
             android:drawablePadding="6dp"
             android:ems="10"
             android:enabled="false"
             android:hint="Meu local"
             android:inputType="textPersonName"
-            android:textColor="@android:color/darker_gray"
-            android:textColorHint="@android:color/darker_gray"
+            android:textColor="#424242"
+            android:textColorHint="#878787"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editDestino"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#EFEFEF"
+            android:background="#F1F1F1"
             android:drawableLeft="@drawable/circulo_verde"
             android:drawablePadding="6dp"
             android:drawableTint="@android:color/darker_gray"
             android:ems="10"
             android:hint="Seu destino (Ex: Nome da Rua,1)"
             android:inputType="textPersonName"
-            android:textColor="@android:color/darker_gray"
-            android:textColorHint="@android:color/darker_gray"
+            android:textColor="#424242"
+            android:textColorHint="#878787"
             android:textSize="18sp" />
 
     </LinearLayout>
