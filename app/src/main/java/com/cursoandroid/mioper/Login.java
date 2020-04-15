@@ -423,6 +423,20 @@ public class Login extends AppCompatActivity {
     //region METODO logarUsuario()
     public void logarUsuario(UserProfile usuario) {
 
+
+        final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Realizando o Login...");
+        progressDialog.show();
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 3000);
+
+
         mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();
         mAuth.signInWithEmailAndPassword(
                 usuario.getEmail(), usuario.getSenha()
@@ -431,17 +445,6 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                    progressDialog.setIndeterminate(true);
-                    progressDialog.setMessage("Realizando o Login...");
-                    progressDialog.show();
-
-                    new android.os.Handler().postDelayed(
-                            new Runnable() {
-                                public void run() {
-                                    progressDialog.dismiss();
-                                }
-                            }, 3000);
 
                     //Verificar o tipo de usuário logado - "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
