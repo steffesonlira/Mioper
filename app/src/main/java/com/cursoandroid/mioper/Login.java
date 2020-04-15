@@ -434,7 +434,7 @@ public class Login extends AppCompatActivity {
                     public void run() {
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 10000);
 
 
         mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();

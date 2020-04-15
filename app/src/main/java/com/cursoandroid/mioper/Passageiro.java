@@ -325,7 +325,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     private void centralizarMarcador(LatLng local) {
         mMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(local, 20)
+                CameraUpdateFactory.newLatLngZoom(local, 18)
         );
     }
 
