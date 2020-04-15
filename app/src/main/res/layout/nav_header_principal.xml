@@ -22,15 +22,16 @@
 
     <TextView
         android:id="@+id/txtboasVindas"
-        android:layout_width="match_parent"
+        android:layout_width="103dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Olá"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16dp" />
 
     <TextView
         android:id="@+id/nomeUsuário"
-        android:layout_width="wrap_content"
+        android:layout_width="263dp"
         android:layout_height="wrap_content"
         android:text="nomeUsuario"
         android:textColor="#FFFFFF"

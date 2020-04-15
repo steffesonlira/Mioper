@@ -38,12 +38,8 @@ import com.google.firebase.database.DatabaseReference;
 //CLASSE LOGIN
 public class Login extends AppCompatActivity {
 
-//region DECLARAÇÃO DE VARIÁVEIS
-
-    //VAR DENIS
+    //region DECLARAÇÃO DE VARIÁVEIS
     public String Email_User, Tipo_User;
-//==================================
-
     public EditText email;
     public EditText senha;
     private Button logar;
@@ -443,8 +439,7 @@ public class Login extends AppCompatActivity {
                                 }
                             }, 3000);
 
-                    //Verificar o tipo de usuário logado
-                    // "Motorista" / "Passageiro"
+                    //Verificar o tipo de usuário logado - "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
 
                     //Toast de Boas vindas
@@ -452,6 +447,7 @@ public class Login extends AppCompatActivity {
                     toastCustom.setGravity(Gravity.CENTER, 0, 0);
                     toastCustom.setView(viewLayout);
                     toastCustom.show();
+
                 } else {
 
                     String excecao = "";
