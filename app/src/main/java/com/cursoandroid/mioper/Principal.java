@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 //endregion
@@ -38,6 +40,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     private FragmentManager fragmentManager;
     DrawerLayout drawer;
     TextView nomeUsuario;
+    String boasVindas_;
     static String nomeUsuario1;
     static String celularUsuario;
     static String senhaUsuario;
@@ -54,12 +57,13 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     private static final String TAG = "Principal";
     private AppBarConfiguration mAppBarConfiguration;
     //endregion
-    
+
     //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
 
         //region RECEBE DADOS DA TELA DE LOGIN
         nomeUsuario = findViewById(R.id.nomeUsuário);
@@ -68,6 +72,19 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
             usuario = dados.getString("name");
 
         }
+
+        //IDENTIFICA SE MANHA TARDE OU NOITE
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+        if (timeOfDay >= 0 && timeOfDay < 12) {
+            boasVindas_ = "Bom Dia";
+        } else if (timeOfDay >= 12 && timeOfDay < 18) {
+            boasVindas_ = "Boa Tarde";
+        } else if (timeOfDay >= 18 && timeOfDay <= 24) {
+            boasVindas_ = "Boa Noite";
+        }
+
+
         //endregion
 
         //region configure navigation bar
@@ -83,6 +100,12 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.nomeUsuário);
         navUsername.setText(usuario);
+        //endregion
+
+
+        //region COLOCAR BOM DIA, BOA TARDE OU BOA NOITE NO TEXTFIELD DO NAVHEADER
+        TextView navBoasVindas = (TextView) headerView.findViewById(R.id.txtboasVindas);
+        navBoasVindas.setText((CharSequence) boasVindas_);
         //endregion
 
         //region Menu Item

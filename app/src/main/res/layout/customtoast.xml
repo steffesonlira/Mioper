@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/idImage"
-        android:layout_width="132dp"
-        android:layout_height="115dp"
+        android:layout_width="87dp"
+        android:layout_height="89dp"
         android:src="@drawable/joia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
