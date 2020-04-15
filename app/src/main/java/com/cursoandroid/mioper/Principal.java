@@ -239,5 +239,10 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     }
     //endregion
 
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
 
