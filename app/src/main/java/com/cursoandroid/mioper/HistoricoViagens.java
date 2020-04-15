@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 
-public class HistoricoViagens extends AppCompatActivity{
+public class HistoricoViagens extends AppCompatActivity {
 
     String nomeUsuario1;
     String celularUsuario;
@@ -47,6 +47,7 @@ public class HistoricoViagens extends AppCompatActivity{
     public ArrayList<HistoricoUsuario> array2 = new ArrayList<>();
     String userMailReplaced;
     Button btnListar;
+    DataSnapshot dSnapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class HistoricoViagens extends AppCompatActivity{
         recyclerView = findViewById(R.id.recyclerView);
         historicoUser = findViewById(R.id.textView_viagem);
 
+        //DEIXA A LABEL "VOCÊ NÃO POSSUI HISTORICO DE VIAGENS" INVISÍVEL NA TELA
+        historicoUser.setVisibility(View.INVISIBLE);
+
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -66,6 +70,7 @@ public class HistoricoViagens extends AppCompatActivity{
         //PESQUISA HISTORICO NO FIREBASE
         retornaHistorico();
     }
+
 
     //ACESSA O HISTORICO DO USUARIO
     public void retornaHistorico() {
@@ -84,8 +89,12 @@ public class HistoricoViagens extends AppCompatActivity{
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
 
+                    //VERIFICA SE RETORNOU DADOS DA CONSULTA  NO FIREBASE
+                    if (dataSnapshot.exists()) {
                         mostrarHistorico(dataSnapshot);
-
+                    } else {
+                        historicoUser.setVisibility(View.VISIBLE); //DEIXA A LABEL "VOCÊ NÃO POSSUI HISTORICO DE VIAGENS" VISÍVEL NA TELA
+                    }
                 }
 
                 @Override
@@ -101,6 +110,7 @@ public class HistoricoViagens extends AppCompatActivity{
     //COLOCA AS INFORMAÇÕES RETORNADAS DO FIREBASE DENTRO DE UM ARRAY
     public void mostrarHistorico(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
             HistoricoUsuario uHistorico = new HistoricoUsuario();
 
             uHistorico.setBairro(ds.getValue(HistoricoUsuario.class).getBairro());
@@ -126,7 +136,6 @@ public class HistoricoViagens extends AppCompatActivity{
     //ENVIA DADOS PARA O RECYCLERVIEW
     public void enviarDadosLista(ArrayList array2) {
 
-        historicoUser.setVisibility(View.INVISIBLE);
 
         //CONFIGURA ADAPTER
         AdapterHistoricoViagem adapter = new AdapterHistoricoViagem(array2);

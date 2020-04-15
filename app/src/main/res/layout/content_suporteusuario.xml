@@ -21,8 +21,8 @@
 
         <!-- Address Label -->
         <ImageView
-            android:layout_width="144dp"
-            android:layout_height="78dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo" />
 
@@ -91,9 +91,9 @@
                 android:id="@+id/idMensagem"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:textAlignment="textStart"
                 android:backgroundTint="@android:color/white"
                 android:hint="Digite sua Mensagem aqui:"
+                android:gravity="top"
                 android:inputType="textMultiLine"
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"
