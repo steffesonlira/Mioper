@@ -13,8 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".CadastrarCartaoActivity"></activity>
-        <activity android:name=".MetodosDePagamentoActivity"></activity>
+        <activity android:name=".CadastrarCartaoActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            ></activity>
+        <activity android:name=".MetodosDePagamentoActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            ></activity>
         <activity
             android:name=".IndiqueGanhe"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>

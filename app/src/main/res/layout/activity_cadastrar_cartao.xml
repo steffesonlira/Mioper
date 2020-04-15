@@ -84,6 +84,9 @@
             <Button
                 android:id="@+id/botaoConfirmarCadastroCartaoID"
                 android:layout_width="match_parent"
+                android:background="@drawable/botao"
+                android:textColor="@color/White"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:text="Confirmar" />
         </LinearLayout>

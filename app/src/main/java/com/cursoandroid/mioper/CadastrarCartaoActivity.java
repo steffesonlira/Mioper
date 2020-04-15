@@ -1,13 +1,19 @@
 package com.cursoandroid.mioper;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +32,12 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_cartao);
+
+        //region Criando botão de voltar no toolbar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Cadastro de Cartões");
+        //endregion
 
         //ComboBox de nome dos paises
         paisesCadastrados = findViewById(R.id.paisesCadastradosID);
@@ -49,16 +61,38 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     }
 
     public void salvarCartaoCadastrado(String numeroDoCartao) {
-        FirebaseUser firebaseUser = getUsuarioAtual();
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("confirmação")
+                .setMessage("Deseja confirmar as alterações ?")
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseUser firebaseUser = getUsuarioAtual();
+                        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
-        String userEmail = firebaseUser.getEmail();
-        String userMailReplaced = userEmail.replace('.', '-');
+                        String userEmail = firebaseUser.getEmail();
+                        String userMailReplaced = userEmail.replace('.', '-');
 
-        DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
+                        DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
 
-        String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-        metodosPagamentos.child(idUsuarioDoCartao).setValue(numeroDoCartao);
+                        String idUsuarioDoCartao = metodosPagamentos.push().getKey();
+                        metodosPagamentos.child(idUsuarioDoCartao).setValue(numeroDoCartao);
+
+                        Toast.makeText(CadastrarCartaoActivity.this,
+                                "Cartão cadastrado com sucesso!",
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
     }
 
 
@@ -75,5 +109,27 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    //region Criação do Menu Toolbar XML
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.principal
+                , menu);
+        return true;
+    }
+    //endregion
+
+    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+                startActivity(new Intent(this, MetodosDePagamentoActivity.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

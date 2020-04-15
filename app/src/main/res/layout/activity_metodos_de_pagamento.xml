@@ -24,9 +24,14 @@
             android:clickable="true"
             android:contextClickable="true"
             android:focusable="true"
+            android:padding="8dp"
+            android:drawableStart="@drawable/ic_add"
+            android:background="@drawable/botao"
+            android:textColor="@color/White"
+            android:layout_gravity="center"
             android:gravity="center"
             android:text="Adicionar método de pagamento"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             tools:ignore="MissingConstraints,RtlCompat" />
     </LinearLayout>
 
