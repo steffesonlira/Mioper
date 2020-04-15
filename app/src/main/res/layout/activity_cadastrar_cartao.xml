@@ -85,10 +85,20 @@
                 android:id="@+id/botaoConfirmarCadastroCartaoID"
                 android:layout_width="match_parent"
                 android:background="@drawable/botao"
+                android:layout_marginTop="80dp"
                 android:textColor="@color/White"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:text="Confirmar" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:layout_height="300dp"
+                android:src="@drawable/cartao"
+                >
+
+            </ImageView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
