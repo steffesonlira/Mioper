@@ -23,21 +23,6 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/editLocal"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#F1F1F1"
-            android:drawableLeft="@drawable/circulo_verde"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:enabled="false"
-            android:hint="Meu local"
-            android:inputType="textPersonName"
-            android:textColor="#424242"
-            android:textColorHint="#878787"
-            android:textSize="18sp" />
-
-        <EditText
             android:id="@+id/editDestino"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -46,10 +31,10 @@
             android:drawablePadding="6dp"
             android:drawableTint="@android:color/darker_gray"
             android:ems="10"
-            android:hint="Seu destino (Ex: Nome da Rua,1)"
+            android:hint="Digite seu destino (Ex: Nome da Rua,1)"
             android:inputType="textPersonName"
             android:textColor="#424242"
-            android:textColorHint="#878787"
+            android:textColorHint="#757575"
             android:textSize="18sp" />
 
     </LinearLayout>
