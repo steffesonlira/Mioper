@@ -394,6 +394,7 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
+    //BOTAO ACESSAR
     //region METODO validarLoginUsuario()
     public void validarLoginUsuario(View view) {
 
@@ -423,6 +424,8 @@ public class Login extends AppCompatActivity {
     }
 //endregion
 
+
+
     //region METODO logarUsuario()
     public void logarUsuario(UserProfile usuario) {
 
@@ -434,10 +437,33 @@ public class Login extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
+
+                    final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Realizando o Login...");
+                    progressDialog.show();
+
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+
+                                    try {
+                                        if ((progressDialog != null) && progressDialog.isShowing()) {
+                                            progressDialog.dismiss();
+                                        }
+                                    } catch (final IllegalArgumentException e) {
+                                        // Handle or log or ignore
+                                    } catch (final Exception e) {
+                                        // Handle or log or ignore
+                                    }
+
+
+                                }
+                            }, 10000);
+
+
                     //Verificar o tipo de usuário logado - "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
-
-
 
                 } else {
 

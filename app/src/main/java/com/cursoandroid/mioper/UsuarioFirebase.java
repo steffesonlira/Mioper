@@ -2,6 +2,7 @@ package com.cursoandroid.mioper;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -86,9 +87,9 @@ public class UsuarioFirebase {
                     //VERIFICA SE EXISTE DADOS DO USUARIO NO DATABASE
                     if (dataSnapshot.exists()) {
                         Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
+
+
                         UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
-
-
                         String nomeUsuario = usuario.getName();
                         String tipoUsuario = usuario.getTipouser();
                         if (tipoUsuario.equals("M")) {
