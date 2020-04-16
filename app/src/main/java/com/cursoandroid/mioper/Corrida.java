@@ -39,7 +39,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -401,7 +400,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.destino))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
         );
 
     }

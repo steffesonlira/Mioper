@@ -1,7 +1,6 @@
 package com.cursoandroid.mioper;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -318,7 +317,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 new MarkerOptions()
                         .position(localizacao)
                         .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.destino))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
         );
 
     }
