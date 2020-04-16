@@ -2,6 +2,7 @@ package com.cursoandroid.mioper;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -323,19 +325,37 @@ public class Requisicoes extends AppCompatActivity {
                 break;
             case R.id.gerenciarDados:
                 //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
-                Intent i = new Intent(Requisicoes.this, MeusDados.class);
-                i.putExtra("name", nomeUsuario1);
-                i.putExtra("mobile", celularUsuario);
-                i.putExtra("senha", senhaUsuario);
-                i.putExtra("email", emailUsuario);
-                i.putExtra("adress", enderecoUsuario);
-                i.putExtra("nascimento", nascimentoUsuario);
-                i.putExtra("cpf", cpfUsuario);
-                i.putExtra("genero", generoUsuario);
-                i.putExtra("tipouser", tipoUsuario);
+                if (nomeUsuario1.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("Aviso!")
+                            .setMessage("Não foi possível recuperar suas informações. Por favor efetue o login novamente")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    break;
+                } else {
 
-                startActivity(i);
-                break;
+                    Intent i = new Intent(Requisicoes.this, MeusDados.class);
+                    i.putExtra("name", nomeUsuario1);
+                    i.putExtra("mobile", celularUsuario);
+                    i.putExtra("senha", senhaUsuario);
+                    i.putExtra("email", emailUsuario);
+                    i.putExtra("adress", enderecoUsuario);
+                    i.putExtra("nascimento", nascimentoUsuario);
+                    i.putExtra("cpf", cpfUsuario);
+                    i.putExtra("genero", generoUsuario);
+                    i.putExtra("tipouser", tipoUsuario);
+
+                    startActivity(i);
+                    break;
+
+                }
+
+
         }
         return true;
     }

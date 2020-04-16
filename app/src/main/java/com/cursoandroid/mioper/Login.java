@@ -70,6 +70,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         LayoutInflater layoutInflater = getLayoutInflater();
+        FirebaseAuth.getInstance().signOut();
 
         //ESCONDE O TECLADO AO INICIAR A ACTIVITY
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -94,6 +95,7 @@ public class Login extends AppCompatActivity {
 //region Método validarPermissoes()
         Permissoes.validarPermissoes(permissoes, this, 1);
         //endregion
+
 
 //region FIREBASE LISTENER
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -349,6 +351,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         mAuth.addAuthStateListener(firebaseAuthListener);
@@ -423,20 +426,6 @@ public class Login extends AppCompatActivity {
     //region METODO logarUsuario()
     public void logarUsuario(UserProfile usuario) {
 
-
-        final ProgressDialog progressDialog = new ProgressDialog(Login.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Realizando o Login...");
-        progressDialog.show();
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        progressDialog.dismiss();
-                    }
-                }, 10000);
-
-
         mAuth = ConfiguracaoFirebase.getFirebaseAutenticacao();
         mAuth.signInWithEmailAndPassword(
                 usuario.getEmail(), usuario.getSenha()
@@ -444,7 +433,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
 
                     //Verificar o tipo de usuário logado - "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);

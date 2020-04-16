@@ -262,8 +262,6 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
                         //VOLTA PARA A TELA DE LOGIN
                         finish();
-
-
                     }
                 });
 

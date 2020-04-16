@@ -1,6 +1,7 @@
 package com.cursoandroid.mioper;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -43,8 +44,8 @@ public class MeusDados extends AppCompatActivity {
     String idUsuario;
     TextView txtMasculino, txtFeminino;
     String email;
+    String nome;
     private FirebaseAuth autenticacao;
-
 
 
     //region ONCREATE
@@ -73,8 +74,6 @@ public class MeusDados extends AppCompatActivity {
         generoUsuario = findViewById(R.id.switchGenero);
 
 
-
-
         //AO CLICAR, ALTERA A COR DO SWITCH MASCULINO/FEMININO
         generoUsuario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("ResourceAsColor")
@@ -100,7 +99,7 @@ public class MeusDados extends AppCompatActivity {
 
         //RECEBE DADOS DA TELA PRINCIPAL
         Bundle dados = getIntent().getExtras();
-        String nome = dados.getString("name");
+        nome = dados.getString("name");
         String celular = dados.getString("mobile");
         email = dados.getString("email");
         String endereco = dados.getString("adress");
@@ -109,6 +108,7 @@ public class MeusDados extends AppCompatActivity {
         String cpf = dados.getString("cpf");
         String genero = dados.getString("genero");
         tipoUsuario = dados.getString("tipouser");
+
 
         //COLOCA DADOS RECEBIDOS NOS TEXTVIEW
         nomeUsuario.setText(nome);
@@ -148,39 +148,38 @@ public class MeusDados extends AppCompatActivity {
                     if (!textoCelular.isEmpty()) {//verifica celular
 
 
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                .setTitle("confirmação")
+                                .setMessage("Deseja confirmar as alterações ?")
+                                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                                        .setTitle("confirmação")
-                                        .setMessage("Deseja confirmar as alterações ?")
-                                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                                        UserProfile usuario = new UserProfile();
+                                        usuario.setName(textoNome);
+                                        usuario.setEmail(textoEmail);
+                                        usuario.setAdress(textoEndereco);
+                                        usuario.setMobile(textoCelular);
+                                        usuario.setNascimento(textoDataNascimento);
+                                        usuario.setCpf(textoCpf);
+                                        usuario.setGenero(verificaGeneroUsuario());
+                                        usuario.setTipouser(tipoUsuario);
 
-                                                UserProfile usuario = new UserProfile();
-                                                usuario.setName(textoNome);
-                                                usuario.setEmail(textoEmail);
-                                                usuario.setAdress(textoEndereco);
-                                                usuario.setMobile(textoCelular);
-                                                usuario.setNascimento(textoDataNascimento);
-                                                usuario.setCpf(textoCpf);
-                                                usuario.setGenero(verificaGeneroUsuario());
-                                                usuario.setTipouser(tipoUsuario);
+                                        //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
+                                        cadastrarUsuario(usuario);
+                                        Toast.makeText(MeusDados.this,
+                                                "Alterações salvas com sucesso!",
+                                                Toast.LENGTH_SHORT).show();
 
-                                                //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
-                                                cadastrarUsuario(usuario);
-                                                Toast.makeText(MeusDados.this,
-                                                        "Dados gravados com sucesso!",
-                                                        Toast.LENGTH_SHORT).show();
+                                    }
+                                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                            }
-                                        });
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
 
                     } else {
@@ -251,6 +250,7 @@ public class MeusDados extends AppCompatActivity {
 
     }
 
+    //BOTÃO EXCLUIR CONTA
     public void excluirUsuario(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -264,8 +264,6 @@ public class MeusDados extends AppCompatActivity {
 
 
                     }
-                }).setNegativeButton("cancelar", (dialog, which) -> {
-
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -276,20 +274,48 @@ public class MeusDados extends AppCompatActivity {
 
     public void excluirConta() {
 
+        excluirInformacoesEsuario();
+
         //REMOVE USUARIO DO FIREBASE AUTH (EMAIL E SENHA UTILIZADO PARA LOGAR)
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Log.d("Aviso!", "Usuário Excluído");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Obrigado por utilizar o Mioper " + nome+".")
+                        .setMessage("Sua conta foi excluída com sucesso. Esperamos te-lo de volta!")
+                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                fecharTela();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
 
             } else {
-                Toast.makeText(MeusDados.this, task.getException().getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Aviso!")
+                        .setMessage("Devido a você estar muito tempo logado, será necessário que refaça o login para que possa excluir sua conta")
+                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
             }
         });
 
-        //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
+
+    }
+
+    //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
+    public void excluirInformacoesEsuario(){
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         try {
             idUsuario = autenticacao.getCurrentUser().getUid();
@@ -299,13 +325,15 @@ public class MeusDados extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void fecharTela(){
 
         FirebaseAuth.getInstance().signOut();
-        Intent m = new Intent(this, MainActivity.class);
+        Intent m = new Intent(this, Login.class);
         startActivity(m);
 
     }
-
 
     public String verificaGeneroUsuario() {
         return generoUsuario.isChecked() ? "Feminino" : "Masculino";

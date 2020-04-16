@@ -167,15 +167,14 @@ public class Cadastro extends AppCompatActivity {
                         finish();
 
                         Toast.makeText(Cadastro.this,
-                                "Sucesso ao cadastrar Passageiro!",
+                                "Cadastro realizado com sucesso!",
                                 Toast.LENGTH_SHORT).show();
 
                     } else {
                         startActivity(new Intent(Cadastro.this, Requisicoes.class));
                         finish();
-
                         Toast.makeText(Cadastro.this,
-                                "Sucesso ao cadastrar Motorista!",
+                                "Cadastro realizado com sucesso!",
                                 Toast.LENGTH_SHORT).show();
                     }
 
