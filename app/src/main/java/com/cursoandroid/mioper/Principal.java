@@ -5,10 +5,14 @@ package com.cursoandroid.mioper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -53,6 +57,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     Principal activity;
     static String tipoUsuario;
     static String usuario;
+    View viewLayout;
     NavigationView navigationView;
     private static final String TAG = "Principal";
     private AppBarConfiguration mAppBarConfiguration;
@@ -63,6 +68,15 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+
+        //EXIBE TOAST DE BOAS VINDAS
+        LayoutInflater layoutInflater = getLayoutInflater();
+        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
+        //Toast de Boas vindas
+        Toast toastCustom = Toast.makeText(Principal.this, "", Toast.LENGTH_SHORT);
+        toastCustom.setGravity(Gravity.CENTER, 0, 0);
+        toastCustom.setView(viewLayout);
+        toastCustom.show();
 
 
         //region RECEBE DADOS DA TELA DE LOGIN

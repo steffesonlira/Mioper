@@ -67,11 +67,6 @@ public class SuporteUsuario extends AppCompatActivity
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SuporteUsuario.this, Principal.class);
-        startActivity(intent);
-    }
 
 
 
@@ -88,8 +83,7 @@ public class SuporteUsuario extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
             default:
                 break;

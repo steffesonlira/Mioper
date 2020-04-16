@@ -264,6 +264,10 @@ public class MeusDados extends AppCompatActivity {
 
 
                     }
+                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -282,7 +286,7 @@ public class MeusDados extends AppCompatActivity {
             if (task.isSuccessful()) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Obrigado por utilizar o Mioper " + nome+".")
+                        .setTitle("Obrigado por utilizar o Mioper " + nome + ".")
                         .setMessage("Sua conta foi excluída com sucesso. Esperamos te-lo de volta!")
                         .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                             @Override
@@ -292,7 +296,6 @@ public class MeusDados extends AppCompatActivity {
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
 
 
             } else {
@@ -315,7 +318,7 @@ public class MeusDados extends AppCompatActivity {
     }
 
     //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
-    public void excluirInformacoesEsuario(){
+    public void excluirInformacoesEsuario() {
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         try {
             idUsuario = autenticacao.getCurrentUser().getUid();
@@ -327,7 +330,7 @@ public class MeusDados extends AppCompatActivity {
         }
     }
 
-    public void fecharTela(){
+    public void fecharTela() {
 
         FirebaseAuth.getInstance().signOut();
         Intent m = new Intent(this, Login.class);
@@ -356,8 +359,8 @@ public class MeusDados extends AppCompatActivity {
                 if (tipoUsuario.equals("M")) {
                     startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 } else {
-                    startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                    finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                    //O efeito ao ser pressionado do botão (no caso abre a activity)
+                    finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
 
                 }
                 break;
@@ -366,5 +369,4 @@ public class MeusDados extends AppCompatActivity {
         }
         return true;
     }
-
 }

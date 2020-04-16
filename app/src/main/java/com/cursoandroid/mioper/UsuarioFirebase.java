@@ -2,10 +2,15 @@ package com.cursoandroid.mioper;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -77,19 +82,26 @@ public class UsuarioFirebase {
             usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
-                    UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
 
-                    String nomeUsuario = usuario.getName();
-                    String tipoUsuario = usuario.getTipouser();
-                    if (tipoUsuario.equals("M")) {
-                        Intent i = new Intent(activity, Requisicoes.class);
-                        activity.startActivity(i);
+                    //VERIFICA SE EXISTE DADOS DO USUARIO NO DATABASE
+                    if (dataSnapshot.exists()) {
+                        Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
+                        UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
+
+
+                        String nomeUsuario = usuario.getName();
+                        String tipoUsuario = usuario.getTipouser();
+                        if (tipoUsuario.equals("M")) {
+                            Intent i = new Intent(activity, Requisicoes.class);
+                            activity.startActivity(i);
+                        } else {
+                            Intent i = new Intent(activity, Principal.class);
+                            //Passa o nome de usuário para tela principal
+                            i.putExtra("name", nomeUsuario);
+                            activity.startActivity(i);
+                        }
                     } else {
-                        Intent i = new Intent(activity, Principal.class);
-                        //Passa o nome de usuário para tela principal
-                        i.putExtra("name", nomeUsuario);
-                        activity.startActivity(i);
+                        alerta(activity);
                     }
                 }
 
@@ -101,6 +113,21 @@ public class UsuarioFirebase {
         }
 
     }
+
+    //CASO EXISTIR CONTA(EMAIL E SENHA CADASTRADO), MAIS NÃO EXISTIR INFORMAÇÕES DO USUÁRIO NO DATABASE
+    public static void alerta(Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle("Aviso!")
+                .setMessage("Erro ao efetuar o login. (User information was deleted on database). Entre em contato com o suporte. (mioper.suporte@outlook.com)")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     public static void atualizarDadosLocalizacao(double lat, double lon) {
 

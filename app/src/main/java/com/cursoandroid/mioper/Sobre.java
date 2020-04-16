@@ -30,7 +30,7 @@ public class Sobre extends AppCompatActivity {
         btn_visao = findViewById(R.id.btnVisao);
         btn_valores = findViewById(R.id.btnValores);
         LayoutInflater layoutInflater = getLayoutInflater();
-        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup)findViewById(R.id.custom_layout));
+        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
 
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,21 +43,21 @@ public class Sobre extends AppCompatActivity {
         btn_manifesto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Sobre.this,Onboarding.class);
+                Intent intent = new Intent(Sobre.this, Onboarding.class);
                 startActivity(intent);
             }
         });
         btn_design.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentDesign= new Intent(Sobre.this,DesignThinking.class);
+                Intent intentDesign = new Intent(Sobre.this, DesignThinking.class);
                 startActivity(intentDesign);
             }
         });
         btn_historia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentDesign= new Intent(Sobre.this,Historia.class);
+                Intent intentDesign = new Intent(Sobre.this, Historia.class);
                 startActivity(intentDesign);
 
             }
@@ -65,14 +65,14 @@ public class Sobre extends AppCompatActivity {
         btn_missao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentMissao= new Intent(Sobre.this,Missao.class);
+                Intent intentMissao = new Intent(Sobre.this, Missao.class);
                 startActivity(intentMissao);
             }
         });
         btn_visao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentVisao= new Intent(Sobre.this,Visao.class);
+                Intent intentVisao = new Intent(Sobre.this, Visao.class);
                 startActivity(intentVisao);
 
             }
@@ -80,17 +80,11 @@ public class Sobre extends AppCompatActivity {
         btn_valores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentValores= new Intent(Sobre.this,Valores.class);
+                Intent intentValores = new Intent(Sobre.this, Valores.class);
                 startActivity(intentValores);
 
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intentValores= new Intent(Sobre.this,Principal.class);
-        startActivity(intentValores);
     }
 
 
@@ -99,8 +93,7 @@ public class Sobre extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, Principal.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 break;
             default:
                 break;

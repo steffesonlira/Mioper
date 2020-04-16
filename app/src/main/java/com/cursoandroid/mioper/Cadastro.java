@@ -163,7 +163,8 @@ public class Cadastro extends AppCompatActivity {
                     // Se o usuário for passageiro chama a activity maps
                     // senão chama a activity requisicoes
                     if (verificaTipoUsuario() == "P") {
-                        startActivity(new Intent(Cadastro.this, Principal.class));
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(Cadastro.this, Login.class));
                         finish();
 
                         Toast.makeText(Cadastro.this,
@@ -171,7 +172,8 @@ public class Cadastro extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                     } else {
-                        startActivity(new Intent(Cadastro.this, Requisicoes.class));
+                        startActivity(new Intent(Cadastro.this, Login.class));
+                        FirebaseAuth.getInstance().signOut();
                         finish();
                         Toast.makeText(Cadastro.this,
                                 "Cadastro realizado com sucesso!",

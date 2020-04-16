@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity {
     static final int GOOGLE_SIGN = 101;
     private static final String TAG = "GoogleActivity";
     FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    //private FirebaseAuth.AuthStateListener firebaseAuthListener;
     ProgressBar progressBar;
     GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
@@ -96,7 +96,7 @@ public class Login extends AppCompatActivity {
         Permissoes.validarPermissoes(permissoes, this, 1);
         //endregion
 
-
+/*
 //region FIREBASE LISTENER
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -109,7 +109,7 @@ public class Login extends AppCompatActivity {
             }
         };
         //endregion FIREBASE LISTENER
-
+*/
 //region LABEL PARA CRIAR UMA NOVA CONTA no MIOPER
         criarConta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,7 +354,7 @@ public class Login extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        mAuth.addAuthStateListener(firebaseAuthListener);
+        //mAuth.addAuthStateListener(firebaseAuthListener);
 
         UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
     }
@@ -437,11 +437,7 @@ public class Login extends AppCompatActivity {
                     //Verificar o tipo de usuário logado - "Motorista" / "Passageiro"
                     UsuarioFirebase.redirecionaUsuarioLogado(Login.this);
 
-                    //Toast de Boas vindas
-                    Toast toastCustom = Toast.makeText(Login.this, "", Toast.LENGTH_SHORT);
-                    toastCustom.setGravity(Gravity.CENTER, 0, 0);
-                    toastCustom.setView(viewLayout);
-                    toastCustom.show();
+
 
                 } else {
 
@@ -469,7 +465,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.removeAuthStateListener(firebaseAuthListener);
+      //  mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 //endregion
 

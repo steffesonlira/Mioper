@@ -9,12 +9,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -23,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
+import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 
 public class Requisicoes extends AppCompatActivity {
 
@@ -43,6 +50,7 @@ public class Requisicoes extends AppCompatActivity {
     private List<Requisicao> listaRequisicoes = new ArrayList<>();
     private RequisicoesAdapter adapter;
     private UserProfile motorista;
+    DataSnapshot _dataSnapshot;
 
     String nomeUsuario1;
     String celularUsuario;
@@ -59,35 +67,46 @@ public class Requisicoes extends AppCompatActivity {
     private LocationListener locationListener;
 
 
-    //RECEDE DADOS SEMPRE QUE A ACTIVITY É RECARREGADA
-    @Override
-    protected void onResume() {
-        super.onResume();
-        nomeUsuario1 = Principal.nomeUsuario1;
-        celularUsuario = Principal.celularUsuario;
-        senhaUsuario = Principal.senhaUsuario;
-        emailUsuario = Principal.emailUsuario;
-        enderecoUsuario = Principal.enderecoUsuario;
-        nascimentoUsuario = Principal.enderecoUsuario;
-        cpfUsuario = Principal.cpfUsuario;
-        generoUsuario = Principal.generoUsuario;
-        tipoUsuario = Principal.tipoUsuario;
-    }
-
-    //RECEDE DADOS DO MOTORISTA DA CLASSE PRINCIPAL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requisicoes);
-        nomeUsuario1 = Principal.nomeUsuario1;
-        celularUsuario = Principal.celularUsuario;
-        senhaUsuario = Principal.senhaUsuario;
-        emailUsuario = Principal.emailUsuario;
-        enderecoUsuario = Principal.enderecoUsuario;
-        nascimentoUsuario = Principal.enderecoUsuario;
-        cpfUsuario = Principal.cpfUsuario;
-        generoUsuario = Principal.generoUsuario;
-        tipoUsuario = Principal.tipoUsuario;
+
+
+        //FAZ CONSULTA NO FIREBASE PARA PASSAR OS DADOS DO MOTORISTA PARA TELA DE MEUS DADOS
+        FirebaseUser user = getUsuarioAtual();
+        if (user != null) {
+            Log.d("resultado", "onDataChange: " + getIdentificadorUsuario());
+            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
+                    .child("Users")
+                    .child(getIdentificadorUsuario());
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
+                    UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
+
+                    _dataSnapshot = dataSnapshot;
+
+                    nomeUsuario1 = usuario.getName();
+                    celularUsuario = usuario.getMobile();
+                    senhaUsuario = usuario.getSenha();
+                    emailUsuario = usuario.getEmail();
+                    enderecoUsuario = usuario.getAdress();
+                    nascimentoUsuario = usuario.getNascimento();
+                    cpfUsuario = usuario.getCpf();
+                    generoUsuario = usuario.getGenero();
+                    tipoUsuario = usuario.getTipouser();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+
+            });
+        }
 
 
         //region Criando botão de voltar no toolbar
@@ -324,37 +343,43 @@ public class Requisicoes extends AppCompatActivity {
                 finishAffinity();
                 break;
             case R.id.gerenciarDados:
-                //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
-                if (nomeUsuario1.isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Aviso!")
-                            .setMessage("Não foi possível recuperar suas informações. Por favor efetue o login novamente")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    break;
-                } else {
+                try {
+                    //SE NÃO EXISTIR DADOS DO MOTORISTA
+                    if (!_dataSnapshot.exists()) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                                .setTitle("Aviso!")
+                                .setMessage("Não foi possível recuperar suas informações. Por favor efetue o login novamente")
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
+                    } else {
 
-                    Intent i = new Intent(Requisicoes.this, MeusDados.class);
-                    i.putExtra("name", nomeUsuario1);
-                    i.putExtra("mobile", celularUsuario);
-                    i.putExtra("senha", senhaUsuario);
-                    i.putExtra("email", emailUsuario);
-                    i.putExtra("adress", enderecoUsuario);
-                    i.putExtra("nascimento", nascimentoUsuario);
-                    i.putExtra("cpf", cpfUsuario);
-                    i.putExtra("genero", generoUsuario);
-                    i.putExtra("tipouser", tipoUsuario);
+                        Intent i = new Intent(Requisicoes.this, MeusDados.class);
+                        i.putExtra("name", nomeUsuario1);
+                        i.putExtra("mobile", celularUsuario);
+                        i.putExtra("senha", senhaUsuario);
+                        i.putExtra("email", emailUsuario);
+                        i.putExtra("adress", enderecoUsuario);
+                        i.putExtra("nascimento", nascimentoUsuario);
+                        i.putExtra("cpf", cpfUsuario);
+                        i.putExtra("genero", generoUsuario);
+                        i.putExtra("tipouser", tipoUsuario);
 
-                    startActivity(i);
-                    break;
+                        startActivity(i);
+                        break;
 
+                    }
+
+                } catch (Exception e) {
+                    Toast.makeText(Requisicoes.this,
+                            "Por Favor realize a operação novamente!",
+                            Toast.LENGTH_SHORT).show();
                 }
-
 
         }
         return true;
