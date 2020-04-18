@@ -24,8 +24,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="0000 0000 0000 0000"
-                android:inputType="textPersonName"
-                app:met_mask="#### #### #### ####" />
+                app:met_mask="#### #### #### ####"
+                android:inputType="number"
+                android:imeOptions="actionNext"/>
 
             <Spinner
                 android:id="@+id/paisesCadastradosID"
@@ -54,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="MM/AA"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:met_mask="##/##" />
                 </LinearLayout>
 
@@ -75,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="CVV"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         app:met_mask="###" />
                 </LinearLayout>
 

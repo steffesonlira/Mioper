@@ -11,7 +11,10 @@
         <TextView
             android:id="@+id/listaPagamentosID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="lista Pagamentos" />
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:text="lista Pagamentos"
+            android:textColor="#000000"
+            android:textSize="18sp" />
     </LinearLayout>
 </RelativeLayout>

@@ -24,9 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 //endregion
 
 public class Cadastro extends AppCompatActivity {
@@ -103,9 +107,9 @@ public class Cadastro extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 validate();//método para realizar a validação dos campos
                 signup(); //Realizar o cadastro
+
             }
         });
         //endregion
@@ -166,6 +170,20 @@ public class Cadastro extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(Cadastro.this, Login.class));
                         finish();
+
+
+                        //ao criar a conta chama a região abaixo para cirar o metodo de pagamento em dinheiro
+                        FirebaseUser firebaseUser = getUsuarioAtual();
+                        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+
+                        String userEmail = firebaseUser.getEmail();
+                        String userMailReplaced = userEmail.replace('.', '-');
+
+                        DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
+
+                        String idUsuarioDoCartao = metodosPagamentos.push().getKey();
+                        metodosPagamentos.child(idUsuarioDoCartao).setValue("Dinheiro");
+                        //end region
 
                         Toast.makeText(Cadastro.this,
                                 "Cadastro realizado com sucesso!",
@@ -237,6 +255,8 @@ public class Cadastro extends AppCompatActivity {
                     }
                 }, 3000);
 
+
+
     }
 
     public void onSignupSuccess() {
@@ -245,7 +265,6 @@ public class Cadastro extends AppCompatActivity {
         CreateUserAccount(usuario);
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-
     }
 
     public void onSignupFailed() {
