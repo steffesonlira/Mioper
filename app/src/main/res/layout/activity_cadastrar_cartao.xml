@@ -86,12 +86,12 @@
             <Button
                 android:id="@+id/botaoConfirmarCadastroCartaoID"
                 android:layout_width="match_parent"
-                android:background="@drawable/botao"
+                android:layout_height="60dp"
                 android:layout_marginTop="80dp"
+                android:background="@drawable/botao"
+                android:text="Confirmar"
                 android:textColor="@color/White"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:text="Confirmar" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="300dp"
