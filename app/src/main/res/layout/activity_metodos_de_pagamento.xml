@@ -20,18 +20,18 @@
         <Button
             android:id="@+id/adcionarCartaoID"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/botao"
             android:clickable="true"
             android:contextClickable="true"
-            android:focusable="true"
-            android:padding="8dp"
             android:drawableStart="@drawable/ic_add"
-            android:background="@drawable/botao"
-            android:textColor="@color/White"
-            android:layout_gravity="center"
+            android:focusable="true"
             android:gravity="center"
+            android:padding="8dp"
             android:text="Adicionar método de pagamento"
             android:textAlignment="center"
+            android:textColor="@color/White"
             tools:ignore="MissingConstraints,RtlCompat" />
     </LinearLayout>
 

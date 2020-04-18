@@ -42,7 +42,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
         Requisicao requisicao = requisicoes.get(position);
         UserProfile passageiro = requisicao.getPassageiro();
 
-        holder.nome.setText("Passageiro: "+ passageiro.getName());
+        holder.nome.setText("Passageiro: " + passageiro.getName());
         try {
             if (motorista != null) {
 
@@ -58,11 +58,12 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
                 float distancia = Local.calcularDistancia(localPassageiro, localMotorista);
                 String distanciaFormatada = Local.formatarDistancia(distancia);
-                holder.distancia.setText(distanciaFormatada + "- Aproximadamente");
+                holder.endereco.setText("Local: " + passageiro.enderecoAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
+                holder.distancia.setText("Distância aproximada: " + distanciaFormatada);
 
             }
-        }catch (Exception e){
-            Log.d("ERRO!", "onKeyEntered: Algum erro interno occoreu."+e.getMessage());
+        } catch (Exception e) {
+            Log.d("ERRO!", "onKeyEntered: Algum erro interno occoreu." + e.getMessage());
         }
 
     }
@@ -74,13 +75,14 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nome, distancia;
+        TextView nome, distancia, endereco;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             nome = itemView.findViewById(R.id.textRequisicaoNome);
             distancia = itemView.findViewById(R.id.textRequisicaoDistancia);
+            endereco = itemView.findViewById(R.id.textRequisicaoEndereco);
 
         }
     }

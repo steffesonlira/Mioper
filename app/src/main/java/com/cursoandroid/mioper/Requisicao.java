@@ -15,6 +15,7 @@ public class Requisicao {
     private UserProfile motorista;
     private Destino destino;
 
+
     public static final String STATUS_AGUARDANDO = "aguardando";
     public static final String STATUS_A_CAMINHO = "acaminho";
     public static final String STATUS_VIAGEM = "viagem";

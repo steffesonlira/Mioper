@@ -110,6 +110,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
     //region Criação do Menu Toolbar XML
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -124,8 +125,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, MetodosDePagamentoActivity.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                finish();
                 break;
             default:
                 break;

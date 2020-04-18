@@ -9,14 +9,21 @@
         android:id="@+id/textRequisicaoNome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Jamilton Damasceno"
-        android:textSize="18sp"
+        android:text="_nomePassageiro"
+        android:textSize="16sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textRequisicaoEndereco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="_enderecoPassageiro"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textRequisicaoDistancia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="0 km- aproximadamente"
+        android:text="_distanciaPassageiro"
         android:textSize="12sp" />
 </LinearLayout>

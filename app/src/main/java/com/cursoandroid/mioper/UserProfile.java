@@ -18,6 +18,8 @@ public class UserProfile implements Serializable {
     private String latitude;
     private String longitude;
     private String genero;
+    public  String enderecoAtualUsuario;
+    public  String cidadeAtualUsuario;
 
 
     public UserProfile() {

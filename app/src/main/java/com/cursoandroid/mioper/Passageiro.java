@@ -71,6 +71,10 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private Marker marcadorDestino;
     private UserProfile motorista;
     private LatLng localMotorista;
+    public static String endereco;
+    public static String cidade;
+    private double _latitude;
+    private double _longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -368,6 +372,9 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
         } else {
 
+            getCompleteAddressString(_latitude, _longitude);
+
+
             String enderecoDestino = editDestino.getText().toString();
 
             if (!enderecoDestino.equals("")) {
@@ -435,6 +442,26 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
+
+    //RECUPERA ENDEREÇO ATUAL DO PASSAGEIRO ATRAVES DA LATITUDE E LONGITUDE
+    private void getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+
+            if (addresses != null && addresses.size() > 0) {
+                endereco = addresses.get(0).getThoroughfare(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                cidade = addresses.get(0).getSubAdminArea();
+                System.out.println("ENDEREEEEE" + endereco + cidade);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     private void salvarRequisicao(Destino destino) {
 
         Requisicao requisicao = new Requisicao();
@@ -443,6 +470,9 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         UserProfile usuarioPassageiro = UsuarioFirebase.getDadosUsuarioLogado();
         usuarioPassageiro.setLatitude(String.valueOf(localPassageiro.latitude));
         usuarioPassageiro.setLongitude(String.valueOf(localPassageiro.longitude));
+        usuarioPassageiro.enderecoAtualUsuario = endereco;
+        usuarioPassageiro.cidadeAtualUsuario = cidade;
+
 
         requisicao.setPassageiro(usuarioPassageiro);
         requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
@@ -479,6 +509,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
+
+    //RECUPERA LATITUDE E LONGITUDE ATUAL DO USUARIO
     private void recuperarLocalizacaoUsuario() {
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -487,9 +519,13 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             @Override
             public void onLocationChanged(Location location) {
 
-                //recuperar latitude e longitude
+                //latitude e longitude
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
+                _latitude = latitude;
+                _longitude = longitude;
+
+
                 localPassageiro = new LatLng(latitude, longitude);
 
                 //Atualizar GeoFire
