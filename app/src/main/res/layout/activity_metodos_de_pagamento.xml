@@ -29,7 +29,8 @@
             android:focusable="true"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Adicionar método de pagamento"
+            android:textStyle="bold"
+            android:text="Adicionar Cartão para Pagamento"
             android:textAlignment="center"
             android:textColor="@color/White"
             tools:ignore="MissingConstraints,RtlCompat" />

@@ -21,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -333,9 +332,25 @@ public class Requisicoes extends AppCompatActivity {
 
 
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                autenticacao.signOut();
-                startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
+                        .setTitle("Confirmação")
+                        .setMessage("Deseja confirmar a operação?")
+                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog2, int which) {
+                                autenticacao.signOut();
+                                Intent i = new Intent(Requisicoes.this, Login.class);
+                                finishAffinity();
+                                startActivity(i);
+                            }
+                        }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog2, int which) {
+
+                            }
+                        });
+                AlertDialog dialog2 = builder2.create();
+                dialog2.show();
                 break;
             case R.id.menuSair:
                 autenticacao.signOut();
@@ -388,11 +403,25 @@ public class Requisicoes extends AppCompatActivity {
     //BOTÃO INFERIOR ESQUERDO DE VOLTAR DO SISTEMA ANDROID
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        autenticacao.signOut();
-        startActivity(new Intent(this, Login.class));
-        finishAffinity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Confirmação")
+                .setMessage("Deseja confirmar a operação?")
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        autenticacao.signOut();
+                        Intent i = new Intent(Requisicoes.this, Login.class);
+                        finishAffinity();
+                        startActivity(i);
+                    }
+                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

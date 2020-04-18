@@ -48,7 +48,10 @@
                 android:id="@+id/edtUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawableStart="@drawable/ic_email"
                 android:backgroundTint="@android:color/white"
+                android:drawableTint="@color/DarkCyan"
+                android:drawableTintMode="src_in"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/background_light"
                 android:textColorHighlight="#C5C1C1"
@@ -67,13 +70,15 @@
             android:textColorHint="#FFFFFF"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/White"
+            app:passwordToggleTint="@color/DarkCyan"
             >
          <!-- Edit Text  E-mail -->
             <EditText
                 android:id="@+id/edtSenha"
                 android:layout_width="match_parent"
+                android:drawableStart="@drawable/ic_pass"
                 android:layout_height="match_parent"
+                android:drawableTint="@color/DarkCyan"
                 android:backgroundTint="@android:color/white"
                 android:inputType="textPassword"
                 android:textColor="@android:color/background_light"

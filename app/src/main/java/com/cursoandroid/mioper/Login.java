@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -488,11 +487,7 @@ public class Login extends AppCompatActivity {
 //endregion
 
     //region METODO onStop()
-    @Override
-    protected void onStop() {
-        super.onStop();
-      //  mAuth.removeAuthStateListener(firebaseAuthListener);
-    }
+
 //endregion
 
 //region Google+  Firebase NÂO UTILIZADO
@@ -530,9 +525,7 @@ public class Login extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-            finish();
-            onStop();
+            Login.this.finish();
         } else {
             Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.", Toast.LENGTH_SHORT).show();
         }
