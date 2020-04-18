@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -165,6 +166,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
+
+    //CHAMADO QUANDO O MOTORISTA CHEGA AO DESTINO
     @SuppressLint("RestrictedApi")
     private void requisicaoFinalizada() {
 
@@ -565,7 +568,22 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                //Método para matar a activity e não deixa-lá indexada na pilhagem
+                break;
+
+            //ENCERRA A VIAGEM ANTECIPADAMENTE PELO MOTORISTA
+            case R.id.menuEncerrarViagem:
+                if (buttonAceitarCorrida.isEnabled()) {
+                    Toast.makeText(this,
+                            "Viagem não iniciada!",
+                            Toast.LENGTH_SHORT).show();
+
+                } else {
+                    requisicao.setStatus(Requisicao.STATUS_FINALIZADA);
+                    requisicao.atualizarStatus();
+
+
+                }
+
                 break;
         }
         return true;

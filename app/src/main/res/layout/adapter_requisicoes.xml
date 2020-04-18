@@ -17,13 +17,13 @@
         android:id="@+id/textRequisicaoEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="_enderecoPassageiro"
+        android:text="Carregando..."
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textRequisicaoDistancia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="_distanciaPassageiro"
+        android:text="Carregando..."
         android:textSize="12sp" />
 </LinearLayout>

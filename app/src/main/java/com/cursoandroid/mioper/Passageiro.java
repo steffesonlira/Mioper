@@ -231,6 +231,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
+    //CHAMADO QUANDO O PASSAGEIRO CHEGA AO DESTINO
     private void requisicaoFinalizada() {
 
         linearLayoutDestino.setVisibility(View.GONE);
@@ -372,6 +373,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
         } else {
 
+            //RECUPERA ENDEREÇO ATUAL DO PASSAGEIRO ATRAVES DA LATITUDE E LONGITUDE
             getCompleteAddressString(_latitude, _longitude);
 
 
@@ -452,7 +454,6 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             if (addresses != null && addresses.size() > 0) {
                 endereco = addresses.get(0).getThoroughfare(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 cidade = addresses.get(0).getSubAdminArea();
-                System.out.println("ENDEREEEEE" + endereco + cidade);
             }
 
         } catch (IOException e) {
