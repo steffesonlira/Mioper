@@ -56,6 +56,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
                 codNumCartao = findViewById(R.id.codigoSegurancaCartaoID);
 
                 salvarCartaoCadastrado(numCartao.getText().toString());
+
             }
         });
     }
@@ -81,7 +82,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
                         Toast.makeText(CadastrarCartaoActivity.this,
                                 "Cartão cadastrado com sucesso!",
                                 Toast.LENGTH_SHORT).show();
-
+                        MudarTelaAoSalvar();
                     }
                 }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
                     @Override
@@ -91,14 +92,17 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
-
-
     }
 
 
     public void ValidaCartao(String numeroCartao) {
 
 
+    }
+
+    public void MudarTelaAoSalvar(){
+        Intent intent = new Intent(this,MetodosDePagamentoActivity.class);
+        startActivity(intent);//retorna para a tela de metodos de pagamentos cadastrados
     }
 
     @Override
