@@ -82,6 +82,7 @@
         <activity
             android:name=".SuporteUsuario"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -121,6 +122,7 @@
         <activity
             android:name=".Login"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tools:ignore="LockedOrientationActivity" />
         <activity
