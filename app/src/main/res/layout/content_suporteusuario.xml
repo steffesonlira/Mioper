@@ -22,7 +22,8 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     android:background="@drawable/gradient"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:fillViewport="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -110,7 +111,7 @@
                 android:layout_height="250dp"
                 android:backgroundTint="@android:color/white"
                 android:hint="Digite sua Mensagem aqui:"
-
+                android:gravity="top"
                 android:inputType="textMultiLine"
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"

@@ -334,7 +334,7 @@ public class Requisicoes extends AppCompatActivity {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
                         .setTitle("Confirmação")
-                        .setMessage("Deseja confirmar a operação?")
+                        .setMessage("Deseja realmente sair?")
                         .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog2, int which) {
@@ -405,7 +405,7 @@ public class Requisicoes extends AppCompatActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Confirmação")
-                .setMessage("Deseja confirmar a operação?")
+                .setMessage("Deseja realmente sair?")
                 .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
