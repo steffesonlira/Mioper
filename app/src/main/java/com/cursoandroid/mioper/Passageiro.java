@@ -406,10 +406,10 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     mensagem.append("\nRua: " + destino.getRua());
                     mensagem.append("\nBairro: " + destino.getBairro());
                     mensagem.append("\nNúmero: " + destino.getNumero());
-                    mensagem.append("\nCep: " + destino.getCep());
+
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Confirme seu endereço!")
+                            .setTitle("Confirme seu destino!")
                             .setMessage(mensagem)
                             .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                                 @Override
