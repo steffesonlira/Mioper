@@ -118,5 +118,97 @@
 
     <string name="home_second">Home Second</string>
 
+    <!-- Alert Dialog Salvar usuário-->
+    <string name="app_name2">Custom Dialog</string>
+    <string name="success">Sucesso</string>
+    <string name="warning">Aviso</string>
+    <string name="error">Erro</string>
+    <string name="success_title">Confirmar Operação</string>
+    <string name="warning_title">Confirmar Operação</string>
+    <string name="error_title">Confirmar Operação</string>
+    <string name="text_desc">Deseja confirmar a operação?</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="ok">Ok</string>
+
+    <!-- Alert Dialog Excluir conta-->
+    <string name="app_name_excluir_conta">Custom Dialog</string>
+    <string name="success_excluir_conta">Sucesso</string>
+    <string name="warning_excluir_conta">Aviso</string>
+    <string name="error_excluir_conta">Erro</string>
+    <string name="success_title_excluir_conta">Confirmar Exclusão</string>
+    <string name="warning_title_excluir_conta">Confirmar Exclusão</string>
+    <string name="error_title_excluir_conta">Confirmar Exclusão</string>
+    <string name="text_desc_excluir_conta">Deseja realmente excluir sua conta ?</string>
+
+    <!-- Alert Dialog Alterar conta-->
+    <string name="app_name_alterar_conta">Custom Dialog</string>
+    <string name="success_alterar_conta">Sucesso</string>
+    <string name="warning_alterar_conta">Aviso</string>
+    <string name="error_alterar_conta">Erro</string>
+    <string name="success_title_alterar_conta">Confirmar Alteraçãp</string>
+    <string name="warning_title_alterar_conta">Confirmar Alteração</string>
+    <string name="error_title_alterar_conta">Confirmar Alteração</string>
+    <string name="text_desc_alterar_conta">Deseja confirmar a alteração de senha ?</string>
+
+    <!-- Alert Dialog Conta Excluida-->
+    <string name="app_name_excluir_ok_conta">Custom Dialog</string>
+    <string name="success_excluir_ok_conta">Sucesso</string>
+    <string name="warning_excluir_ok_conta">Aviso</string>
+    <string name="error_excluir_ok_conta">Erro</string>
+    <string name="success_title_excluir_ok_conta">Obrigado por utilizar o Mioper</string>
+    <string name="warning_title_excluir_ok_conta">Obrigado por utilizar o Mioper</string>
+    <string name="error_title_excluir_ok_conta">Obrigado por utilizar o Mioper</string>
+    <string name="text_desc_excluir_ok_conta">Sua conta foi excluída com sucesso. Esperamos te-lo de volta!</string>
+
+    <!-- Alert Dialog Logado muito tempo-->
+    <string name="app_name_excluir_tempo_ok_conta">Custom Dialog</string>
+    <string name="success_excluir_tempo_ok_conta">Sucesso</string>
+    <string name="warning_excluir_tempo_ok_conta">Aviso</string>
+    <string name="error_excluir_tempo_ok_conta">Erro</string>
+    <string name="success_title_tempo_excluir_ok_conta">Aviso!</string>
+    <string name="warning_title_tempo_excluir_ok_conta">Aviso!</string>
+    <string name="error_title_tempo_excluir_ok_conta">Aviso!</string>
+    <string name="text_desc_tempo_excluir_ok_conta">Devido a você estar muito tempo logado, será necessário que refaça o login para que possa excluir sua conta.</string>
+
+    <!-- Alert Dialog Redefinir Senha-->
+    <string name="app_name_redefinir_ok_conta">Custom Dialog</string>
+    <string name="success_redefinir_ok_conta">Sucesso</string>
+    <string name="warning_redefinir_ok_conta">Aviso</string>
+    <string name="error_redefinir_ok_conta">Erro</string>
+    <string name="success_title_redefinir_ok_conta">Aviso!</string>
+    <string name="warning_title_redefinir_ok_conta">Aviso!</string>
+    <string name="error_title_redefinir_ok_conta">Aviso!</string>
+    <string name="text_desc_redefinir_ok_conta">Para sua segurança o processo de reset de senha é realizado em duas etapas. Verifique seu e-mail!</string>
+
+    <!-- Alert Dialog Salvar usuário-->
+    <string name="app_name_cadastro_cartao">Custom Dialog</string>
+    <string name="success_cadastro_cartao">Sucesso</string>
+    <string name="warning_cadastro_cartao">Aviso</string>
+    <string name="error_cadastro_cartao">Erro</string>
+    <string name="success_title_cadastro_cartao">Confirmação</string>
+    <string name="warning_title_cadastro_cartao">Confirmação</string>
+    <string name="error_title_cadastro_cartao">Confirmação</string>
+    <string name="text_desc_cadastro_cartao">Deseja confirmar a operação?</string>
+
+    <!-- Alert Dialog Requisições-->
+    <string name="app_name_requisicao">Custom Dialog</string>
+    <string name="success_requisicao">Sucesso</string>
+    <string name="warning_requisicao">Aviso</string>
+    <string name="error_requisicao">Erro</string>
+    <string name="success_title_requisicao">Confirmação</string>
+    <string name="warning_title_requisicao">Confirmação</string>
+    <string name="error_title_requisicao">Confirmação</string>
+    <string name="text_desc_requisicao">Deseja realmente sair?</string>
+
+    <!-- Alert Dialog Não existe dados Motorista-->
+    <string name="app_name_nao_motorista">Custom Dialog</string>
+    <string name="success_nao_motorista">Sucesso</string>
+    <string name="warning_nao_motorista">Aviso</string>
+    <string name="error_nao_motorista">Erro</string>
+    <string name="success_title_nao_motorista">Aviso!</string>
+    <string name="warning_title_nao_motorista">Aviso!</string>
+    <string name="error_title_nao_motorista">Aviso!</string>
+    <string name="text_desc_nao_motorista">Não foi possível recuperar suas informações. Por favor efetue o login novamente.</string>
 
 </resources>

@@ -25,4 +25,18 @@
     <color name="Black">#000000</color>
     <color name="Blue_escuro">#191966</color>
 
+    <!-- Colors Alert Dialog -->
+    <color name="colorPrimary2">#008577</color>
+    <color name="colorPrimaryDark2">#005748</color>
+    <color name="colorAccent2">#D81B60</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorSuccess">#4BB543</color>
+    <color name="colorWarning">#FFCC00</color>
+    <color name="colorNatural">#434343</color>
+    <color name="colorError">#CC0000</color>
+    <color name="colorTextPrimary">#212121</color>
+
+
+
+
 </resources>

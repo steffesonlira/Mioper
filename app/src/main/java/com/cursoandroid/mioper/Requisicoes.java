@@ -2,24 +2,28 @@ package com.cursoandroid.mioper;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -332,25 +336,40 @@ public class Requisicoes extends AppCompatActivity {
 
 
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
-                        .setTitle("Confirmação")
-                        .setMessage("Deseja realmente sair?")
-                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog2, int which) {
-                                autenticacao.signOut();
-                                Intent i = new Intent(Requisicoes.this, Login.class);
-                                finishAffinity();
-                                startActivity(i);
-                            }
-                        }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog2, int which) {
 
-                            }
-                        });
-                AlertDialog dialog2 = builder2.create();
-                dialog2.show();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
+                View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+                builder2.setView(view2);
+                ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
+                ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
+                ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+                ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+                ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
+
+                final AlertDialog alertDialog = builder2.create();
+
+                view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view2){
+                        alertDialog.dismiss();
+                        autenticacao.signOut();
+                        Intent i = new Intent(Requisicoes.this, Login.class);
+                        finishAffinity();
+                        startActivity(i);
+
+                    }
+                });
+
+                view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
                 break;
             case R.id.menuSair:
                 autenticacao.signOut();
@@ -361,16 +380,26 @@ public class Requisicoes extends AppCompatActivity {
                 try {
                     //SE NÃO EXISTIR DADOS DO MOTORISTA
                     if (!_dataSnapshot.exists()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                                .setTitle("Aviso!")
-                                .setMessage("Não foi possível recuperar suas informações. Por favor efetue o login novamente")
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
+                        View view3 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                        builder.setView(view3);
+                        ((TextView) view3.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_nao_motorista));
+                        ((TextView) view3.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_nao_motorista));
+                        ((Button) view3.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
+                        ((ImageView) view3.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+
+                        final AlertDialog alertDialog2 = builder.create();
+
+                        view3.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog2.dismiss();
+                            }
+                        });
+                        if(alertDialog2.getWindow() != null){
+                            alertDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                        }
+                        alertDialog2.show();
                         break;
                     } else {
 
@@ -403,25 +432,39 @@ public class Requisicoes extends AppCompatActivity {
     //BOTÃO INFERIOR ESQUERDO DE VOLTAR DO SISTEMA ANDROID
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Confirmação")
-                .setMessage("Deseja realmente sair?")
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        autenticacao.signOut();
-                        Intent i = new Intent(Requisicoes.this, Login.class);
-                        finishAffinity();
-                        startActivity(i);
-                    }
-                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        builder2.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
+        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
+        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        final AlertDialog alertDialog = builder2.create();
+
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view2){
+                alertDialog.dismiss();
+                autenticacao.signOut();
+                Intent i = new Intent(Requisicoes.this, Login.class);
+                finishAffinity();
+                startActivity(i);
+
+            }
+        });
+
+        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
     }
 
 }

@@ -1,8 +1,9 @@
 package com.cursoandroid.mioper;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,11 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -62,36 +66,52 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     }
 
     public void salvarCartaoCadastrado(String numeroDoCartao) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("confirmação")
-                .setMessage("Deseja confirmar a operação?")
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseUser firebaseUser = getUsuarioAtual();
-                        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
-                        String userEmail = firebaseUser.getEmail();
-                        String userMailReplaced = userEmail.replace('.', '-');
+        AlertDialog.Builder builder = new AlertDialog.Builder(CadastrarCartaoActivity.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(CadastrarCartaoActivity.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        builder.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.success_title_cadastro_cartao));
+        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_cadastro_cartao));
+        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
-                        DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
+        final AlertDialog alertDialog = builder.create();
 
-                        String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-                        metodosPagamentos.child(idUsuarioDoCartao).setValue(numeroDoCartao);
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view2){
+                alertDialog.dismiss();
+                FirebaseUser firebaseUser = getUsuarioAtual();
+                DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
-                        Toast.makeText(CadastrarCartaoActivity.this,
-                                "Cartão cadastrado com sucesso!",
-                                Toast.LENGTH_SHORT).show();
-                        MudarTelaAoSalvar();
-                    }
-                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                String userEmail = firebaseUser.getEmail();
+                String userMailReplaced = userEmail.replace('.', '-');
 
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
+
+                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
+                metodosPagamentos.child(idUsuarioDoCartao).setValue(numeroDoCartao);
+
+                Toast.makeText(CadastrarCartaoActivity.this,
+                        "Cartão cadastrado com sucesso!",
+                        Toast.LENGTH_SHORT).show();
+                MudarTelaAoSalvar();
+
+            }
+        });
+
+        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
+
     }
 
 

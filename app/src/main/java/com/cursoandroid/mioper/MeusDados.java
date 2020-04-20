@@ -1,20 +1,19 @@
 package com.cursoandroid.mioper;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +22,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -148,38 +148,50 @@ public class MeusDados extends AppCompatActivity {
                     if (!textoCelular.isEmpty()) {//verifica celular
 
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                                .setTitle("confirmação")
-                                .setMessage("Deseja confirmar as alterações ?")
-                                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
+                        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+                        builder.setView(view2);
+                        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title));
+                        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc));
+                        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+                        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+                        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
-                                        UserProfile usuario = new UserProfile();
-                                        usuario.setName(textoNome);
-                                        usuario.setEmail(textoEmail);
-                                        usuario.setAdress(textoEndereco);
-                                        usuario.setMobile(textoCelular);
-                                        usuario.setNascimento(textoDataNascimento);
-                                        usuario.setCpf(textoCpf);
-                                        usuario.setGenero(verificaGeneroUsuario());
-                                        usuario.setTipouser(tipoUsuario);
+                        final AlertDialog alertDialog = builder.create();
 
-                                        //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
-                                        cadastrarUsuario(usuario);
-                                        Toast.makeText(MeusDados.this,
-                                                "Alterações salvas com sucesso!",
-                                                Toast.LENGTH_SHORT).show();
+                        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view2){
+                                alertDialog.dismiss();
+                                UserProfile usuario = new UserProfile();
+                                usuario.setName(textoNome);
+                                usuario.setEmail(textoEmail);
+                                usuario.setAdress(textoEndereco);
+                                usuario.setMobile(textoCelular);
+                                usuario.setNascimento(textoDataNascimento);
+                                usuario.setCpf(textoCpf);
+                                usuario.setGenero(verificaGeneroUsuario());
+                                usuario.setTipouser(tipoUsuario);
 
-                                    }
-                                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                //APÓS VERIFICAÇÃO CHAMA MÉTODO PARA CADASTRAR USUÁRIO
+                                cadastrarUsuario(usuario);
+                                Toast.makeText(MeusDados.this,
+                                        "Alterações salvas com sucesso!",
+                                        Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                            }
+                        });
+
+                        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alertDialog.dismiss();
+                            }
+                        });
+                        if(alertDialog.getWindow() != null){
+                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                        }
+                        alertDialog.show();
 
 
                     } else {
@@ -253,25 +265,36 @@ public class MeusDados extends AppCompatActivity {
     //BOTÃO EXCLUIR CONTA
     public void excluirUsuario(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Aviso!")
-                .setMessage("Deseja realmente excluir sua conta ?")
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        builder.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_excluir_conta));
+        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_excluir_conta));
+        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
-                        excluirConta();
+        final AlertDialog alertDialog = builder.create();
 
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view2){
+                alertDialog.dismiss();
+                excluirConta();
 
-                    }
-                }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+            }
+        });
 
+        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
 
     }
 
@@ -285,31 +308,51 @@ public class MeusDados extends AppCompatActivity {
         user.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Obrigado por utilizar o Mioper " + nome + ".")
-                        .setMessage("Sua conta foi excluída com sucesso. Esperamos te-lo de volta!")
-                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                fecharTela();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
+                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                builder.setView(view2);
+                ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_excluir_ok_conta));
+                ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_excluir_ok_conta));
+                ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
+                ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+
+                final AlertDialog alertDialog = builder.create();
+
+                view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        fecharTela();
+                    }
+                });
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
 
 
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Aviso!")
-                        .setMessage("Devido a você estar muito tempo logado, será necessário que refaça o login para que possa excluir sua conta")
-                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
+                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                builder.setView(view2);
+                ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_tempo_excluir_ok_conta));
+                ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_tempo_excluir_ok_conta));
+                ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
+                ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
 
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                final AlertDialog alertDialog = builder.create();
+
+                view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        fecharTela();
+                    }
+                });
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
 
             }
         });
@@ -369,4 +412,5 @@ public class MeusDados extends AppCompatActivity {
         }
         return true;
     }
+
 }

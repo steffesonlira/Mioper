@@ -1,19 +1,22 @@
 package com.cursoandroid.mioper;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -109,17 +112,28 @@ public class AlterarSenha extends AppCompatActivity {
                             }
                         });
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle("Aviso!")
-                        .setMessage("Para sua segurança o processo de reset de senha é realizado em duas etapas. Verifique seu e-mail!")
-                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(AlterarSenha.this, R.style.AlertDialogTheme);
+                View view2 = LayoutInflater.from(AlterarSenha.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                builder.setView(view2);
+                ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_redefinir_ok_conta));
+                ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_redefinir_ok_conta));
+                ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
+                ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+
+                final AlertDialog alertDialog = builder.create();
+
+                view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        finish();
+                    }
+                });
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
+
 
 
             } else {
