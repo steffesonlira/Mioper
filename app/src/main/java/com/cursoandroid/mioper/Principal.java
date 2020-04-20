@@ -45,6 +45,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     DrawerLayout drawer;
     TextView nomeUsuario;
     String boasVindas_;
+    public static boolean verificaRetorno = false;
     static String nomeUsuario1;
     static String celularUsuario;
     static String senhaUsuario;
@@ -62,6 +63,45 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     private static final String TAG = "Principal";
     private AppBarConfiguration mAppBarConfiguration;
     //endregion
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //region FAZ CONSULTA NO FIREBASE SEMPRE QUE USUÁRIO RETORNAR DA TELA MEUS DADOS
+        if (verificaRetorno == true) {
+            FirebaseUser user = getUsuarioAtual();
+            if (user != null) {
+                Log.d("resultado", "onDataChange: " + getIdentificadorUsuario());
+                DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
+                        .child("Users")
+                        .child(getIdentificadorUsuario());
+                usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
+                        UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
+                        nomeUsuario1 = usuario.getName();
+                        celularUsuario = usuario.getMobile();
+                        senhaUsuario = usuario.getSenha();
+                        repitasenha = usuario.getRepitasenha();
+                        emailUsuario = usuario.getEmail();
+                        enderecoUsuario = usuario.getAdress();
+                        nascimentoUsuario = usuario.getNascimento();
+                        cpfUsuario = usuario.getCpf();
+                        generoUsuario = usuario.getGenero();
+                        tipoUsuario = usuario.getTipouser();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+            verificaRetorno = false;
+        }
+    }
 
     //region onCreate
     @Override
@@ -153,7 +193,6 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
             DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
                     .child("Users")
                     .child(getIdentificadorUsuario());
-            System.out.println(usuariosRef);
             usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

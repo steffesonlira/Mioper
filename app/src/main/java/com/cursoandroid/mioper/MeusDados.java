@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -149,7 +150,7 @@ public class MeusDados extends AppCompatActivity {
 
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
-                        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+                        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
                         builder.setView(view2);
                         ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title));
                         ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc));
@@ -159,9 +160,9 @@ public class MeusDados extends AppCompatActivity {
 
                         final AlertDialog alertDialog = builder.create();
 
-                        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+                        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view2){
+                            public void onClick(View view2) {
                                 alertDialog.dismiss();
                                 UserProfile usuario = new UserProfile();
                                 usuario.setName(textoNome);
@@ -170,6 +171,7 @@ public class MeusDados extends AppCompatActivity {
                                 usuario.setMobile(textoCelular);
                                 usuario.setNascimento(textoDataNascimento);
                                 usuario.setCpf(textoCpf);
+                                usuario.setSenha(senhaUsuario);
                                 usuario.setGenero(verificaGeneroUsuario());
                                 usuario.setTipouser(tipoUsuario);
 
@@ -188,7 +190,7 @@ public class MeusDados extends AppCompatActivity {
                                 alertDialog.dismiss();
                             }
                         });
-                        if(alertDialog.getWindow() != null){
+                        if (alertDialog.getWindow() != null) {
                             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                         }
                         alertDialog.show();
@@ -266,7 +268,7 @@ public class MeusDados extends AppCompatActivity {
     public void excluirUsuario(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
         builder.setView(view2);
         ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_excluir_conta));
         ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_excluir_conta));
@@ -276,9 +278,9 @@ public class MeusDados extends AppCompatActivity {
 
         final AlertDialog alertDialog = builder.create();
 
-        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view2){
+            public void onClick(View view2) {
                 alertDialog.dismiss();
                 excluirConta();
 
@@ -291,7 +293,7 @@ public class MeusDados extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-        if(alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();
@@ -301,15 +303,21 @@ public class MeusDados extends AppCompatActivity {
 
     public void excluirConta() {
 
-        excluirInformacoesEsuario();
+        //PEGA INFORMAÇÕES DA CONTA ATIVA ANTES DE REALIZAR A EXCLUSÃO
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        idUsuario = autenticacao.getCurrentUser().getUid();
+
 
         //REMOVE USUARIO DO FIREBASE AUTH (EMAIL E SENHA UTILIZADO PARA LOGAR)
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
 
+                //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
+                excluirInformacoesEsuario();
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
-                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
                 builder.setView(view2);
                 ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_excluir_ok_conta));
                 ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_excluir_ok_conta));
@@ -325,7 +333,7 @@ public class MeusDados extends AppCompatActivity {
                         fecharTela();
                     }
                 });
-                if(alertDialog.getWindow() != null){
+                if (alertDialog.getWindow() != null) {
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 alertDialog.show();
@@ -333,7 +341,7 @@ public class MeusDados extends AppCompatActivity {
 
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
-                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
                 builder.setView(view2);
                 ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_tempo_excluir_ok_conta));
                 ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_tempo_excluir_ok_conta));
@@ -349,7 +357,7 @@ public class MeusDados extends AppCompatActivity {
                         fecharTela();
                     }
                 });
-                if(alertDialog.getWindow() != null){
+                if (alertDialog.getWindow() != null) {
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 alertDialog.show();
@@ -362,9 +370,9 @@ public class MeusDados extends AppCompatActivity {
 
     //REMOVE INFORMAÇÕES DO USUARIO DO DATABASE
     public void excluirInformacoesEsuario() {
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         try {
-            idUsuario = autenticacao.getCurrentUser().getUid();
+            // idUsuario = autenticacao.getCurrentUser().getUid();
             UserProfile usuario = new UserProfile();
             usuario.setId(idUsuario);
             usuario.remover();
@@ -402,8 +410,8 @@ public class MeusDados extends AppCompatActivity {
                 if (tipoUsuario.equals("M")) {
                     startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 } else {
-                    //O efeito ao ser pressionado do botão (no caso abre a activity)
-                    finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                    Principal.verificaRetorno = true;
+                    finish();
 
                 }
                 break;
@@ -413,4 +421,9 @@ public class MeusDados extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Principal.verificaRetorno = true;
+        finish();
+    }
 }

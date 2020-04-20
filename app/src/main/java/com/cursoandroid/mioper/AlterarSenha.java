@@ -1,11 +1,13 @@
 package com.cursoandroid.mioper;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,9 +58,17 @@ public class AlterarSenha extends AppCompatActivity {
         email = dados.getString("email");
     }
 
-    //ALTERA A SENHA DO USUÁRIO NO FIREBASE
+    //BOTÃO ALTERAR A SENHA
     public void AlterarSenha(final View view) {
 
+
+        //ESCONDER O TECLADO AO CLICAR NO BOTÃO ALTERAR SENHA
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
+        //PEGA OS VALORES DOS TEXTVIEW
         String _SenhaAntiga = String.valueOf(senhaAntiga.getText());
         String _SenhaNova = String.valueOf(senhaNova.getText());
         String _ConfirmarSenha = String.valueOf(confirmarSenha.getText());
@@ -94,46 +104,58 @@ public class AlterarSenha extends AppCompatActivity {
             if (_SenhaAntiga.equals(senha)) {
 
 
-                //ALTERA A SENHA NO FIREBASE DATABASE
-                DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-                DatabaseReference usuario = firebaseRef.child("Users").child(userID).child("senha");
-                String senhaNovaUsuario = String.valueOf(senhaNova.getText());
-                usuario.setValue(senhaNovaUsuario);
-
-                //ALTERA A SENHA NO FIREBASE AUTHENTICATION (SENHA PARA ACESSAR O APP)
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                String emailAddress = email;
-
-                auth.sendPasswordResetEmail(emailAddress)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                            }
-                        });
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(AlterarSenha.this, R.style.AlertDialogTheme);
-                View view2 = LayoutInflater.from(AlterarSenha.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                View view2 = LayoutInflater.from(AlterarSenha.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
                 builder.setView(view2);
-                ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_redefinir_ok_conta));
-                ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_redefinir_ok_conta));
-                ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
-                ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+                ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_redefinir_ok_conta));
+                ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_redefinir_ok_conta));
+                ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+                ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+                ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
                 final AlertDialog alertDialog = builder.create();
 
-                view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+
+                        //ALTERA A SENHA NO FIREBASE DATABASE
+                        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+                        DatabaseReference usuario = firebaseRef.child("Users").child(userID).child("senha");
+                        String senhaNovaUsuario = String.valueOf(senhaNova.getText());
+                        usuario.setValue(senhaNovaUsuario);
+
+                        //ALTERA A SENHA NO FIREBASE AUTHENTICATION (SENHA PARA ACESSAR O APP)
+                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                        String emailAddress = email;
+
+                        auth.sendPasswordResetEmail(emailAddress)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                    }
+                                });
+
+
                         alertDialog.dismiss();
                         finish();
                     }
                 });
-                if(alertDialog.getWindow() != null){
+
+                view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+                if (alertDialog.getWindow() != null) {
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 alertDialog.show();
-
 
 
             } else {
@@ -154,6 +176,7 @@ public class AlterarSenha extends AppCompatActivity {
 
 
     }
+
 
     //region Criação do Menu Toolbar XML
     @Override

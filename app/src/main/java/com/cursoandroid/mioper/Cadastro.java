@@ -135,7 +135,6 @@ public class Cadastro extends AppCompatActivity {
         String mobile = _mobileText.getText().toString();
         String email = _emailText.getText().toString();
         String senha = _passwordText.getText().toString();
-        String repitasenha = _reEnterPasswordText.getText().toString();
 
 
         usuario.setEmail(email);
@@ -143,7 +142,6 @@ public class Cadastro extends AppCompatActivity {
         usuario.setName(nome);
         usuario.setAdress(address);
         usuario.setMobile(mobile);
-        usuario.setRepitasenha(repitasenha);
         usuario.setTipouser(verificaTipoUsuario());
 
 
