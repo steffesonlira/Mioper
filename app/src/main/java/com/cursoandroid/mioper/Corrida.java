@@ -425,23 +425,25 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                try {
+                    //recuperar latitude e longitude
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    localMotorista = new LatLng(latitude, longitude);
 
-                //recuperar latitude e longitude
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                localMotorista = new LatLng(latitude, longitude);
+                    //Atualizar GeoFire
+                    UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
 
-                //Atualizar GeoFire
-                UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
+                    //Atualizar localização motorista no Firebase
+                    motorista.setLatitude(String.valueOf(latitude));
+                    motorista.setLongitude(String.valueOf(longitude));
+                    requisicao.setMotorista(motorista);
+                    requisicao.atualizarLocalizacaoMotorista();
 
-                //Atualizar localização motorista no Firebase
-                motorista.setLatitude(String.valueOf(latitude));
-                motorista.setLongitude(String.valueOf(longitude));
-                requisicao.setMotorista(motorista);
-                requisicao.atualizarLocalizacaoMotorista();
-
-                alteraInterfaceStatusRequisicao(statusRequisicao);
-
+                    alteraInterfaceStatusRequisicao(statusRequisicao);
+                } catch (Exception e) {
+                    System.out.println("OCORREU ALGUM ERRO INTERNO" + e.getMessage());
+                }
             }
 
             @Override
