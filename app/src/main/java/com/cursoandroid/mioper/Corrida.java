@@ -483,20 +483,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             requisicao.setStatus(Requisicao.STATUS_A_CAMINHO);
             requisicao.atualizar();
         } else {
-            /*
-            AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .setTitle("Aviso!")
-                    .setMessage("A corrida foi cancelada pelo passageiro. ")
-                    .setCancelable(false)
-                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
-                            //VOLTA PARA A TELA DE REQUISIÇÕES
-                            finish();
-                        }
-                    });
-*/
             AlertDialog.Builder builder = new AlertDialog.Builder(Corrida.this, R.style.AlertDialogTheme);
             View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
             builder.setView(view2);
@@ -523,12 +510,12 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
     private void inicializarComponentes() {
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setTitle("Iniciar corrida");
-
+        /*
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Iniciar corrida");
+*/
         buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida);
 
         //Configurações iniciais
