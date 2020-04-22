@@ -3,7 +3,6 @@ package com.cursoandroid.mioper;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -480,7 +479,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         requisicao.salvar();
 
         linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("Cancelar Uber");
+        buttonChamarUber.setText("Cancelar Mioper");
 
     }
 

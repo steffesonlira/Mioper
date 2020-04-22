@@ -64,8 +64,10 @@ public class EsqueciSenha extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    final ProgressDialog progressDialog = new ProgressDialog(EsqueciSenha.this);
+                                    final ProgressDialog progressDialog = new ProgressDialog(EsqueciSenha.this, R.style.AppCompatAlertDialogStyle);
                                     progressDialog.setIndeterminate(true);
+                                    progressDialog.setIcon(R.drawable.logo);
+                                    progressDialog.setTitle("Mioper");
                                     progressDialog.setMessage("Enviando e-mail para recuperação de senha...");
                                     progressDialog.show();
 

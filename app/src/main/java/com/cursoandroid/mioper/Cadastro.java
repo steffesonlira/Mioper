@@ -237,8 +237,10 @@ public class Cadastro extends AppCompatActivity {
             return;
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(Cadastro.this);
+        final ProgressDialog progressDialog = new ProgressDialog(Cadastro.this, R.style.AppCompatAlertDialogStyle);
         progressDialog.setIndeterminate(true);
+        progressDialog.setIcon(R.drawable.logo);
+        progressDialog.setTitle("Mioper");
         progressDialog.setMessage("Criando sua conta...");
         progressDialog.show();
 

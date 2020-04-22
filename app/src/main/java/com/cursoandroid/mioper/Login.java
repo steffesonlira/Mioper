@@ -437,8 +437,10 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
 
-                    final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                    final ProgressDialog progressDialog = new ProgressDialog(Login.this, R.style.AppCompatAlertDialogStyle);
                     progressDialog.setIndeterminate(true);
+                    progressDialog.setIcon(R.drawable.logo);
+                    progressDialog.setTitle("Mioper");
                     progressDialog.setMessage("Realizando o Login...");
                     progressDialog.show();
 
