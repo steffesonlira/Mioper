@@ -363,6 +363,16 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     //BOTÃO CHAMAR MIOPER
     public void chamarUber(View view) {
 
+        //VERIFICAÇÃO SE GPS DO CELULAR ESTÁ LIGADO
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (gpsStatus == false) {
+            Toast.makeText(this,
+                    "A localização do seu celular foi desligada ou o sinal está fraco.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+
+        }
         //false -> uber não pode ser cancelado ainda
         //true -> uber pode ser cancelado
         if (cancelarUber) {//Uber pode ser cancelado
