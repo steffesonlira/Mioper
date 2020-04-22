@@ -478,7 +478,7 @@ public class Login extends AppCompatActivity {
                     } catch (FirebaseAuthInvalidCredentialsException e) {
                         excecao = "E-mail e senha não correspondem a um usuário cadastrado";
                     } catch (Exception e) {
-                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                        excecao = "Verifique sua conexão com a internet";
                         e.printStackTrace();
                     }
                     Toast.makeText(Login.this,
@@ -528,13 +528,7 @@ public class Login extends AppCompatActivity {
     //region METODO onBackPressed()
     @Override
     public void onBackPressed() {
-        if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            Login.this.finish();
-        } else {
-            Toast.makeText(getApplicationContext(), "Pressione o botão voltar novamente para sair da aplicação.", Toast.LENGTH_SHORT).show();
-        }
-        backPressedTime = System.currentTimeMillis();
-
+        finishAffinity();
     }
 //endregion
 

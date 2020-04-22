@@ -2,9 +2,12 @@ package com.cursoandroid.mioper;
 
 //region IMPORT
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +53,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     DrawerLayout drawer;
     TextView nomeUsuario;
     String boasVindas_;
+    private boolean gpsStatus;
     public static boolean verificaRetorno = false;
     static String nomeUsuario1;
     static String celularUsuario;
@@ -114,15 +118,23 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        //EXIBE TOAST DE BOAS VINDAS
-        LayoutInflater layoutInflater = getLayoutInflater();
-        viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
-        //Toast de Boas vindas
-        Toast toastCustom = Toast.makeText(Principal.this, "", Toast.LENGTH_SHORT);
-        toastCustom.setGravity(Gravity.CENTER, 0, 0);
-        toastCustom.setView(viewLayout);
-        toastCustom.show();
+        //VERIFICA SE GPS DO CELULAR ESTÁ LIGADO
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        gpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
+        if (gpsStatus == false) {
+            alertaGpsDesligado();
+        } else {
+            //EXIBE TOAST DE BOAS VINDAS
+            LayoutInflater layoutInflater = getLayoutInflater();
+            viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
+            //Toast de Boas vindas
+            Toast toastCustom = Toast.makeText(Principal.this, "", Toast.LENGTH_SHORT);
+            toastCustom.setGravity(Gravity.CENTER, 0, 0);
+            toastCustom.setView(viewLayout);
+            toastCustom.show();
+
+        }
 
         //region RECEBE DADOS DA TELA DE LOGIN
         nomeUsuario = findViewById(R.id.nomeUsuário);
@@ -243,8 +255,13 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
         switch (id) {
             case R.id.sair:
-                Intent m = new Intent(Principal.this, Passageiro.class);
-                startActivity(m);
+                if (gpsStatus == false) {
+                    alertaGpsDesligado();
+                } else {
+                    Intent m = new Intent(Principal.this, Passageiro.class);
+                    startActivity(m);
+                }
+
                 break;
             case R.id.nav_dados:
                 Intent i = new Intent(Principal.this, MeusDados.class);
@@ -290,6 +307,47 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
         return true;
     }
     //endregion
+
+
+    //ALERTA CHAMADO CASO A LOCALIZAÇÃO DO CELULAR ESTIVER DESATIVADA
+    public void alertaGpsDesligado() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Principal.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(Principal.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        builder.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.success_title_sair_gps_ok));
+        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_sair_gps_ok));
+        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
+
+        final AlertDialog alertDialog = builder.create();
+
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                alertDialog.dismiss();
+                //ABRE A TELA DE CONFIGURAÇÕES GERAIS DO ANDROID
+                // startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+
+                //ABRE A TELA DE CONFIGURAÇÕES DE LOCALIZAÇÃO DO ANDROID
+                startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
+
+            }
+        });
+
+        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
+
+    }
 
 
     public void Sair() {

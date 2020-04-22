@@ -213,8 +213,7 @@ public class Cadastro extends AppCompatActivity {
                 } catch (FirebaseAuthUserCollisionException e) {
                     excecao = "Este conta já foi cadastrada";
                 } catch (Exception e) {
-                    excecao = "Erro ao cadastrar usuário: " + e.getMessage();
-                    e.printStackTrace();
+                    excecao = "Verifique sua conexão com a internet";
                 }
 
                 Toast.makeText(Cadastro.this,
@@ -347,6 +346,7 @@ public class Cadastro extends AppCompatActivity {
     public void onBackPressed() {
         Intent h = new Intent(Cadastro.this, Login.class);
         startActivity(h);
+        finish();
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
@@ -369,7 +369,7 @@ public class Cadastro extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 break;
             default:

@@ -201,6 +201,14 @@
     <string name="error_title_sair_ok">Aviso!</string>
     <string name="text_desc_sair_ok">Deseja realmente sair?</string>
 
+    <!-- Alert Dialog verificação gps desligado-->
+    <string name="warning_sair_gps_ok">Aviso</string>
+    <string name="error_sair_gps_ok">Erro</string>
+    <string name="success_title_sair_gps_ok">Aviso!</string>
+    <string name="warning_title_sair_gps_ok">Aviso!</string>
+    <string name="error_title_sair_gps_ok">Aviso!</string>
+    <string name="text_desc_sair_gps_ok">A localização do seu celular está desativada. Para viajar com o Mioper será necessário ativa-la. Deseja ativar a localização?</string>
+
 
     <string-array name="paises">
         <item>Brasil</item>
