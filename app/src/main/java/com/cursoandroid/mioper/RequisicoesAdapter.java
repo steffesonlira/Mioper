@@ -78,7 +78,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nome, distancia, endereco,destino;
+        TextView nome, distancia, endereco, destino;
 
         public MyViewHolder(View itemView) {
             super(itemView);

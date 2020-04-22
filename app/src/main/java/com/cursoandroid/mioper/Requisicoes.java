@@ -338,7 +338,7 @@ public class Requisicoes extends AppCompatActivity {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
 
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-                View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+                View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
                 builder2.setView(view2);
                 ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
                 ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
@@ -348,9 +348,9 @@ public class Requisicoes extends AppCompatActivity {
 
                 final AlertDialog alertDialog = builder2.create();
 
-                view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+                view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view2){
+                    public void onClick(View view2) {
                         alertDialog.dismiss();
                         autenticacao.signOut();
                         Intent i = new Intent(Requisicoes.this, Login.class);
@@ -366,37 +366,67 @@ public class Requisicoes extends AppCompatActivity {
                         alertDialog.dismiss();
                     }
                 });
-                if(alertDialog.getWindow() != null){
+                if (alertDialog.getWindow() != null) {
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 alertDialog.show();
                 break;
             case R.id.menuSair:
-                autenticacao.signOut();
-                startActivity(new Intent(this, Login.class));
-                finishAffinity();
+                AlertDialog.Builder builder3 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
+                View view3 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+                builder3.setView(view3);
+                ((TextView) view3.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
+                ((TextView) view3.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
+                ((Button) view3.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+                ((Button) view3.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+                ((ImageView) view3.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
+
+                final AlertDialog alertDialogSair = builder3.create();
+
+                view3.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view2) {
+                        alertDialogSair.dismiss();
+                        autenticacao.signOut();
+                        Intent i = new Intent(Requisicoes.this, Login.class);
+                        startActivity(i);
+                        finishAffinity();
+
+                    }
+                });
+
+                view3.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialogSair.dismiss();
+                    }
+                });
+                if (alertDialogSair.getWindow() != null) {
+                    alertDialogSair.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialogSair.show();
                 break;
             case R.id.gerenciarDados:
                 try {
                     //SE NÃO EXISTIR DADOS DO MOTORISTA
                     if (!_dataSnapshot.exists()) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-                        View view3 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-                        builder.setView(view3);
-                        ((TextView) view3.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_nao_motorista));
-                        ((TextView) view3.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_nao_motorista));
-                        ((Button) view3.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
-                        ((ImageView) view3.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+                        View view4 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                        builder.setView(view4);
+                        ((TextView) view4.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_nao_motorista));
+                        ((TextView) view4.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_nao_motorista));
+                        ((Button) view4.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
+                        ((ImageView) view4.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
 
                         final AlertDialog alertDialog2 = builder.create();
 
-                        view3.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                        view4.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 alertDialog2.dismiss();
                             }
                         });
-                        if(alertDialog2.getWindow() != null){
+                        if (alertDialog2.getWindow() != null) {
                             alertDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                         }
                         alertDialog2.show();
@@ -433,7 +463,7 @@ public class Requisicoes extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
         builder2.setView(view2);
         ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
         ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
@@ -443,9 +473,9 @@ public class Requisicoes extends AppCompatActivity {
 
         final AlertDialog alertDialog = builder2.create();
 
-        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view2){
+            public void onClick(View view2) {
                 alertDialog.dismiss();
                 autenticacao.signOut();
                 Intent i = new Intent(Requisicoes.this, Login.class);
@@ -461,7 +491,7 @@ public class Requisicoes extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-        if(alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();
