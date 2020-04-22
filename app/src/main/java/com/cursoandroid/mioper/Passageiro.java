@@ -62,6 +62,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private boolean cancelarUber = false;
     private DatabaseReference firebaseRef;
     private Requisicao requisicao;
+    private String tipoRequisicao;
     private UserProfile passageiro;
     private String statusRequisicao;
     private Destino destino;
@@ -111,6 +112,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 Collections.reverse(lista);
                 if (lista != null && lista.size() > 0) {
                     requisicao = lista.get(0);
+                    tipoRequisicao = requisicao.getStatus();
 
                     if (requisicao != null) {
                         if (!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
@@ -366,10 +368,11 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         if (cancelarUber) {//Uber pode ser cancelado
 
             //Cancelar a requisição
-            requisicao.setStatus(Requisicao.STATUS_CANCELADA);
-            requisicao.atualizarStatus();
-            requisicao.excluirHistorico();
-
+            if (tipoRequisicao.equals("aguardando")) {
+                requisicao.setStatus(Requisicao.STATUS_CANCELADA);
+                requisicao.atualizarStatus();
+                requisicao.excluirHistorico();
+            }
         } else {
 
             //RECUPERA ENDEREÇO ATUAL DO PASSAGEIRO ATRAVES DA LATITUDE E LONGITUDE

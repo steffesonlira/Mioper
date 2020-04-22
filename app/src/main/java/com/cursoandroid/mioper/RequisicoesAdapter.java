@@ -28,6 +28,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
         this.context = context;
         this.motorista = motorista;
 
+
     }
 
     @Override
@@ -41,6 +42,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
         Requisicao requisicao = requisicoes.get(position);
         UserProfile passageiro = requisicao.getPassageiro();
+        Destino destino = requisicao.getDestino();
 
         holder.nome.setText("Passageiro: " + passageiro.getName());
         try {
@@ -58,8 +60,9 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
                 float distancia = Local.calcularDistancia(localPassageiro, localMotorista);
                 String distanciaFormatada = Local.formatarDistancia(distancia);
-                holder.endereco.setText("Local: " + passageiro.enderecoAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
-                holder.distancia.setText("Distância aproximada: " + distanciaFormatada);
+                holder.endereco.setText("Local Atual: " + passageiro.enderecoAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
+                holder.destino.setText("Destino: " + destino.getRua() + " - " + destino.getBairro());
+                holder.distancia.setText("Distância aproximada até o passageiro: " + distanciaFormatada);
 
             }
         } catch (Exception e) {
@@ -75,7 +78,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nome, distancia, endereco;
+        TextView nome, distancia, endereco,destino;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -83,6 +86,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
             nome = itemView.findViewById(R.id.textRequisicaoNome);
             distancia = itemView.findViewById(R.id.textRequisicaoDistancia);
             endereco = itemView.findViewById(R.id.textRequisicaoEndereco);
+            destino = itemView.findViewById(R.id.textRequisicaoDestino);
 
         }
     }

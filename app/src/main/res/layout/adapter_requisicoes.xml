@@ -9,12 +9,19 @@
         android:id="@+id/textRequisicaoNome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="_nomePassageiro"
+        android:text="Carregando..."
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textRequisicaoEndereco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carregando..."
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/textRequisicaoDestino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Carregando..."
