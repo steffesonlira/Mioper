@@ -239,4 +239,17 @@
         <item>Outros</item>
     </string-array>
 
+    <!-- Alert Dialog Encerrar Viagem Passageiro-->
+    <string name="app_name_enc_viagem">Custom Dialog</string>
+    <string name="success_enc_viagem">Sucesso</string>
+    <string name="warning_enc_viagem">Aviso</string>
+    <string name="error_enc_viagem">Erro</string>
+    <string name="success_title_enc_viagem">Total da Viagem</string>
+    <string name="warning_title_enc_viagem">Total da Viagem</string>
+    <string name="error_title_enc_viagem">Total da Viagem</string>
+    <string name="text_desc_enc_viagem">Sua viagem ficou: R$ </string>
+    <string name="encerrar_viagem">Encerrar Viagem</string>
+
+    <!-- Alert Dialog Confirmar viagem-->
+    <string name="success_title_confirme_viagem">Confirme seu Destino</string>
 </resources>

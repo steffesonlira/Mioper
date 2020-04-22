@@ -3,7 +3,6 @@ package com.cursoandroid.mioper;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -196,26 +195,38 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         buttonAceitarCorrida.setEnabled(false);
         buttonAceitarCorrida.setText("Corrida finalizada - R$ " + resultado);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(Corrida.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+        builder.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
+        ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("O valor a ser recebido é de R$" + resultado);
+        ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText("Encerrar Viagem");
+        ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Total da viagem")
-                .setMessage("O valor a ser recebido é de: R$ " + resultado)
-                .setCancelable(false)
-                .setNegativeButton("Encerrar viagem", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        try {
+            final AlertDialog alertDialog = builder.create();
 
-                        //VOLTA PARA A TELA DE REQUISIÇÃO
-                        requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-                        requisicao.atualizarStatus();
-                        finish();
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+            view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view2) {
+                    alertDialog.dismiss();
+                    //VOLTA PARA A TELA DE REQUISIÇÃO
+                    requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
+                    requisicao.atualizarStatus();
+                    finish();
+                }
+            });
+
+            if (alertDialog.getWindow() != null) {
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            alertDialog.show();
+        }catch (Exception e){
+            System.out.println("ERRO" + e.getMessage());
+        }
 
 
-    }
+      }
 
     private void centralizarMarcador(LatLng local) {
         mMap.moveCamera(

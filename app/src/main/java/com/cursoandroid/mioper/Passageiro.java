@@ -2,24 +2,28 @@ package com.cursoandroid.mioper;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -254,28 +258,35 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
         buttonChamarUber.setText("Corrida finalizada - R$ " + resultado);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Total da viagem")
-                .setMessage("Sua viagem ficou: R$ " + resultado)
-                .setCancelable(false)
-                .setNegativeButton("Encerrar viagem", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-                        requisicao.atualizarStatus();
-
-                        //VOLTA PARA A TELA DE LOGIN
-                        finish();
-                    }
-                });
+        AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
+        View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+        builder.setView(view2);
+        ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
+        ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("Sua viagem ficou: R$ " + resultado);
+        ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText("Encerrar Viagem");
+        ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
 
         try {
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        } catch (Exception e) {
-            System.out.println("ERRO" + e.getMessage());
+            final AlertDialog alertDialog = builder.create();
 
+            view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view2) {
+                    alertDialog.dismiss();
+                    requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
+                    requisicao.atualizarStatus();
+
+                    //VOLTA PARA A TELA DE LOGIN
+                    finish();
+                }
+            });
+
+            if (alertDialog.getWindow() != null) {
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            alertDialog.show();
+        }catch (Exception e){
+            System.out.println("ERRO" + e.getMessage());
         }
 
 
@@ -439,30 +450,45 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     }
 
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Confirme seu destino!")
-                            .setMessage(mensagem)
-                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
 
-                                    //salvar requisição
-                                    salvarRequisicao(destino);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
+                    View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+                    builder.setView(view2);
+                    ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.success_title_confirme_viagem));
+                    ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(mensagem);
+                    ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
+                    ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
+                    ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
 
-                                    //SALVAR HISTORICO DO USUÁRIO
-                                    Requisicao requisicao1 = new Requisicao();
-                                    requisicao1.salvarHistorico(destino);
+                    final AlertDialog alertDialog = builder.create();
 
-                                }
-                            }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                    view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                            //salvar requisição
+                            salvarRequisicao(destino);
 
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                            //SALVAR HISTORICO DO USUÁRIO
+                            Requisicao requisicao1 = new Requisicao();
+                            requisicao1.salvarHistorico(destino);
 
+                        }
+                    });
+
+                    view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+
+                        }
+                    });
+
+
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    alertDialog.show();
                 }
 
             } else {
