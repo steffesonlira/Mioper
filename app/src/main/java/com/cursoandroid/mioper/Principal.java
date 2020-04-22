@@ -78,6 +78,10 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     protected void onResume() {
         super.onResume();
 
+        //VERIFICA SE GPS DO CELULAR ESTÁ LIGADO
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        gpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         //region FAZ CONSULTA NO FIREBASE SEMPRE QUE USUÁRIO RETORNAR DA TELA MEUS DADOS
         if (verificaRetorno == true) {
             FirebaseUser user = getUsuarioAtual();
