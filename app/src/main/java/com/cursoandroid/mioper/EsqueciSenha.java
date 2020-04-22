@@ -126,6 +126,7 @@ public class EsqueciSenha extends AppCompatActivity {
             case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 startActivity(new Intent(this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 finishAffinity();  //Método para matar a activity e não deixa-lá indexada na pilhagem
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 break;
             default:
                 break;
@@ -133,4 +134,11 @@ public class EsqueciSenha extends AppCompatActivity {
         return true;
     }
     //endregion
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
 }
