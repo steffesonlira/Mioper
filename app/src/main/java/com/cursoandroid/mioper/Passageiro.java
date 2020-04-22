@@ -404,10 +404,29 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
 
                     StringBuilder mensagem = new StringBuilder();
-                    mensagem.append("Cidade: " + destino.getCidade());
-                    mensagem.append("\nRua: " + destino.getRua());
-                    mensagem.append("\nBairro: " + destino.getBairro());
-                    mensagem.append("\nNúmero: " + destino.getNumero());
+
+                    if (destino.getCidade() != null) {
+                        mensagem.append("Cidade: " + destino.getCidade());
+                    } else {
+
+                        mensagem.append("Cidade: " + "N/A");
+                    }
+
+
+                    if (destino.getRua() != null) {
+
+                        mensagem.append("\nRua: " + destino.getRua());
+                    } else {
+                        mensagem.append("\nRua: " + "N/A");
+                    }
+
+
+                    if (destino.getBairro() != null) {
+
+                        mensagem.append("\nBairro: " + destino.getBairro());
+                    } else {
+                        mensagem.append("\nBairro: " + "N/A");
+                    }
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
