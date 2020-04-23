@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 public class EsqueciSenha extends AppCompatActivity {
 
     //region declaração de variáveis
-    private AutoCompleteTextView email;
+    private EditText email;
     private FirebaseAuth firebaseAuth;
     private Button buttonEsqueciSenha;
     private EditText userEmail;
@@ -75,9 +74,13 @@ public class EsqueciSenha extends AppCompatActivity {
                                             new Runnable() {
                                                 public void run() {
                                                     progressDialog.dismiss();
+                                                    Toast.makeText(EsqueciSenha.this, "Solicitação enviada com sucesso para o seu e-mail"
+                                                            , Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(EsqueciSenha.this, Login.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
+                                                    finish();
                                                 }
                                             }, 2500);
-                                    email.setText("");
+
 
 
                                 } else {

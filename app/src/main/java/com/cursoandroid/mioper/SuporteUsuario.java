@@ -58,11 +58,18 @@ public class SuporteUsuario extends AppCompatActivity
         btnMensagem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW
-                , Uri.parse("mailto:" + txtPara.getText().toString()));
-                intent.putExtra(Intent.EXTRA_SUBJECT, assunto.getSelectedItem().toString());
-                intent.putExtra(intent.EXTRA_TEXT,txtMensagem.getText().toString());
-                startActivity(intent);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("mailto:"));
+
+                final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{txtPara.getText().toString()});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT,assunto.getSelectedItem().toString());
+                emailIntent.putExtra(Intent.EXTRA_TEXT,txtMensagem.getText().toString());
+                emailIntent.setSelector(intent);
+                startActivity(Intent.createChooser(emailIntent, "Enviar E-mail via..."));
+                txtMensagem.setText("");
+
             }
         });
     }

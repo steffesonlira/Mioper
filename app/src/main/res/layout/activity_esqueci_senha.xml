@@ -45,7 +45,8 @@
         tools:layout_conversion_wrapHeight="247"
         tools:layout_conversion_wrapWidth="1032" />
 
-    <AutoCompleteTextView
+
+    <EditText
         android:id="@+id/edtEsqueciSenhaId"
         android:layout_width="259dp"
         android:layout_height="61dp"
@@ -54,6 +55,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="228dp"
         android:backgroundTint="@android:color/white"
+        android:drawableStart="@drawable/ic_email"
+        android:drawableTint="@color/DarkCyan"
         android:inputType="textEmailAddress"
         android:textColor="@android:color/background_light"
         android:textColorHint="@android:color/background_light"

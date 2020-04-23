@@ -123,6 +123,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     public void MudarTelaAoSalvar(){
         Intent intent = new Intent(this,MetodosDePagamentoActivity.class);
         startActivity(intent);//retorna para a tela de metodos de pagamentos cadastrados
+        finish();
     }
 
     @Override
