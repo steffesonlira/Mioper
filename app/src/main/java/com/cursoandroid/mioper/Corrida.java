@@ -66,6 +66,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     private static LatLng localPassageiroAtual;
     double _latitude;
     double _longitude;
+    private String statusDaViagem;
     private UserProfile motorista;
     private UserProfile passageiro;
     private String idRequisicao;
@@ -259,6 +260,9 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     @SuppressLint("RestrictedApi")
     private void requisicaoACaminho() {
 
+        //PERMITE FINALIZAR A VIAGEM SOMENTE QUANDO STATUS FOR "viagem"
+        statusDaViagem = "acaminho";
+
         buttonAceitarCorrida.setText("A caminho do passageiro");
         buttonAceitarCorrida.setEnabled(false);
         fabRota.setVisibility(View.VISIBLE);
@@ -280,6 +284,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
     @SuppressLint("RestrictedApi")
     private void requisicaoViagem() {
+
+        statusDaViagem = "viagem";
 
         //Altera interface
         fabRota.setVisibility(View.VISIBLE);
@@ -622,16 +628,21 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             case R.id.menuEncerrarViagem:
                 if (buttonAceitarCorrida.isEnabled()) {
                     Toast.makeText(this,
-                            "Viagem não iniciada!",
+                            "A viagem ainda não foi iniciada!",
                             Toast.LENGTH_SHORT).show();
-
                 } else {
-                    verificaEncerramento = true;
-                    requisicao.atualizarLocalizacaoAtualPassageiro();
-                    requisicao.setStatus(Requisicao.STATUS_FINALIZADA);
-                    requisicao.atualizarStatus();
+                    if (statusDaViagem.equals("acaminho")) {
+                        Toast.makeText(this,
+                                "O passageiro ainda não foi embarcado!",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        verificaEncerramento = true;
+                        statusDaViagem = "finalizada";
+                        requisicao.atualizarLocalizacaoAtualPassageiro();
+                        requisicao.setStatus(Requisicao.STATUS_FINALIZADA);
+                        requisicao.atualizarStatus();
+                    }
                 }
-                break;
         }
         return true;
     }

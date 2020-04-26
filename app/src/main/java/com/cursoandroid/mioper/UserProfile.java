@@ -22,6 +22,7 @@ public class UserProfile implements Serializable {
     private String genero;
     public  String enderecoAtualUsuario;
     public  String cidadeAtualUsuario;
+    public String bairroAtualUsuario;
 
 
     public UserProfile() {
@@ -180,4 +181,5 @@ public class UserProfile implements Serializable {
     public void setLongitude_atual(String longitude_atual) {
         this.longitude_atual = longitude_atual;
     }
+
 }

@@ -78,6 +78,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private LatLng localMotoristaAtual;
     public static String endereco;
     public static String cidade;
+    public static String bairro;
     private double _latitude;
     private double _longitude;
 
@@ -562,6 +563,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             if (addresses != null && addresses.size() > 0) {
                 endereco = addresses.get(0).getThoroughfare(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 cidade = addresses.get(0).getSubAdminArea();
+                bairro = addresses.get(0).getSubLocality();
             }
 
         } catch (IOException e) {
@@ -581,6 +583,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         usuarioPassageiro.setLongitude(String.valueOf(localPassageiro.longitude));
         usuarioPassageiro.enderecoAtualUsuario = endereco;
         usuarioPassageiro.cidadeAtualUsuario = cidade;
+        usuarioPassageiro.bairroAtualUsuario = bairro;
 
 
         requisicao.setPassageiro(usuarioPassageiro);

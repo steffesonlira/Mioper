@@ -60,8 +60,8 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
                 float distancia = Local.calcularDistancia(localPassageiro, localMotorista);
                 String distanciaFormatada = Local.formatarDistancia(distancia);
-                holder.endereco.setText("Local Atual: " + passageiro.enderecoAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
-                holder.destino.setText("Destino: " + destino.getRua() + " - " + destino.getBairro());
+                holder.endereco.setText("Local Atual: " + passageiro.enderecoAtualUsuario + " - " + passageiro.bairroAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
+                holder.destino.setText("Destino: " + destino.getRua() + " - " + destino.getBairro() + " - " + destino.getCidade());
                 holder.distancia.setText("Distância aproximada até o passageiro: " + distanciaFormatada);
 
             }
