@@ -48,6 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 
 public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
@@ -60,7 +61,11 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LatLng localMotorista;
+    private LatLng localMotorista2;
     private LatLng localPassageiro;
+    private static LatLng localPassageiroAtual;
+    double _latitude;
+    double _longitude;
     private UserProfile motorista;
     private UserProfile passageiro;
     private String idRequisicao;
@@ -73,6 +78,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     private boolean requisicaoAtiva;
     private Destino destino;
     private String tipoRequisicao;
+    private static boolean verificaEncerramento = false;
+    double distancia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +87,6 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_corrida);
 
         inicializarComponentes();
-
-        //region Criando botão de voltar no toolbar
-        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // getSupportActionBar().setHomeButtonEnabled(true);
-        //getSupportActionBar().setTitle("Sobre o Mioper");
-        //endregion
-
 
         //Recupera dados do usuário
         if (getIntent().getExtras().containsKey("idRequisicao")
@@ -99,6 +99,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             );
             idRequisicao = extras.getString("idRequisicao");
             requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
+
+            //ADICIONA LISTENER PARA REQUISIÇÃO
             verificaStatusRequisicao();
         }
 
@@ -131,11 +133,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
-
     }
 
     private void alteraInterfaceStatusRequisicao(String status) {
@@ -169,6 +168,8 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     @SuppressLint("RestrictedApi")
     private void requisicaoFinalizada() {
 
+        locationManager.removeUpdates(locationListener);
+
         fabRota.setVisibility(View.GONE);
         requisicaoAtiva = false;
 
@@ -186,9 +187,15 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         adicionaMarcadorDestino(localDestino, "Destino");
         centralizarMarcador(localDestino);
 
-        //Calcular distancia
-        float distancia = Local.calcularDistancia(localPassageiro, localDestino);
-        float valor = distancia * 8;//4.56
+        if (verificaEncerramento == true) {
+            //CALCULA DISTANCIA QUANDO VIAGEM É ENCERRADA ANTES
+            distancia = Local.calcularDistancia(localPassageiro, localMotorista);
+            System.out.println("LOCAL MOTORISTA" + localPassageiro + localMotorista);
+        } else {
+            //CALCULA DISTANCIA QUANDO VEAGEM É FINALIZADA AUTOMATICAMENTE PELO SISTEMA
+            distancia = Local.calcularDistancia(localPassageiro, localDestino);
+        }
+        double valor = distancia * 8;//4.56
         DecimalFormat decimal = new DecimalFormat("0.00");
         String resultado = decimal.format(valor);
 
@@ -196,7 +203,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         buttonAceitarCorrida.setText("Corrida finalizada - R$ " + resultado);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Corrida.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+        View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
         builder.setView(view2);
         ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
         ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("O valor a ser recebido é de R$" + resultado);
@@ -209,10 +216,14 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
-                    alertDialog.dismiss();
+
                     //VOLTA PARA A TELA DE REQUISIÇÃO
                     requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                     requisicao.atualizarStatus();
+                    verificaEncerramento = false;
+                    alertDialog.dismiss();
+
+                    //VOLTA PARA TELA DE REQUISIÇÕES
                     finish();
                 }
             });
@@ -221,12 +232,12 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
             alertDialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("ERRO" + e.getMessage());
         }
 
 
-      }
+    }
 
     private void centralizarMarcador(LatLng local) {
         mMap.moveCamera(
@@ -293,65 +304,69 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void iniciarMonitoramento(final UserProfile uOrigem, LatLng localDestino, final String status) {
+        if (!status.equals("finalizada")) {
 
-        //Inicializar GeoFire
-        DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
-                .child("local_usuario");
-        GeoFire geoFire = new GeoFire(localUsuario);
+            //Inicializar GeoFire
+            DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
+                    .child("local_usuario");
+            GeoFire geoFire = new GeoFire(localUsuario);
 
-        //Adiciona círculo no passageiro
-        final Circle circulo = mMap.addCircle(
-                new CircleOptions()
-                        .center(localDestino)
-                        .radius(50)//em metros
-                        .fillColor(Color.argb(90, 255, 153, 0))
-                        .strokeColor(Color.argb(190, 255, 152, 0))
-        );
 
-        final GeoQuery geoQuery = geoFire.queryAtLocation(
-                new GeoLocation(localDestino.latitude, localDestino.longitude),
-                0.05//em km (0.05 50 metros)
-        );
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
+            //Adiciona círculo no passageiro
+            final Circle circulo = mMap.addCircle(
+                    new CircleOptions()
+                            .center(localDestino)
+                            .radius(30)//em metros
+                            .fillColor(Color.argb(90, 255, 153, 0))
+                            .strokeColor(Color.argb(190, 255, 152, 0))
+            );
 
-                if (key.equals(uOrigem.getId())) {
-                    Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!");
+            final GeoQuery geoQuery = geoFire.queryAtLocation(
+                    new GeoLocation(localDestino.latitude, localDestino.longitude),
+                    0.03//em km (0.05 50 metros)
+            );
+            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+                @Override
+                public void onKeyEntered(String key, GeoLocation location) {
 
-                    //Altera status da requisicao
-                    requisicao.setStatus(status);
-                    requisicao.atualizarStatus();
+                    if (key.equals(uOrigem.getId())) {
+                        Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!");
 
-                    //Remove listener
-                    geoQuery.removeAllListeners();
-                    circulo.remove();
+
+                        //Altera status da requisicao
+                        requisicao.setStatus(status);
+                        requisicao.atualizarStatus();
+
+                        //Remove listener
+                        geoQuery.removeAllListeners();
+                        circulo.remove();
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onKeyExited(String key) {
 
-            @Override
-            public void onKeyExited(String key) {
+                }
 
-            }
+                @Override
+                public void onKeyMoved(String key, GeoLocation location) {
 
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
+                }
 
-            }
+                @Override
+                public void onGeoQueryReady() {
 
-            @Override
-            public void onGeoQueryReady() {
+                }
 
-            }
+                @Override
+                public void onGeoQueryError(DatabaseError error) {
 
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
+                }
+            });
 
-            }
-        });
-
+        }//if
     }
 
     private void centralizarDoisMarcadores(Marker marcador1, Marker marcador2) {
@@ -472,7 +487,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             }
         };
 
-        //Solicitar atualizações de localização
+        //RECUPERA A LOCALIZAÇÃO (LATITUDE E LONGITUDE) AUTOMATICAMENTE DO USUÁRIO
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
@@ -482,6 +497,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             );
         }
     }
+
 
     //BOTÃO ACEITAR CORRIDA
     public void aceitarCorrida(View view) {
@@ -521,12 +537,6 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
     private void inicializarComponentes() {
 
-        /*
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Iniciar corrida");
-*/
         buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida);
 
         //Configurações iniciais
@@ -592,6 +602,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
         return false;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_profile_nav, menu);
@@ -615,15 +626,13 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
                             Toast.LENGTH_SHORT).show();
 
                 } else {
+                    verificaEncerramento = true;
+                    requisicao.atualizarLocalizacaoAtualPassageiro();
                     requisicao.setStatus(Requisicao.STATUS_FINALIZADA);
                     requisicao.atualizarStatus();
-
-
                 }
-
                 break;
         }
         return true;
     }
-
 }

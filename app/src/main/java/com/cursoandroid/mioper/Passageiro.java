@@ -57,7 +57,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private EditText editDestino;
     private LinearLayout linearLayoutDestino;
     private Button buttonChamarUber;
-
+    private double distancia;
     private GoogleMap mMap;
     private FirebaseAuth autenticacao;
     private LocationManager locationManager;
@@ -75,6 +75,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     private Marker marcadorDestino;
     private UserProfile motorista;
     private LatLng localMotorista;
+    private LatLng localMotoristaAtual;
     public static String endereco;
     public static String cidade;
     private double _latitude;
@@ -93,8 +94,9 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
         inicializarComponentes();
 
-        //Adiciona listener para status da requisição
+        //Adiciona listener para requisição
         verificaStatusRequisicao();
+
     }
 
     private void verificaStatusRequisicao() {
@@ -119,6 +121,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     tipoRequisicao = requisicao.getStatus();
 
                     if (requisicao != null) {
+
+
                         if (!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
                             passageiro = requisicao.getPassageiro();
                             localPassageiro = new LatLng(
@@ -127,6 +131,17 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                             );
                             statusRequisicao = requisicao.getStatus();
                             destino = requisicao.getDestino();
+
+
+                            //RECUPERA LOCALIZAÇÃO ATUAL DO PASSAGEIRO (QUANDO A VIAGEM É ENCERRADA ANTECIPADAMENTE PELO MOTORISTA)
+                            if (passageiro.getLatitude_atual() != null && passageiro.getLongitude_atual() != null) {
+                                localMotoristaAtual = new LatLng(
+                                        Double.parseDouble(passageiro.getLatitude_atual()),
+                                        Double.parseDouble(passageiro.getLongitude_atual())
+                                );
+                            }
+
+
                             if (requisicao.getMotorista() != null) {
                                 motorista = requisicao.getMotorista();
                                 localMotorista = new LatLng(
@@ -134,6 +149,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                                         Double.parseDouble(motorista.getLongitude())
                                 );
                             }
+
                             alteraInterfaceStatusRequisicao(statusRequisicao);
                         }
                     }
@@ -239,6 +255,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     //CHAMADO QUANDO O PASSAGEIRO CHEGA AO DESTINO
     private void requisicaoFinalizada() {
 
+
         linearLayoutDestino.setVisibility(View.GONE);
         buttonChamarUber.setEnabled(false);
 
@@ -250,16 +267,22 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         adicionaMarcadorDestino(localDestino, "Destino");
         centralizarMarcador(localDestino);
 
-        //Calcular distancia
-        float distancia = Local.calcularDistancia(localPassageiro, localDestino);
-        float valor = distancia * 8;
+
+        if (localMotoristaAtual != null) {
+            distancia = Local.calcularDistancia(localPassageiro, localMotoristaAtual);
+            System.out.println("LOCAL PASSAGEIRO" + localPassageiro + localMotoristaAtual);
+        } else {
+            distancia = Local.calcularDistancia(localPassageiro, localDestino);
+        }
+
+        double valor = distancia * 8;
         DecimalFormat decimal = new DecimalFormat("0.00");
         String resultado = decimal.format(valor);
 
         buttonChamarUber.setText("Corrida finalizada - R$ " + resultado);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_successok_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
+        View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
         builder.setView(view2);
         ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
         ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("Sua viagem ficou: R$ " + resultado);
@@ -272,11 +295,12 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
-                    alertDialog.dismiss();
                     requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                     requisicao.atualizarStatus();
+                    localMotoristaAtual = null;
+                    alertDialog.dismiss();
 
-                    //VOLTA PARA A TELA DE LOGIN
+                    //VOLTA PARA A TELA PRINCIPAL
                     finish();
                 }
             });
@@ -285,7 +309,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
             }
             alertDialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("ERRO" + e.getMessage());
         }
 
@@ -402,6 +426,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
             String enderecoDestino = editDestino.getText().toString();
 
+            //SE USUÁRIO INFORMAR O ENDEREÇO
             if (!enderecoDestino.equals("")) {
 
                 //DATA E HORA ATUAL
@@ -412,18 +437,45 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
                 Address addressDestino = recuperarEndereco(enderecoDestino);
                 if (addressDestino != null) {
-
-
                     final Destino destino = new Destino();
                     destino.setData(dataFormatada);
-                    destino.setCidade(addressDestino.getSubAdminArea());
-                    destino.setCep(addressDestino.getPostalCode());
-                    destino.setBairro(addressDestino.getSubLocality());
-                    destino.setRua(addressDestino.getThoroughfare());
-                    destino.setNumero(addressDestino.getFeatureName());
+
+
+                    if (addressDestino.getSubAdminArea() == null) {
+                        destino.setCidade("N/A");
+                    } else {
+                        destino.setCidade(addressDestino.getSubAdminArea());
+                    }
+
+                    if (addressDestino.getPostalCode() == null) {
+                        destino.setCep("N/A");
+                    } else {
+                        destino.setCep(addressDestino.getPostalCode());
+                    }
+
+                    if (addressDestino.getSubLocality() == null) {
+                        destino.setBairro("N/A");
+                    } else {
+                        destino.setBairro(addressDestino.getSubLocality());
+                    }
+
+                    if (addressDestino.getThoroughfare() == null) {
+                        destino.setRua("N/A");
+                    } else {
+                        destino.setRua(addressDestino.getThoroughfare());
+                    }
+
+                    if (addressDestino.getFeatureName() == null) {
+                        destino.setNumero("N/A");
+                    } else {
+                        destino.setNumero(addressDestino.getFeatureName());
+                    }
+
                     destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
                     destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
 
+
+                    //CONTROI O ARRAY DE CONFIRMAÇÃO DE ENDEREÇO AO CHAMAR O MIOPER
                     StringBuilder mensagem = new StringBuilder();
 
                     if (destino.getCidade() != null) {
@@ -448,7 +500,6 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                     } else {
                         mensagem.append("\nBairro: " + "N/A");
                     }
-
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
@@ -541,8 +592,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
+    //RECUPERA ENDEREÇO DIGITADO PELO USUÁRIO E VERIFICA NA NUVEM SE EXISTE
     private Address recuperarEndereco(String endereco) {
-
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
 
@@ -597,7 +648,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                             || statusRequisicao.equals(Requisicao.STATUS_FINALIZADA)) {
                         locationManager.removeUpdates(locationListener);
                     } else {
-                        //Solicitar atualizações de localização
+
+                        //RECUPERA A LOCALIZAÇÃO (LATITUDE E LONGITUDE) AUTOMATICAMENTE DO USUÁRIO
                         if (ActivityCompat.checkSelfPermission(Passageiro.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                             locationManager.requestLocationUpdates(
                                     LocationManager.GPS_PROVIDER,
@@ -608,8 +660,8 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                         }
                     }
                 }
-
             }
+
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -627,6 +679,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
             }
         };
 
+
         //Solicitar atualizações de localização
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
@@ -641,24 +694,7 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        switch (item.getItemId()) {
-//            case R.id.menuSair:
-//                autenticacao.signOut();
-//                finish();
-//                break;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     private void inicializarComponentes() {
-
-        // Toolbar toolbar = findViewById(R.id.toolbarpassageiro);
-        // toolbar.setTitle("Iniciar uma viagem");
-//        setSupportActionBar(toolbar);
 
         //Inicializar componentes
         editDestino = findViewById(R.id.editDestino);

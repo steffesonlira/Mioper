@@ -131,6 +131,14 @@ public class Requisicoes extends AppCompatActivity {
         verificaStatusRequisicao();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inicializarComponentes();
+        //Recuperar localizacao do usuário
+        recuperarLocalizacaoUsuario();
+    }
+
     private void verificaStatusRequisicao() {
 
         UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();

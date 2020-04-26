@@ -24,18 +24,20 @@ public class Requisicao {
     public static final String STATUS_CANCELADA = "cancelada";
     static String idRequisicaoHistorico;
 
+
     public Requisicao() {
     }
 
-    public void salvar(){
+
+    public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
 
         String idRequisicao = requisicoes.push().getKey();
-        setId( idRequisicao );
+        setId(idRequisicao);
 
-        requisicoes.child( getId() ).setValue(this);
+        requisicoes.child(getId()).setValue(this);
 
     }
 
@@ -57,6 +59,7 @@ public class Requisicao {
         historico.child(getId()).setValue(destino);
 
     }
+
     public void excluirHistorico() {
 
         FirebaseUser firebaseUser = getUsuarioAtual();
@@ -69,7 +72,7 @@ public class Requisicao {
         requisicoes.removeValue();
     }
 
-    public void atualizar(){
+    public void atualizar() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
@@ -77,14 +80,14 @@ public class Requisicao {
         DatabaseReference requisicao = requisicoes.child(getId());
 
         Map objeto = new HashMap();
-        objeto.put("motorista", getMotorista() );
+        objeto.put("motorista", getMotorista());
         objeto.put("status", getStatus());
 
-        requisicao.updateChildren( objeto );
+        requisicao.updateChildren(objeto);
 
     }
 
-    public void atualizarStatus(){
+    public void atualizarStatus() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
         DatabaseReference requisicoes = firebaseRef.child("requisicoes");
@@ -93,12 +96,11 @@ public class Requisicao {
 
         Map objeto = new HashMap();
         objeto.put("status", getStatus());
-
-        requisicao.updateChildren( objeto );
+        requisicao.updateChildren(objeto);
 
     }
 
-    public void atualizarLocalizacaoMotorista(){
+    public void atualizarLocalizacaoMotorista() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
         DatabaseReference requisicoes = firebaseRef
@@ -109,10 +111,29 @@ public class Requisicao {
                 .child("motorista");
 
         Map objeto = new HashMap();
-        objeto.put("latitude", getMotorista().getLatitude() );
+        objeto.put("latitude", getMotorista().getLatitude());
         objeto.put("longitude", getMotorista().getLongitude());
 
-        requisicao.updateChildren( objeto );
+        requisicao.updateChildren(objeto);
+
+    }
+
+
+    public void atualizarLocalizacaoAtualPassageiro() {
+
+        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference requisicoes = firebaseRef
+                .child("requisicoes");
+
+        DatabaseReference requisicao = requisicoes
+                .child(getId())
+                .child("passageiro");
+
+        Map objeto = new HashMap();
+        objeto.put("latitude_atual", getMotorista().getLatitude());
+        objeto.put("longitude_atual", getMotorista().getLongitude());
+
+        requisicao.updateChildren(objeto);
 
     }
 

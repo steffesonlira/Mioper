@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuEncerrarViagem"
-        android:title="Encerrar viagem antecipadamente" />
+        android:title="Encerrar viagem" />
 </menu>

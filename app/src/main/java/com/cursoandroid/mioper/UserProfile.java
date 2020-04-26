@@ -17,6 +17,8 @@ public class UserProfile implements Serializable {
     private String tipouser;
     private String latitude;
     private String longitude;
+    private String latitude_atual;
+    private String longitude_atual;
     private String genero;
     public  String enderecoAtualUsuario;
     public  String cidadeAtualUsuario;
@@ -36,7 +38,7 @@ public class UserProfile implements Serializable {
         this.senha = senha;
         this.repitasenha = repitasenha;
         this.tipouser = tipouser;
-        this.latitude = latitude;
+        this.setLatitude(latitude);
         this.longitude = longitude;
         this.genero = genero;
     }
@@ -160,5 +162,22 @@ public class UserProfile implements Serializable {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+
+    public String getLatitude_atual() {
+        return latitude_atual;
+    }
+
+    public void setLatitude_atual(String latitude_atual) {
+        this.latitude_atual = latitude_atual;
+    }
+
+    public String getLongitude_atual() {
+        return longitude_atual;
+    }
+
+    public void setLongitude_atual(String longitude_atual) {
+        this.longitude_atual = longitude_atual;
     }
 }
