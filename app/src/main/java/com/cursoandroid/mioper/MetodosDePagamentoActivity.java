@@ -1,5 +1,6 @@
 package com.cursoandroid.mioper;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
 
     //private ArrayList<MetodosPagamentosCadastrados> metodos = new ArrayList<>();
     private  ArrayList<String> metodosOk = new ArrayList<>();
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
                 adicionarCartao();
             }
         });
+
 
     }
 
@@ -75,23 +78,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
                         metodosOk.add(ds.getValue().toString());
 
                     }
-                    //VERIFICA SE O PAGAMENTO EM DINHEIRO EXISTE
-                    if(metodosOk.contains("Dinheiro")){
                         IniciarRecyclerView(metodosOk);
-                    }else{
-                        //CASO NÃO EXISTA DINHEIRO, ACRESCETA NA LISTA
-                        FirebaseUser firebaseUser = getUsuarioAtual();
-                        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-
-                        String userEmail = firebaseUser.getEmail();
-                        String userMailReplaced = userEmail.replace('.', '-');
-
-                        DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
-
-                        String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-                        metodosPagamentos.child(idUsuarioDoCartao).setValue("Dinheiro");
-                    }
-
                 }
 
                 @Override
@@ -101,6 +88,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
             });
         }
     }
+
 
 
     public void IniciarRecyclerView(ArrayList metodos){

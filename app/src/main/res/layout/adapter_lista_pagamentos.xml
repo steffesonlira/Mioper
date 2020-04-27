@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/listaPagamentosID"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:text="lista Pagamentos"
-            android:textColor="#000000"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/listaPagamentosID"
+                android:layout_width="296dp"
+                android:layout_height="36dp"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/removerCartaoID"
+                android:layout_width="102dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightRed"
+                android:text="Remover" />
+
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
