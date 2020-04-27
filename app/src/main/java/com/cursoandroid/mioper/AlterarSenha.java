@@ -2,6 +2,8 @@ package com.cursoandroid.mioper;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,6 +62,15 @@ public class AlterarSenha extends AppCompatActivity {
 
     //BOTÃO ALTERAR A SENHA
     public void AlterarSenha(final View view) {
+
+
+        if (isOnline(this) == false) {
+            Toast.makeText(this,
+                    "Erro ao alterar sua senha. Verifique sua conexão com a internet.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
 
         //ESCONDER O TECLADO AO CLICAR NO BOTÃO ALTERAR SENHA
@@ -201,4 +212,16 @@ public class AlterarSenha extends AppCompatActivity {
         }
         return true;
     }
+
+    //VERIFICA SE HA CONEXÃO COM INTERNET
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
 }

@@ -413,6 +413,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    //VERIFICA SE HA CONEXÃO COM INTERNET
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
