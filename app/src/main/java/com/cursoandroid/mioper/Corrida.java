@@ -193,7 +193,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
             distancia = Local.calcularDistancia(localPassageiro, localMotorista);
             System.out.println("LOCAL MOTORISTA" + localPassageiro + localMotorista);
         } else {
-            //CALCULA DISTANCIA QUANDO VEAGEM É FINALIZADA AUTOMATICAMENTE PELO SISTEMA
+            //CALCULA DISTANCIA QUANDO VIAGEM É FINALIZADA AUTOMATICAMENTE PELO SISTEMA
             distancia = Local.calcularDistancia(localPassageiro, localDestino);
         }
         double valor = distancia * 8;//4.56
@@ -329,7 +329,7 @@ public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
 
             final GeoQuery geoQuery = geoFire.queryAtLocation(
                     new GeoLocation(localDestino.latitude, localDestino.longitude),
-                    0.03//em km (0.05 50 metros)
+                    0.03//em km (0.03 30 metros)
             );
             geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
                 @Override

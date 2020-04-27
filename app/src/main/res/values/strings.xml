@@ -211,6 +211,18 @@
     <string name="text_desc_sair_gps_ok">A localização do seu celular está desativada. Para viajar com o Mioper será necessário ativa-la. Deseja ativar a localização?</string>
 
 
+    <string name="app_name_enc_viagem">Custom Dialog</string>
+    <string name="success_enc_viagem">Sucesso</string>
+
+    <!-- Alert Dialog Encerrar Viagem Passageiro-->
+    <string name="warning_enc_viagem">Aviso</string>
+    <string name="error_enc_viagem">Erro</string>
+    <string name="success_title_enc_viagem">Total da Viagem</string>
+    <string name="warning_title_enc_viagem">Total da Viagem</string>
+    <string name="error_title_enc_viagem">Total da Viagem</string>
+    <string name="text_desc_enc_viagem">Sua viagem ficou: R$ </string>
+    <string name="encerrar_viagem">Encerrar Viagem</string>
+    <string name="success_title_confirme_viagem">Confirme seu Destino</string>
     <string-array name="paises">
         <item>Brasil</item>
         <item>Afeganistão</item>
@@ -230,6 +242,8 @@
         <item>Rússia</item>
         <item>Suíça</item>
     </string-array>
+
+    <!-- Alert Dialog Confirmar viagem-->
     <string-array name="assunto">
         <item>Crítica</item>
         <item>Elogio</item>
@@ -239,18 +253,4 @@
         <item>Sugestão</item>
         <item>Outros</item>
     </string-array>
-
-    <!-- Alert Dialog Encerrar Viagem Passageiro-->
-    <string name="app_name_enc_viagem">Custom Dialog</string>
-    <string name="success_enc_viagem">Sucesso</string>
-    <string name="warning_enc_viagem">Aviso</string>
-    <string name="error_enc_viagem">Erro</string>
-    <string name="success_title_enc_viagem">Total da Viagem</string>
-    <string name="warning_title_enc_viagem">Total da Viagem</string>
-    <string name="error_title_enc_viagem">Total da Viagem</string>
-    <string name="text_desc_enc_viagem">Sua viagem ficou: R$ </string>
-    <string name="encerrar_viagem">Encerrar Viagem</string>
-
-    <!-- Alert Dialog Confirmar viagem-->
-    <string name="success_title_confirme_viagem">Confirme seu Destino</string>
 </resources>

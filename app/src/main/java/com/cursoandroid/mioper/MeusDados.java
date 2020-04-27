@@ -1,9 +1,12 @@
 package com.cursoandroid.mioper;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -133,6 +136,13 @@ public class MeusDados extends AppCompatActivity {
 
     //BOTÃO SALVAR AS ALTERAÇÕES
     public void salvarAlteracoes(View view) {
+
+        if (isOnline(this) == false) {
+            Toast.makeText(this,
+                    "Alterações não foram salvas. Verifique sua conexão com a internet. ",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //RECUPERAR TEXTOS DOS CAMPOS
         String textoNome = nomeUsuario.getText().toString();
@@ -266,6 +276,13 @@ public class MeusDados extends AppCompatActivity {
 
     //BOTÃO EXCLUIR CONTA
     public void excluirUsuario(View view) {
+
+        if (isOnline(this) == false) {
+            Toast.makeText(this,
+                    "Erro ao excluir sua conta. Verifique sua conexão com a internet. ",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MeusDados.this, R.style.AlertDialogTheme);
         View view2 = LayoutInflater.from(MeusDados.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
@@ -426,4 +443,16 @@ public class MeusDados extends AppCompatActivity {
         Principal.verificaRetorno = true;
         finish();
     }
+
+    //VERIFICA SE HA CONEXÃO COM INTERNET
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
 }

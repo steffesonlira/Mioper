@@ -9,6 +9,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -404,11 +406,19 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
         boolean gpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (gpsStatus == false) {
             Toast.makeText(this,
-                    "A localização do seu celular foi desligada ou o sinal está fraco.",
+                    "A localização do seu celular está desligada ou o sinal está muito fraco.",
                     Toast.LENGTH_SHORT).show();
             return;
-
         }
+
+        if(isOnline(this) == false){
+            Toast.makeText(this,
+                    "Sem conexão com a internet",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         //false -> uber não pode ser cancelado ainda
         //true -> uber pode ser cancelado
         if (cancelarUber) {//Uber pode ser cancelado
@@ -737,6 +747,18 @@ public class Passageiro extends AppCompatActivity implements OnMapReadyCallback 
                 break;
         }
         return true;
+    }
+
+
+    //VERIFICA SE EXISTE CONEXÃO COM A INTERNET
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 
 

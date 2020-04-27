@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -258,6 +260,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            //TELA DE NAVEGAÇAO
             case R.id.sair:
                 if (gpsStatus == false) {
                     alertaGpsDesligado();
@@ -268,26 +271,38 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
 
                 break;
             case R.id.nav_dados:
-                Intent i = new Intent(Principal.this, MeusDados.class);
-                //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
-                i.putExtra("name", nomeUsuario1);
-                i.putExtra("mobile", celularUsuario);
-                i.putExtra("senha", senhaUsuario);
-                i.putExtra("email", emailUsuario);
-                i.putExtra("adress", enderecoUsuario);
-                i.putExtra("nascimento", nascimentoUsuario);
-                i.putExtra("cpf", cpfUsuario);
-                i.putExtra("genero", generoUsuario);
-                i.putExtra("tipouser", tipoUsuario);
-                startActivity(i);
+                if (isOnline(this) == true) {
+                    Intent i = new Intent(Principal.this, MeusDados.class);
+                    //CHAMA A TELA MEUS DADOS E PASSA OS DADOS
+                    i.putExtra("name", nomeUsuario1);
+                    i.putExtra("mobile", celularUsuario);
+                    i.putExtra("senha", senhaUsuario);
+                    i.putExtra("email", emailUsuario);
+                    i.putExtra("adress", enderecoUsuario);
+                    i.putExtra("nascimento", nascimentoUsuario);
+                    i.putExtra("cpf", cpfUsuario);
+                    i.putExtra("genero", generoUsuario);
+                    i.putExtra("tipouser", tipoUsuario);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(this,
+                            "Informações indisponíveis. Verifique sua conexão com a internet",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.nav_pagamento:
                 Intent g = new Intent(Principal.this, MetodosDePagamentoActivity.class);
                 startActivity(g);
                 break;
             case R.id.nav_historico:
-                Intent s = new Intent(Principal.this, HistoricoViagens.class);
-                startActivity(s);
+                if (isOnline(this) == true) {
+                    Intent s = new Intent(Principal.this, HistoricoViagens.class);
+                    startActivity(s);
+                } else {
+                    Toast.makeText(this,
+                            "Informações indisponíveis. Verifique sua conexão com a internet",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.nav_indicacao:
                 Intent t = new Intent(Principal.this, IndiqueGanhe.class);
@@ -397,5 +412,17 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
     public void onBackPressed() {
 
     }
+
+    //VERIFICA SE HA CONEXÃO COM INTERNET
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
 }
 

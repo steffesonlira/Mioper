@@ -1,7 +1,10 @@
 package com.cursoandroid.mioper;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,8 +70,17 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
 
     public void salvarCartaoCadastrado(String numeroDoCartao) {
 
+        //VERIFICA SE HÁ CONEXÃO COM A INTERNET
+        if (isOnline(this) == false) {
+            Toast.makeText(this,
+                    "Sem conexão com a internet",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(CadastrarCartaoActivity.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(CadastrarCartaoActivity.this).inflate(R.layout.layout_success_dialog,(ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
+        View view2 = LayoutInflater.from(CadastrarCartaoActivity.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
         builder.setView(view2);
         ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.success_title_cadastro_cartao));
         ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_cadastro_cartao));
@@ -78,9 +90,9 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
 
         final AlertDialog alertDialog = builder.create();
 
-        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener(){
+        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view2){
+            public void onClick(View view2) {
                 alertDialog.dismiss();
                 FirebaseUser firebaseUser = getUsuarioAtual();
                 DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -107,7 +119,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
                 alertDialog.dismiss();
             }
         });
-        if(alertDialog.getWindow() != null){
+        if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         }
         alertDialog.show();
@@ -120,8 +132,8 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
 
     }
 
-    public void MudarTelaAoSalvar(){
-        Intent intent = new Intent(this,MetodosDePagamentoActivity.class);
+    public void MudarTelaAoSalvar() {
+        Intent intent = new Intent(this, MetodosDePagamentoActivity.class);
         startActivity(intent);//retorna para a tela de metodos de pagamentos cadastrados
         finish();
     }
@@ -157,4 +169,15 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
         }
         return true;
     }
+
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
 }
