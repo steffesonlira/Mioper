@@ -9,13 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
+
+import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
 
 public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodosPagamentos.ViewHolder>{
 
     private static final String TAg = "RecyclerViewAdapter";
-
     private ArrayList<String> tipoPagamentoOK;
+    public String userMailReplaced;
+
 
     public AdapterMetodosPagamentos(ArrayList tipoPag) {
         this.tipoPagamentoOK = tipoPag;
@@ -33,7 +39,35 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
+
         viewHolder.metodoPagamento.setText(tipoPagamentoOK.get(i));
+
+        viewHolder.deletarNumero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(tipoPagamentoOK.get(i));
+                FirebaseUser firebaseUser = getUsuarioAtual();
+                DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+
+                String userEmail = firebaseUser.getEmail();
+                String userMailReplaced = userEmail.replace('.', '-');
+
+                DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
+
+                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
+                metodosPagamentos.child(idUsuarioDoCartao).child(tipoPagamentoOK.get(i));
+
+                metodosPagamentos.removeValue();
+
+                //REMOÇÃO DO ITEM DA LISTA
+                tipoPagamentoOK.remove(i);
+                notifyItemRemoved(i);
+                notifyItemChanged(i,this);
+                //fIM DA REMOÇÃO DA LISTA
+
+                //FIME DA EXCLUSAO
+            }
+        });
 
     }
 
@@ -45,22 +79,13 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView metodoPagamento;
-        public Button deletarNumero ;
+        Button deletarNumero ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             metodoPagamento = itemView.findViewById(R.id.listaPagamentosID);
-
             deletarNumero = itemView.findViewById(R.id.removerCartaoID);
-            deletarNumero.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(tipoPagamentoOK != null){
-                        tipoPagamentoOK.remove(this);
-                    }
-                }
-            });
 
         }
     }

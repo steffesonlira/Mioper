@@ -28,14 +28,15 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
     public Button botaoCadastrarCartao;
     public String userMailReplaced;
 
-    //private ArrayList<MetodosPagamentosCadastrados> metodos = new ArrayList<>();
     private  ArrayList<String> metodosOk = new ArrayList<>();
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_metodos_de_pagamento);
         resgatarMetodosPagamentos();
+
         //region Criando botão de voltar no toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -76,7 +77,6 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         //ADICIONA O OBJETO HISTORICO COM TODOS OS DADOS NO ARRAY
                         metodosOk.add(ds.getValue().toString());
-
                     }
                         IniciarRecyclerView(metodosOk);
                 }
@@ -86,6 +86,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
 
                 }
             });
+
         }
     }
 
