@@ -52,12 +52,22 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
                 String userEmail = firebaseUser.getEmail();
                 String userMailReplaced = userEmail.replace('.', '-');
 
-                DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
-
-                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-                metodosPagamentos.child(idUsuarioDoCartao).child(tipoPagamentoOK.get(i));
+                DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos")
+                        .child(userMailReplaced)
+                        .child(tipoPagamentoOK.get(i));
 
                 metodosPagamentos.removeValue();
+
+
+
+//
+//                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
+//                metodosPagamentos.child(idUsuarioDoCartao).child(tipoPagamentoOK.get(i));
+//
+//                metodosPagamentos.removeValue();
+
+
+
 
                 //REMOÇÃO DO ITEM DA LISTA
                 tipoPagamentoOK.remove(i);

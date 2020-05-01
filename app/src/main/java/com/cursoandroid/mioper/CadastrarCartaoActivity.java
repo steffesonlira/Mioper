@@ -102,8 +102,7 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
 
                 DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos").child(userMailReplaced);
 
-                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-                metodosPagamentos.child(idUsuarioDoCartao).setValue(numeroDoCartao);
+                metodosPagamentos.child(numeroDoCartao).setValue(numeroDoCartao);
 
                 Toast.makeText(CadastrarCartaoActivity.this,
                         "Cartão cadastrado com sucesso!",
