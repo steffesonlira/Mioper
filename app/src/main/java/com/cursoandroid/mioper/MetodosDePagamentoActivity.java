@@ -77,8 +77,9 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         //ADICIONA O OBJETO HISTORICO COM TODOS OS DADOS NO ARRAY
                         metodosOk.add(ds.getValue().toString());
-                    }
                         IniciarRecyclerView(metodosOk);
+                    }
+
                 }
 
                 @Override
@@ -100,6 +101,8 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        adapter.notifyItemRemoved(adapter.getItemCount());
+
 
     }
 

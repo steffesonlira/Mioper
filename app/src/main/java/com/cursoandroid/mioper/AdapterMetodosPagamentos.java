@@ -45,37 +45,25 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
         viewHolder.deletarNumero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(tipoPagamentoOK.get(i));
+
                 FirebaseUser firebaseUser = getUsuarioAtual();
                 DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
 
                 String userEmail = firebaseUser.getEmail();
                 String userMailReplaced = userEmail.replace('.', '-');
 
+                //CAMINHO DA REMOÇÃO DO FIREBASE
                 DatabaseReference metodosPagamentos = firebaseRef.child("CartoesPagamentos")
                         .child(userMailReplaced)
                         .child(tipoPagamentoOK.get(i));
 
                 metodosPagamentos.removeValue();
 
-
-
-//
-//                String idUsuarioDoCartao = metodosPagamentos.push().getKey();
-//                metodosPagamentos.child(idUsuarioDoCartao).child(tipoPagamentoOK.get(i));
-//
-//                metodosPagamentos.removeValue();
-
-
-
-
                 //REMOÇÃO DO ITEM DA LISTA
                 tipoPagamentoOK.remove(i);
-                notifyItemRemoved(i);
-                notifyItemChanged(i,this);
-                //fIM DA REMOÇÃO DA LISTA
+                notifyItemRemoved(viewHolder.getAdapterPosition());
 
-                //FIME DA EXCLUSAO
+                //fIM DA REMOÇÃO DO CARTAO
             }
         });
 
