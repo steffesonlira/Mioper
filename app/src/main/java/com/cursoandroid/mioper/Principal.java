@@ -135,7 +135,7 @@ public class Principal extends AppCompatActivity implements NavigationView.OnNav
             LayoutInflater layoutInflater = getLayoutInflater();
             viewLayout = layoutInflater.inflate(R.layout.customtoast, (ViewGroup) findViewById(R.id.custom_layout));
             //Toast de Boas vindas
-            Toast toastCustom = Toast.makeText(Principal.this, "", Toast.LENGTH_SHORT);
+            Toast toastCustom = Toast.makeText(Principal.this, "", Toast.LENGTH_LONG);
             toastCustom.setGravity(Gravity.CENTER, 0, 0);
             toastCustom.setView(viewLayout);
             toastCustom.show();

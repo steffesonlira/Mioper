@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AdapterHistoricoViagem extends RecyclerView.Adapter<AdapterHistoricoViagem.MyViewHolder> {
 
@@ -17,6 +18,9 @@ public class AdapterHistoricoViagem extends RecyclerView.Adapter<AdapterHistoric
 
     public AdapterHistoricoViagem(ArrayList lista) {
         this.listaUsuario = lista;
+
+        //DEIXA A VIAGEM MAIS RECENTE NO TOP DO RECYCLERVIEW
+        Collections.reverse(this.listaUsuario);
     }
 
     @Override

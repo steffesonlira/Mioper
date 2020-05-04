@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.cursoandroid.mioper.UsuarioFirebase.getIdentificadorUsuario;
 import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
@@ -128,8 +130,6 @@ public class HistoricoViagens extends AppCompatActivity {
 
             //CHAMA O METODO PARA PASSAR OS DADOS PARA O RECYVLERVIEW
             enviarDadosLista(array2);
-
-
         }
     }
 
