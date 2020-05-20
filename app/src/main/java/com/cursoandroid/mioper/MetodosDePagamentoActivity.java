@@ -57,6 +57,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
     public void adicionarCartao(){
         Intent intent = new Intent(this,CadastrarCartaoActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void resgatarMetodosPagamentos(){
