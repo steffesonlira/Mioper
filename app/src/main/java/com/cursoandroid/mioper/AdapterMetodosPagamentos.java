@@ -60,10 +60,8 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
                 metodosPagamentos.removeValue();
 
                 //REMOÇÃO DO ITEM DA LISTA
-                tipoPagamentoOK.remove(i);
-                notifyItemRemoved(viewHolder.getAdapterPosition());
-
-                //fIM DA REMOÇÃO DO CARTAO
+                tipoPagamentoOK.clear();
+//
             }
         });
 

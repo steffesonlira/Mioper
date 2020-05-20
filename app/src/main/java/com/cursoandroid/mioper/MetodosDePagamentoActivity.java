@@ -101,7 +101,7 @@ public class MetodosDePagamentoActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        adapter.notifyItemRemoved(adapter.getItemCount());
+
 
 
     }
