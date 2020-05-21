@@ -15,6 +15,7 @@
         tools:replace="android:appComponentFactory">
         <activity android:name=".CadastrarCartaoActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"></activity>
         <activity android:name=".MetodosDePagamentoActivity"

@@ -160,7 +160,8 @@ public class CadastrarCartaoActivity extends AppCompatActivity implements Adapte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
+            case android.R.id.home:
+                startActivity(new Intent(this, MetodosDePagamentoActivity.class));//ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
                 finish();
                 break;
             default:
