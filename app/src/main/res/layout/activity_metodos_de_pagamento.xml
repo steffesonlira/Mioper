@@ -23,7 +23,7 @@
                 android:layout_height="36dp"
                 android:layout_marginLeft="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/dinheiro"
+                android:text="@string/text_view_dinheiro"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:padding="8dp"
             android:textStyle="bold"
-            android:text="Adicionar Cartão para Pagamento"
+            android:text="@string/button_adicionar_cartao"
             android:textAlignment="center"
             android:textColor="@color/White"
             tools:ignore="MissingConstraints,RtlCompat" />

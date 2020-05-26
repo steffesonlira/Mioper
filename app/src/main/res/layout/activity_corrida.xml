@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Corrida">
 
-
-
     <include layout="@layout/content_passageiro" />
 
     <Button
@@ -15,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
-        android:text="Aceitar corrida"
+        android:text="@string/button_aceitar_corrida"
         android:background="@drawable/botao"
         android:onClick="aceitarCorrida"
         android:theme="@style/botaoPadrao" />
@@ -30,7 +28,6 @@
         android:backgroundTint="@color/DarkCyan"
         android:layout_marginBottom="66dp"
         android:layout_marginRight="16dp"
-
         app:fabSize="normal"
         app:srcCompat="@drawable/rota"
         android:visibility="gone"

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="40"
-            android:text="Cidade"
+            android:text="@string/textView_cidade"
             android:textSize="18sp" />
 
         <TextView
@@ -23,14 +23,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Data" />
+            android:text="@string/textView_data" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textViewRua"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="NomeRua" />
+        android:text="@string/textView_nome_rua" />
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

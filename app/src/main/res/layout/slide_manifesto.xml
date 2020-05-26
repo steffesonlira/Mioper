@@ -5,21 +5,23 @@
 
     <ImageView
         android:id="@+id/imgManifesto1"
-        android:layout_width="190dp"
-        android:layout_height="245dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="175dp"
+        android:layout_height="187dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
         app:srcCompat="@drawable/manifesto1" />
 
     <TextView
         android:id="@+id/txtManifesto1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imgManifesto1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="280dp"
-        android:textColor="@color/White"
+        android:layout_marginTop="20dp"
         android:text="Manifesto 1"
         android:textAlignment="center"
+        android:textColor="@color/White"
         android:textSize="34sp"
         android:textStyle="bold" />
 
@@ -27,11 +29,12 @@
         android:id="@+id/txtManifesto1Desc1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="370dp"
-        android:textColor="@color/White"
+        android:layout_below="@+id/txtManifesto1"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:textSize="25dp"
-        android:layout_centerHorizontal="true"
         android:inputType="textMultiLine"
-        android:text="" />
+        android:text=""
+        android:textColor="@color/White"
+        android:textSize="25dp" />
 </RelativeLayout>

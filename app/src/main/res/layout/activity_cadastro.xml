@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
-                android:hint="Nome:"
+                android:hint="@string/nome_edit_text_hint"
                 android:inputType="textPersonName"
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"
@@ -52,6 +52,7 @@
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+
             <EditText android:id="@+id/input_address"
                 android:layout_width="match_parent"
                 android:textColorHighlight="#C5C1C1"
@@ -60,7 +61,7 @@
                 android:backgroundTint="@android:color/white"
                 android:textColor="@color/White"
                 android:inputType="textPostalAddress"
-                android:hint="Endereço Residencial:" />
+                android:hint="@string/edit_text_endereco_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -72,6 +73,7 @@
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+
             <EditText android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:textColorHighlight="#C5C1C1"
@@ -80,7 +82,7 @@
                 android:backgroundTint="@android:color/white"
                 android:textColor="@color/White"
                 android:inputType="textEmailAddress"
-                android:hint="E-mail:" />
+                android:hint="@string/edit_text_email_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -99,7 +101,7 @@
                 android:textCursorDrawable="@color/design_default_color_primary_dark"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:hint="Celular:" />
+                android:hint="@string/edit_text_celular_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label -->
@@ -109,6 +111,7 @@
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,7 +120,7 @@
                 android:textColor="@color/White"
                 android:textCursorDrawable="@color/design_default_color_primary_dark"
                 android:inputType="textPassword"
-                android:hint="Senha:"/>
+                android:hint="@string/edit_text_senha_hint"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Re-enter Label -->
@@ -127,6 +130,7 @@
             android:textColorHint="#FFFFFF"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
+
             <EditText android:id="@+id/input_reEnterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,18 +139,9 @@
                 android:textColorHighlight="#C5C1C1"
                 android:textColor="@color/White"
                 android:textCursorDrawable="@color/design_default_color_primary_dark"
-                android:hint="Confirme a senha:"/>
+                android:hint="@string/edittext_con_senha_hint"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <ToggleButton-->
-<!--            android:id="@+id/tbTipoUser"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:onClick="onToggleClick"-->
-<!--            android:textOff="Passageiro"-->
-<!--            android:textOn="Motorista"-->
-<!--            ></ToggleButton>-->
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -159,7 +154,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="10dp"
-        android:text="Passageiro"
+        android:text="@string/text_view_passageiro"
         android:textColor="#009688" />
     <Switch
         android:id="@+id/switchTipoUsuario"
@@ -175,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/White"
-            android:text="Motorista"
+            android:text="@string/text_view_motorista"
            />
 </androidx.appcompat.widget.LinearLayoutCompat>
         <!-- Signup Button -->
@@ -188,14 +183,14 @@
             android:padding="12dp"
             android:textColor="@color/White"
             android:background="@drawable/botao"
-            android:text="Criar conta"/>
+            android:text="@string/button_criar_conta"/>
 
         <TextView android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:hint="@android:color/white"
-            android:text="Já é um Mioper? Faça o Login"
+            android:text="@string/text_view_login_link"
             android:textColorHighlight="#C5C1C1"
             android:textColor="@android:color/white"
             android:textCursorDrawable="@color/design_default_color_primary_dark"

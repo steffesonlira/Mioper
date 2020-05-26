@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
-                    android:hint="Nome"
+                    android:hint="@string/editText_nome_hint"
                     android:inputType="textPersonName"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
@@ -69,7 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
-                    android:hint="Endereço Residencial"
+                    android:hint="@string/editText_end_residencial"
                     android:inputType="textPostalAddress"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
-                    android:hint="Celular"
+                    android:hint="@string/editText_celular_hint"
                     android:inputType="number"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
@@ -154,7 +154,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/white"
-                    android:hint="CPF"
+                    android:hint="@string/editText_cpf_hint"
                     android:inputType="number"
                     android:textColor="@color/White"
                     android:textColorHighlight="#C5C1C1"
@@ -173,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="80dp"
                     android:layout_marginRight="10dp"
-                    android:text="Masculino"
+                    android:text="@string/textView_masculino"
                     android:textColor="#009688" />
 
             <Switch
@@ -188,7 +188,7 @@
                     android:id="@+id/txtMasculino"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Feminino"
+                    android:text="@string/textView_feminino"
                     android:textColor="@color/White" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -207,7 +207,7 @@
                 android:onClick="salvarAlteracoes"
                 android:textColorHighlight="#C5C1C1"
                 android:textColor="@android:color/white"
-                android:text="Salvar Alterações" />
+                android:text="@string/button_salvar_alteracoes" />
 
             <!-- Botão Alterar Senha -->
             <Button
@@ -223,7 +223,7 @@
                 android:drawableLeft="@drawable/ic_altera_senha"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/botao"
-                android:text="Alterar Senha" />
+                android:text="@string/button_alterar_senha" />
 
             <Button
                 android:id="@+id/btnExcluirConta"
@@ -238,7 +238,7 @@
                 android:textColor="@color/White"
                 android:onClick="excluirUsuario"
                 android:background="@drawable/botao"
-                android:text="Excluir Conta" />
+                android:text="@string/button_excluir_conta" />
 
         </LinearLayout>
 

@@ -16,14 +16,16 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Número do Cartão" />
+                android:text="@string/num_cartao_label" />
+
+
 
             <com.santalu.maskedittext.MaskEditText
                 android:id="@+id/numeroCartaoID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="0000 0000 0000 0000"
+                android:hint="@string/num_cartao_mask_hint"
                 app:met_mask="#### #### #### ####"
                 android:inputType="number"
                 android:imeOptions="actionNext"/>
@@ -47,14 +49,14 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data de Vencimento" />
+                        android:text="@string/data_venc_label" />
 
                     <com.santalu.maskedittext.MaskEditText
                         android:id="@+id/dataVencimentoCartaoID"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="MM/AA"
+                        android:hint="@string/data_venc_mask_hint"
                         android:inputType="number"
                         app:met_mask="##/##"
                         android:imeOptions="actionNext"/>
@@ -69,14 +71,14 @@
                         android:id="@+id/textView5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Código de Segurança" />
+                        android:text="@string/codigo_seg_label" />
 
                     <com.santalu.maskedittext.MaskEditText
                         android:id="@+id/codigoSegurancaCartaoID"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="CVV"
+                        android:hint="@string/codigo_seg_mask_hint"
                         android:inputType="number"
                         app:met_mask="###" />
                 </LinearLayout>
@@ -89,7 +91,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="80dp"
                 android:background="@drawable/botao"
-                android:text="Confirmar"
+                android:text="@string/confirmar_button"
                 android:textColor="@color/White"
                 android:textStyle="bold" />
 

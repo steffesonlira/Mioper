@@ -21,9 +21,7 @@
     <string name="menu_sobre_nos">Sobre Nós</string>
     <string name="menu_sair">Sair</string>
 
-    <string name="dinheiro">Dinheiro</string>
 
-    <string name="logoMarca">O mundo se abre com apenas um toque</string>
     <!-- Strings para facebook login -->
     <string name="facebook_app_id">2388688338068853</string>
     <string name="fb_login_protocol_scheme">fb2388688338068853</string>
@@ -34,7 +32,6 @@
     <string name="back4app_app_id">2486ca8630c32215f629f21be63aa984</string>
     <string name="back4app_client_key">Cbecwmh34y3ovRkuCfHsqEcozbZ4jh0sPFvCIvY7</string>
     <string name="descricao">Insira seu e-mail cadastrado para que enviemos a você um link para a redefinição de senha:</string>
-    <string name="description">Insira seu e-mail para que seja enviado um link para a redefinição de senha:</string>
     <string name="error_invalid_password">Senha Incorreta</string>
     <string name="error_invalid_email">Email incorreto</string>
     <string name="error_field_required">Email Incorreto</string>
@@ -223,6 +220,7 @@
     <string name="text_desc_enc_viagem">Sua viagem ficou: R$ </string>
     <string name="encerrar_viagem">Encerrar Viagem</string>
     <string name="success_title_confirme_viagem">Confirme seu Destino</string>
+
     <string-array name="paises">
         <item>Brasil</item>
         <item>Afeganistão</item>
@@ -253,4 +251,142 @@
         <item>Sugestão</item>
         <item>Outros</item>
     </string-array>
+
+    <!--Strings activity_alterar_senha -->
+    <string name="alterar_button">Alterar</string>
+    <string name="confirmar_senha_hint">Confirmar Senha</string>
+    <string name="nova_senha_hint">Nova Senha</string>
+    <string name="senha_antiga_label">Senha Antiga</string>
+
+
+    <!--Strings activity_cadastrar_cartao -->
+    <string name="num_cartao_label">Número do Cartão</string>
+    <string name="num_cartao_mask_hint">0000 0000 0000 0000</string>
+    <string name="data_venc_label">Data de Vencimento</string>
+    <string name="data_venc_mask_hint">MM/AA</string>
+    <string name="codigo_seg_label">Código de Segurança</string>
+    <string name="codigo_seg_mask_hint">CVV</string>
+    <string name="confirmar_button">Confirmar</string>
+
+
+    <!--Strings activity_cadastro -->
+    <string name="nome_edit_text_hint">Nome:</string>
+    <string name="edit_text_endereco_hint">Endereço Residencial:</string>
+    <string name="edit_text_email_hint">E-mail:</string>
+    <string name="edit_text_celular_hint">Celular:</string>
+    <string name="edit_text_senha_hint">Senha:</string>
+    <string name="edittext_con_senha_hint">Confirme a senha:</string>
+    <string name="text_view_passageiro">Passageiro</string>
+    <string name="text_view_motorista">Motorista</string>
+    <string name="button_criar_conta">Criar conta</string>
+    <string name="text_view_login_link">Já é um Mioper? Faça o Login</string>
+
+    <!--Strings padrão para activity Sobre -->
+    <string name="button_anterior">Anterior</string>
+    <string name="button_proximo">Próximo</string>
+
+
+    <!--Strings activity_corrida -->
+    <string name="button_aceitar_corrida">Aceitar corrida</string>
+
+
+    <!--Strings activity_design_thinking -->
+    <string name="button_anterior_design_thinking">Anterior</string>
+    <string name="button_proximo_design_thinking">Próximo</string>
+
+    <!--Strings activity_esqueci_senha -->
+    <string name="text_view_desc_esqueci_senha">Insira seu e-mail para que seja enviado um link para a redefinição de senha:</string>
+    <string name="button_recuperar_senha">Recuperar Senha</string>
+
+
+    <!--Strings activity_historia -->
+    <string name="button_anterior_historia">Anterior</string>
+    <string name="button_proximo_historia">Próximo</string>
+
+    <!--Strings activity_login-->
+    <string name="text_view_email_hint">E-mail:</string>
+    <string name="text_view_senha_hint">Senha:</string>
+    <string name="button_acessar">Acessar</string>
+    <string name="text_view_desc_cadastro_link">Não tem uma conta ? Clique AQUI para se tornar um Mioper</string>
+    <string name="text_view_desc_esqueci_senha_link">Esqueceu a senha ? Clique AQUI para recuperá-la</string>
+
+    <!--Strings activity_main-->
+    <string name="text_view_logoMarca">O mundo se abre com apenas um toque</string>
+
+    <!--Strings activity_metodos_de_pagamentos-->
+    <string name="text_view_dinheiro">Dinheiro</string>
+    <string name="button_adicionar_cartao">Adicionar Cartão para Pagamento</string>
+
+
+    <!--Strings activity_missao-->
+    <string name="button_anterior_missao">Anterior</string>
+    <string name="button_proximo_missao">Próximo</string>
+
+    <!--Strings activity_onboarding-->
+    <string name="button_anterior_onboarding">Anterior</string>
+    <string name="button_proximo_onboarding">Próximo</string>
+
+
+    <!--Strings activity_passageiro-->
+    <string name="editText_destino">Digite seu destino (Ex: Nome da rua, cidade)</string>
+    <string name="button_solicita_mioper">Solicitar Mioper</string>
+
+    <!--Strings activity_requisicoes-->
+    <string name="textView_aguard_requisicoes">Aguardando Requisições</string>
+
+    <!--Strings activity_requisition-->
+    <string name="textView_requisition">REQUISITION SCREEN</string>
+
+    <!--Strings adapter_requisicoes-->
+    <string name="textView_cidade">Cidade</string>
+    <string name="textView_data">Data</string>
+    <string name="textView_nome_rua">NomeRua</string>
+
+    <!--Strings adapter_lista_pagamentos-->
+    <string name="button_remover">Remover</string>
+
+    <!--Strings adapter_requisicoes-->
+    <string name="textView_carregando">Carregando...</string>
+
+    <!--Strings content_historico_viagens-->
+    <string name="textView_aviso_viagens">Você ainda não realizou nenhuma viagem</string>
+
+    <!--Strings content_indique_ganhe-->
+    <string name="button_convidar_amigos">Convidar Amigos</string>
+
+    <!--Strings content_meus_dados-->
+    <string name="editText_nome_hint">Nome</string>
+    <string name="editText_end_residencial">Endereço Residencial</string>
+    <string name="editText_celular_hint">Celular</string>
+    <string name="editText_cpf_hint">CPF</string>
+    <string name="textView_masculino">Masculino</string>
+    <string name="textView_feminino">Feminino</string>
+    <string name="button_salvar_alteracoes">Salvar Alterações</string>
+    <string name="button_alterar_senha">Alterar Senha</string>
+    <string name="button_excluir_conta">Excluir Conta</string>
+
+    <!--Strings content_sobre-->
+    <string name="textView_o_que_e_o_mioper">O que é o Mioper?</string>
+    <string name="textView_manifesto_mioper">Manifesto Mioper</string>
+    <string name="textView_design_thinking">Design Thinking</string>
+    <string name="textView_nossa_historia">Nossa Historia</string>
+    <string name="textView_missao">Missão</string>
+    <string name="textView_visao">Visão</string>
+    <string name="textView_valores">Valores</string>
+
+    <!--Strings content_suporteusuario-->
+    <string name="textView_suporte_usuario">Suporte ao Usuário</string>
+    <string name="editText_email_suporte">mioper.suporte@outlook.com</string>
+    <string name="spiner_assunto_hint">Assunto:</string>
+    <string name="editText_para_hint">Para:</string>
+    <string name="edit_text_mensagem_hint">Digite sua Mensagem aqui:</string>
+    <string name="button_enviar_mensagem">Enviar Mensagem</string>
+
+    <!--Strings customtoast-->
+    <string name="textView_bem_vindo_ao_mioper">Bem vindo ao Mioper</string>
+
+    <!--Strings nav_headert_principal-->
+    <string name="textView_ola">Olá</string>
+    <string name="textView_nome_usuario">nomeUsuario</string>
+
 </resources>

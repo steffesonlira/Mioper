@@ -36,7 +36,7 @@
         android:layout_width="141dp"
         android:layout_height="74dp"
         android:background="@drawable/botao"
-        android:text="Convidar Amigos"
+        android:text="@string/button_convidar_amigos"
         android:textColor="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

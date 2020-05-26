@@ -31,7 +31,7 @@
             android:drawablePadding="6dp"
             android:drawableTint="@android:color/darker_gray"
             android:ems="10"
-            android:hint="Digite seu destino (Ex: Nome da rua, cidade)"
+            android:hint="@string/editText_destino"
             android:inputType="textPersonName"
             android:textColor="#424242"
             android:textColorHint="#757575"
@@ -45,7 +45,7 @@
         android:layout_height="60dp"
         android:background="@drawable/botao"
         android:layout_gravity="bottom"
-        android:text="Solicitar Mioper"
+        android:text="@string/button_solicita_mioper"
         android:onClick="chamarUber"
         android:theme="@style/botaoPadrao" />
 

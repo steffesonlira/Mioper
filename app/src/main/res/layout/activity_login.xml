@@ -39,7 +39,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_user"
             android:layout_width="match_parent"
-            android:hint="E-mail:"
+            android:hint="@string/text_view_email_hint"
             android:textColorHint="#FFFFFF"
             android:layout_height="wrap_content">
 
@@ -66,7 +66,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_password"
             android:layout_width="match_parent"
-            android:hint="Senha:"
+            android:hint="@string/text_view_senha_hint"
             android:textColorHint="#FFFFFF"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true"
@@ -99,7 +99,7 @@
             android:layout_marginBottom="24dp"
             android:background="@drawable/botao"
             android:padding="8dp"
-            android:text="Acessar"
+            android:text="@string/button_acessar"
             android:textScaleX="1"
             android:textColor="@color/White"
             android:textAlignment="center"
@@ -113,7 +113,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Não tem uma conta ? Clique AQUI para se tornar um Mioper"
+            android:text="@string/text_view_desc_cadastro_link"
             android:textColor="#FFFFFF"
             android:textColorHint="@android:color/background_light"
             android:textSize="16dip"
@@ -129,9 +129,6 @@
             android:layout_width="match_parent"
             android:layout_height="136dp">
 
-            <!--Label Criar Conta -->
-
-
             <!-- Label Esqueci a Senha -->
             <TextView
                 android:id="@+id/txtEsqueciSenhaId"
@@ -139,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:text="Esqueceu a senha ? Clique AQUI  para recuperá-la"
+                android:text="@string/text_view_desc_esqueci_senha_link"
                 android:textColor="#FFFFFF"
                 android:textColorLink="#3F51B5"
                 android:textSize="16sp"

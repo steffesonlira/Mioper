@@ -43,7 +43,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="O que é o Mioper?"
+                            android:text="@string/textView_o_que_e_o_mioper"
                             android:textColor="@color/White"
                             android:gravity="center"
                             android:textSize="24sp"
@@ -97,7 +97,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Manifesto Mioper"
+                                    android:text="@string/textView_manifesto_mioper"
                                     android:textSize="14sp"
                                     android:layout_below="@+id/imgManifesto"
                                     android:layout_centerHorizontal="true"
@@ -139,7 +139,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Design Thinking"
+                                    android:text="@string/textView_design_thinking"
                                     android:textSize="14sp"
                                     android:textStyle="bold"
                                     android:layout_below="@+id/imgDesignThinking"
@@ -191,7 +191,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Nossa Historia"
+                                    android:text="@string/textView_nossa_historia"
                                     android:textStyle="bold"
                                     android:textSize="14sp"
                                     android:layout_below="@+id/imgHistoria"
@@ -234,7 +234,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Missão"
+                                    android:text="@string/textView_missao"
                                     android:textStyle="bold"
                                     android:textSize="14sp"
                                     android:layout_below="@+id/imgMissao"
@@ -286,7 +286,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Visão"
+                                    android:text="@string/textView_visao"
                                     android:textStyle="bold"
                                     android:textSize="14sp"
                                     android:layout_below="@+id/imgVisao"
@@ -328,7 +328,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Valores"
+                                    android:text="@string/textView_valores"
                                     android:textStyle="bold"
                                     android:textSize="14sp"
                                     android:layout_below="@+id/imgValores"

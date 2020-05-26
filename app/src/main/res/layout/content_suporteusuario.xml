@@ -50,7 +50,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="Suporte ao Usuário"
+            android:text="@string/textView_suporte_usuario"
             android:textColor="@color/White"
             android:textSize="30sp" />
 
@@ -66,9 +66,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
-                android:hint="Para:"
+                android:hint="@string/editText_para_hint"
                 android:inputType="textEmailAddress"
-                android:text="mioper.suporte@outlook.com"
+                android:text="@string/editText_email_suporte"
                 android:enabled="false"
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"
@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:backgroundTint="@android:color/white"
-                android:hint="Assunto:"
+                android:hint="@string/spiner_assunto_hint"
                 android:inputType="text"
                 android:textColor="@color/White"
                 android:textColorHighlight="#C5C1C1"
@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:backgroundTint="@android:color/white"
-                android:hint="Digite sua Mensagem aqui:"
+                android:hint="@string/edit_text_mensagem_hint"
                 android:gravity="top"
                 android:inputType="textMultiLine"
                 android:textColor="@color/White"
@@ -132,7 +132,7 @@
             android:background="@drawable/botao"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Enviar Mensagem"/>
+            android:text="@string/button_enviar_mensagem"/>
 
     </LinearLayout>
 </ScrollView>

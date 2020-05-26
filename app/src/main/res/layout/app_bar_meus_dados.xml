@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MeusDados">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimaryDark"
-        app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" >
-
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="25dp"
-            app:srcCompat="@drawable/logo" />
-
-
-    </androidx.appcompat.widget.Toolbar>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,13 +13,13 @@
         android:layout_height="match_parent">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingTop="56dp"
-        android:paddingRight="24dp"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingTop="56dp"
+            android:paddingRight="24dp"></LinearLayout>
 
 
     </ScrollView>

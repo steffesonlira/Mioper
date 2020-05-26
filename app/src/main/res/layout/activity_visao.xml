@@ -32,7 +32,7 @@
         android:layout_alignParentBottom="true"
         android:textColor="@color/White"
         android:background="@color/transparent"
-        android:text="Anterior" />
+        android:text="@string/button_anterior" />
 
     <Button
         android:id="@+id/btnProximoVisao"
@@ -42,7 +42,7 @@
         android:layout_alignParentRight="true"
         android:textColor="@color/White"
         android:background="@color/transparent"
-        android:text="Próximo" />
+        android:text="@string/button_proximo" />
 
 
 </RelativeLayout>

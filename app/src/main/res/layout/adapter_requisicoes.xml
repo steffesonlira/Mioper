@@ -9,7 +9,7 @@
         android:id="@+id/textRequisicaoNome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Carregando..."
+        android:text="@string/textView_carregando"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -17,20 +17,24 @@
         android:id="@+id/textRequisicaoEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Carregando..."
+        android:text="@string/textView_carregando"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textRequisicaoDestino"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Carregando..."
+        android:text="@string/textView_carregando"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textRequisicaoDistancia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Carregando..."
+        android:text="@string/textView_carregando"
         android:textSize="12sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/DarkCyan"/>
 </LinearLayout>
