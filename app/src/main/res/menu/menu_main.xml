@@ -4,13 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+
     <item
         android:id="@+id/gerenciarDados"
         android:title="Gerenciar Dados"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menuSair"
+        android:contentDescription="www"
         android:title="Sair"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        />
 
 </menu>

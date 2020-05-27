@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MeusDados">
+    tools:context=".view.MeusDados">
 
 
     <ScrollView

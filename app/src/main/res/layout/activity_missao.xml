@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bkgmissao"
-    tools:context=".Onboarding">
+    tools:context=".view.Onboarding">
 
 
     <androidx.viewpager.widget.ViewPager

@@ -20,6 +20,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
+import com.cursoandroid.mioper.firebase.UsuarioFirebase;
+import com.cursoandroid.mioper.model.Mask;
+import com.cursoandroid.mioper.model.UserProfile;
+import com.cursoandroid.mioper.view.Login;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -30,7 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.cursoandroid.mioper.UsuarioFirebase.getUsuarioAtual;
+import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getUsuarioAtual;
 //endregion
 
 public class Cadastro extends AppCompatActivity {

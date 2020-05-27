@@ -4,7 +4,6 @@
     package="com.cursoandroid.mioper">
 
     <application
-
         android:allowBackup="true"
         android:appComponentFactory="whateverString"
         android:icon="@mipmap/ic_launcher"
@@ -13,78 +12,87 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".CadastrarCartaoActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity android:name=".MetodosDePagamentoActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
         <activity
-            android:name=".IndiqueGanhe"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:name=".view.CadastrarCartaoActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity android:name=".AdapterHistoricoViagem" />
-        <activity android:name=".AlterarSenha"
+
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Corrida"
-            android:parentActivityName=".Corrida"
+            android:name=".view.MetodosDePagamentoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.IndiqueGanhe"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".adapter.AdapterHistoricoViagem" />
+        <activity
+            android:name=".view.AlterarSenha"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Corrida"
+            android:parentActivityName=".view.Corrida"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Requisicoes" />
+                android:value=".view.Requisicoes" />
         </activity>
-        <activity android:name=".RequisicoesAdapter"
+        <activity
+            android:name=".adapter.RequisicoesAdapter"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Requisicoes"
+            android:name=".view.Requisicoes"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Passageiro"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".Valores"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".Visao"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".Missao"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".Historia"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity android:name=".DesignThinking"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
-        <activity
-            android:name=".Onboarding"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Sobre"
+            android:name=".view.Passageiro"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".SuporteUsuario"
+            android:name=".view.Valores"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Visao"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Missao"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Historia"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.DesignThinking"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Onboarding"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.Sobre"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".view.SuporteUsuario"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
@@ -94,25 +102,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HistoricoViagens"
+            android:name=".view.HistoricoViagens"
             android:label="@string/title_activity_historico_viagens"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".MeusDados"
+            android:name=".view.MeusDados"
             android:label="@string/title_activity_meus_dados"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Principal"
+            android:name=".view.Principal"
             android:label="@string/title_activity_principal"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".EsqueciSenha"
+            android:name=".view.EsqueciSenha"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
@@ -122,13 +130,13 @@
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Login"
+            android:name=".view.Login"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             tools:ignore="LockedOrientationActivity">
@@ -192,7 +200,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

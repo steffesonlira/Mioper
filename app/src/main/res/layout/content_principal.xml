@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/vanlogo"
-    tools:context=".Principal"
+    tools:context=".view.Principal"
     tools:showIn="@layout/app_bar_principal">
 
 
