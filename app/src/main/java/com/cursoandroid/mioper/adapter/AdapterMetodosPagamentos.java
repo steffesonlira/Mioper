@@ -63,6 +63,7 @@ public class AdapterMetodosPagamentos extends RecyclerView.Adapter<AdapterMetodo
 
                 //REMOÇÃO DO ITEM DA LISTA
                 tipoPagamentoOK.clear();
+                notifyDataSetChanged();
 //
             }
         });
