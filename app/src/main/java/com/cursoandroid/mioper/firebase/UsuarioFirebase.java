@@ -34,15 +34,22 @@ public class UsuarioFirebase {
 
     public static UserProfile getDadosUsuarioLogado() {
 
-        FirebaseUser firebaseUser = getUsuarioAtual();
 
-        UserProfile usuario = new UserProfile();
-        usuario.setId(firebaseUser.getUid());
-        usuario.setEmail(firebaseUser.getEmail());
-        usuario.setName(firebaseUser.getDisplayName());
 
+            FirebaseUser firebaseUser = getUsuarioAtual();
+
+            UserProfile usuario = new UserProfile();
+        try {
+            usuario.setId(firebaseUser.getUid());
+            usuario.setEmail(firebaseUser.getEmail());
+            usuario.setName(firebaseUser.getDisplayName());
+
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+
+        }
         return usuario;
-
     }
 
     public static boolean atualizarNomeUsuario(String nome) {
@@ -138,18 +145,21 @@ public class UsuarioFirebase {
 
         //Recupera dados usuário logado
         UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+        try {
+            //Configura localização do usuário
+            geoFire.setLocation(
+                    usuarioLogado.getId(),
+                    new GeoLocation(lat, lon),
+                    (key, error) -> {
+                        if (error != null) {
+                            Log.d("Erro", "Erro ao salvar local!");
+                        }
 
-        //Configura localização do usuário
-        geoFire.setLocation(
-                usuarioLogado.getId(),
-                new GeoLocation(lat, lon),
-                (key, error) -> {
-                    if (error != null) {
-                        Log.d("Erro", "Erro ao salvar local!");
                     }
-
-                }
-        );
+            );
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
     }
 
