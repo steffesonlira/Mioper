@@ -1,11 +1,24 @@
-# Mioper  - Transporte de Vans Compartilhado
+## Mioper  - Transporte de Vans Compartilhado
 ## O que é?
 O objetivo do desenvolvimento do aplicativo MIOPER é oferecer uma solução para que  usuários possam locomover-se de maneira acessível e prática, tendo como intermediário um aplicativo que realizará todo o gerenciamento de veículos disponíveis bem como suas rotas e custos a serem cobrados do ponto A ao ponto B. Ao mesmo tempo gerar uma renda extra para os motoristas de transportes coletivos privados e incentivar o uso desse tipo de transporte para contribuição da redução de trânsitos, principalmente nas grandes cidades.
 
 Conheça melhor a aplicação com o video demonstrativo do Mioper
 
-##### [Overview Mioper  – Marketing da Aplicação ]
+##### Overview Mioper  – Marketing da Aplicação
 ![](https://i.imgur.com/gOFir7d.png)
+
+Bibliotecas Utilizadas
+
+- [Card View](https://developer.android.com/reference/androidx/cardview/widget/CardView?hl=en "CArd View")
+- [Butter Knife](https://jakewharton.github.io/butterknife/ "Butter Knife")
+- [Firebase](https://firebase.google.com/?hl=pt-br "Firebase")
+- [Glide](https://bumptech.github.io/glide/ "Glide")
+- [Picasso](https://square.github.io/picasso/ "Picasso")
+- [Lottie](https://lottiefiles.com/ "Lottie")
+- [Recycler View](https://developer.android.com/reference/androidx/recyclerview/widget/package-summary?hl=en "Recycler View")
+- [Mak Edit Text](https://codinginflow.com/tutorials/android/mask-edittext "Mak Edit Text")
+- [Navigation](https://developer.android.com/guide/navigation "Navigation")
+- [Maps](https://developer.android.com/training/maps "Maps")
 
 ## Utilização do Design Thinking como Metodologia de Desenvolvimento
 O desenvolvimento da solução teve como base o Design Thinking para chegar no resultado esperado, passando pelas seguintes fases:
@@ -37,5 +50,12 @@ Veja abaixo as principais telas do aplicativo Mioper:
 
 ### Menu Principal
 ![](https://i.imgur.com/MceiyjE.jpg)
+
+### Navegação Motorista X Passageiro
+![](https://i.imgur.com/IpT6cmE.png)
+
+###  Sobre o Mioper
+![](https://i.imgur.com/z6tTCOZ.png)
+
 
 
