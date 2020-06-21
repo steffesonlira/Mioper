@@ -6,7 +6,7 @@
 
 Conheça melhor a aplicação com o video demonstrativo do Mioper
 
-### Overview Mioper  – Marketing da Aplicação
+## Overview Mioper  – Marketing da Aplicação
 ![](https://i.imgur.com/gOFir7d.png)
 
 
@@ -32,7 +32,7 @@ Conheça melhor a aplicação com o video demonstrativo do Mioper
 </p>
 
 
-#### Bibliotecas Utilizadas
+## Bibliotecas Utilizadas
 
 - [Card View](https://developer.android.com/reference/androidx/cardview/widget/CardView?hl=en "CArd View")
 - [Butter Knife](https://jakewharton.github.io/butterknife/ "Butter Knife")
