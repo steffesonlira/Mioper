@@ -26,9 +26,9 @@ Conheça melhor a aplicação com o video demonstrativo do Mioper
 <p align="center">
   <img title="Navigation Screen 2" alt="Navigation Screen 2" src="https://i.imgur.com/hTSDaOU.gif">
   &emsp;
-  <img title="Navigation Screen 3" alt="Navigation Screen 3" src="">
+  <img title="Navigation Screen 3" alt="Navigation Screen 3" src="https://i.imgur.com/ZphbS0x.gif">
   &emsp;
-  <img alt="Navigation Screen 4" title="Navigation Screen 4" src="">
+  <img alt="Navigation Screen 4" title="Navigation Screen 4" src="https://i.imgur.com/lNGzdna.gif">
 </p>
 
 
