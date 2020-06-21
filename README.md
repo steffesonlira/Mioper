@@ -4,14 +4,33 @@
   <img src="https://i.imgur.com/k4xyDMA.png" alt="Sublime's custom image"/>
 </p>
 
-
-## O que é?
-O objetivo do desenvolvimento do aplicativo MIOPER é oferecer uma solução para que  usuários possam locomover-se de maneira acessível e prática, tendo como intermediário um aplicativo que realizará todo o gerenciamento de veículos disponíveis bem como suas rotas e custos a serem cobrados do ponto A ao ponto B. Ao mesmo tempo gerar uma renda extra para os motoristas de transportes coletivos privados e incentivar o uso desse tipo de transporte para contribuição da redução de trânsitos, principalmente nas grandes cidades.
-
 Conheça melhor a aplicação com o video demonstrativo do Mioper
 
 ##### Overview Mioper  – Marketing da Aplicação
 ![](https://i.imgur.com/gOFir7d.png)
+
+
+## O que é?
+<div style="text-align: justify;">O objetivo do desenvolvimento do aplicativo MIOPER é oferecer uma solução para que  usuários possam locomover-se de maneira acessível e prática, tendo como intermediário um aplicativo que realizará todo o gerenciamento de veículos disponíveis bem como suas rotas e custos a serem cobrados do ponto A ao ponto B. Ao mesmo tempo gerar uma renda extra para os motoristas de transportes coletivos privados e incentivar o uso desse tipo de transporte para contribuição da redução de trânsitos, principalmente nas grandes cidades.</div>
+
+
+## Imagens Demonstrativas da Aplicação
+
+<p align="center">
+  <img title="First Screen Splash" alt="First Screen Splash Screen" src="https://i.imgur.com/Bfx4jc3.gif">
+  &emsp;
+  <img title="Login Mioper" alt="Login Mioper" src="https://i.imgur.com/1ug3izc.gif">
+  &emsp;
+  <img alt="Navigation Screen 1" title="Navigation Screen 1" src="https://i.imgur.com/2LcqdoJ.gif">
+</p>
+<p align="center">
+  <img title="Navigation Screen 2" alt="Navigation Screen 2" src="https://i.imgur.com/hTSDaOU.gif">
+  &emsp;
+  <img title="Navigation Screen 3" alt="Navigation Screen 3" src="">
+  &emsp;
+  <img alt="Navigation Screen 4" title="Navigation Screen 4" src="">
+</p>
+
 
 Bibliotecas Utilizadas
 
@@ -48,17 +67,3 @@ Ao finalizar discussões e definições mais específicas referente a utilizaç�
 ### Implementação
 Ao finalizar a etapa de prototipação, com todas as telas melhoradas e resultados obtidos durante esses anos, foi possível entrar na fase de implementação, onde todo o desenvolvimento real do aplicativo com implementação de banco de dados para a manipulação dos dados, todas as funcionalidades possíveis foram sendo geradas, chegando a conclusão estruturada dos resultados, que foram obtidos durante todo esse período. 
 
-# Principais Telas do Mioper
-Veja abaixo as principais telas do aplicativo Mioper:
-
-### Tela de Login
-![](https://i.imgur.com/IMpLiR1.jpg)
-
-### Menu Principal
-![](https://i.imgur.com/MceiyjE.jpg)
-
-### Navegação Motorista X Passageiro
-![](https://i.imgur.com/IpT6cmE.png)
-
-###  Sobre o Mioper
-![](https://i.imgur.com/z6tTCOZ.png)
