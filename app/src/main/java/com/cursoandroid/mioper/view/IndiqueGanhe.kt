@@ -1,136 +1,101 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterViewFlipper;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterViewFlipper
+import android.widget.BaseAdapter
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import com.cursoandroid.mioper.R
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+class IndiqueGanhe : AppCompatActivity() {
+    private lateinit var adapterViewFlipper: AdapterViewFlipper
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var btnInvite: Button
+    private var analytics: FirebaseAnalytics? = null
+    lateinit var txtCodigo: TextView
 
-import com.cursoandroid.mioper.R;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.FirebaseAuth;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.content_indique_ganhe)
+        btnInvite = findViewById(R.id.btnInvite)
+        mAuth = FirebaseAuth.getInstance()
+        adapterViewFlipper = findViewById(R.id.idAdapterVF)
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        txtCodigo = findViewById(R.id.txtCodigo)
 
-public class IndiqueGanhe extends AppCompatActivity {
-    private static final String TAG = "Mioper";
-    private AdapterViewFlipper adapterViewFlipper;
-    private static final String[] TEXT = {"Entre no App do Mioper", "Procure pelo Mioper mais próximo", "O Motorista aceitará sua solicitação", "Partiu Viajar com o Mioper"};
-    private static final int[] IMAGES = {R.drawable.indique1, R.drawable.indique2,R.drawable.indique3,R.drawable.indique4};
-    private FirebaseAuth mAuth;
-    private Button btnInvite;
-    private FirebaseAnalytics analytics;
-    public TextView txtCodigo;
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "Indique e Ganhe"
 
+        val adapter = FlipperAdapter(this, TEXT, IMAGES)
+        adapterViewFlipper.adapter = adapter
+        adapterViewFlipper.isAutoStart = true
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_indique_ganhe);
-        btnInvite = findViewById(R.id.btnInvite);
-        mAuth = FirebaseAuth.getInstance();
-        adapterViewFlipper = findViewById(R.id.idAdapterVF);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        txtCodigo = findViewById(R.id.txtCodigo);
-
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Indique e Ganhe");
-        //endregion
-
-        //Criando objeto adapter
-        FlipperAdapter adapter = new FlipperAdapter(this, TEXT,IMAGES);
-        adapterViewFlipper.setAdapter(adapter);
-        adapterViewFlipper.setAutoStart(true);
-
-        //click botão Invite
-        btnInvite.setOnClickListener(v -> {
-            onInviteClicked();
-        });
-    }
-
-    class FlipperAdapter extends BaseAdapter {
-        Context ctx;
-        int[] images;
-        String[] text;
-        LayoutInflater inflater;
-
-        public FlipperAdapter(Context context, String[] myText, int[] myImages) {
-            this.ctx = context;
-            this.images = myImages;
-            this.text = myText;
-            inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getCount() {
-            return text.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = inflater.inflate(R.layout.sliderimages, null);
-            TextView txtName = view.findViewById(R.id.idTxtImageView);
-            ImageView txtImage = view.findViewById(R.id.idImgView);
-            txtName.setText(text[i]);
-            txtName.setTextSize(18);
-            txtImage.setImageResource(images[i]);
-            return view;
+        btnInvite.setOnClickListener {
+            onInviteClicked()
         }
     }
 
-    private void onInviteClicked() {
-        //get text from blovetext1
-        String text = txtCodigo.getText().toString();
-        //Sharing intent
-        Intent mSharingIntent = new Intent(Intent.ACTION_SEND);
-        mSharingIntent.setType("text/plain");
-        mSharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Write your subject here");
-        mSharingIntent.putExtra(Intent.EXTRA_TEXT, text);
-        startActivity(Intent.createChooser(mSharingIntent, "Share text via"));
-    }
+    inner class FlipperAdapter(
+        var ctx: Context,
+        var text: Array<String>,
+        var images: IntArray
+    ) : BaseAdapter() {
+        var inflater: LayoutInflater = LayoutInflater.from(ctx)
 
+        override fun getCount(): Int = text.size
 
-    //region Criação do Menu Toolbar XML
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.principal
-                , menu);
-        return true;
-    }
-    //endregion
+        override fun getItem(position: Int): Any? = null
 
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
-                break;
-            default:
-                break;
+        override fun getItemId(position: Int): Long = 0
+
+        override fun getView(i: Int, view: View?, viewGroup: ViewGroup?): View {
+            val itemView = inflater.inflate(R.layout.sliderimages, null)
+            val txtName = itemView.findViewById<TextView>(R.id.idTxtImageView)
+            val txtImage = itemView.findViewById<ImageView>(R.id.idImgView)
+            txtName.text = text[i]
+            txtName.textSize = 18f
+            txtImage.setImageResource(images[i])
+            return itemView
         }
-        return true;
     }
 
+    private fun onInviteClicked() {
+        val text = txtCodigo.text.toString()
+        val mSharingIntent = Intent(Intent.ACTION_SEND)
+        mSharingIntent.type = "text/plain"
+        mSharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Write your subject here")
+        mSharingIntent.putExtra(Intent.EXTRA_TEXT, text)
+        startActivity(Intent.createChooser(mSharingIntent, "Share text via"))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.principal, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+        }
+        return true
+    }
+
+    companion object {
+        private const val TAG = "Mioper"
+        private val TEXT = arrayOf("Entre no App do Mioper", "Procure pelo Mioper mais próximo", "O Motorista aceitará sua solicitação", "Partiu Viajar com o Mioper")
+        private val IMAGES = intArrayOf(R.drawable.indique1, R.drawable.indique2, R.drawable.indique3, R.drawable.indique4)
+    }
 }

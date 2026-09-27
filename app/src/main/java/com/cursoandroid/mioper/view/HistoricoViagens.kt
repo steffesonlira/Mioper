@@ -1,177 +1,129 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ListView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.adapter.AdapterHistoricoViagem
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
+import com.cursoandroid.mioper.model.HistoricoUsuario
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class HistoricoViagens : AppCompatActivity() {
 
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.adapter.AdapterHistoricoViagem;
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.model.HistoricoUsuario;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+    var nomeUsuario1: String? = null
+    var celularUsuario: String? = null
+    var senhaUsuario: String? = null
+    var repitasenha: String? = null
+    var emailUsuario: String? = null
+    var enderecoUsuario: String? = null
+    var nascimentoUsuario: String? = null
+    var cpfUsuario: String? = null
+    var generoUsuario: String? = null
+    lateinit var historicoUser: TextView
+    var activity: Principal? = null
+    var tipoUsuario: String? = null
+    private var listLocais: ListView? = null
+    private lateinit var recyclerView: RecyclerView
+    var array2 = ArrayList<HistoricoUsuario>()
+    var userMailReplaced: String? = null
+    var btnListar: Button? = null
+    var dSnapshot: DataSnapshot? = null
 
-import java.util.ArrayList;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.content_historico_viagens)
 
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getIdentificadorUsuario;
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getUsuarioAtual;
+        recyclerView = findViewById(R.id.recyclerView)
+        historicoUser = findViewById(R.id.textView_viagem)
 
-public class HistoricoViagens extends AppCompatActivity {
+        historicoUser.visibility = View.INVISIBLE
 
-    String nomeUsuario1;
-    String celularUsuario;
-    String senhaUsuario;
-    String repitasenha;
-    String emailUsuario;
-    String enderecoUsuario;
-    String nascimentoUsuario;
-    String cpfUsuario;
-    String generoUsuario;
-    TextView historicoUser;
-    Principal activity;
-    String tipoUsuario;
-    private ListView listLocais;
-    private RecyclerView recyclerView;
-    public static ArrayAdapter adapter;
-    public static ArrayList<String> array = new ArrayList<>();
-    public ArrayList<HistoricoUsuario> array2 = new ArrayList<>();
-    String userMailReplaced;
-    Button btnListar;
-    DataSnapshot dSnapshot;
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "Histórico de Viagens"
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_historico_viagens);
-
-
-        recyclerView = findViewById(R.id.recyclerView);
-        historicoUser = findViewById(R.id.textView_viagem);
-
-        //DEIXA A LABEL "VOCÊ NÃO POSSUI HISTORICO DE VIAGENS" INVISÍVEL NA TELA
-        historicoUser.setVisibility(View.INVISIBLE);
-
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Histórico de Viagens");
-        //endregion
-
-        //PESQUISA HISTORICO NO FIREBASE
-        retornaHistorico();
+        retornaHistorico()
     }
 
+    fun retornaHistorico() {
+        val user = UsuarioFirebase.getUsuarioAtual()!!
+        userMailReplaced = user.email!!.replace('.', '-')
 
-    //ACESSA O HISTORICO DO USUARIO
-    public void retornaHistorico() {
-        FirebaseUser user = getUsuarioAtual();
-        String userEmail = user.getEmail();
+        Log.d("resultado", "onDataChange: " + UsuarioFirebase.getIdentificadorUsuario())
+        val usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
+            .child("historicoUsuario")
+            .child(userMailReplaced!!)
+        usuariosRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.d("resultado", "onDataChange: $dataSnapshot")
 
-        userMailReplaced = userEmail.replace('.', '-');
-
-        if (user != null) {
-            Log.d("resultado", "onDataChange: " + getIdentificadorUsuario());
-            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
-                    .child("historicoUsuario")
-                    .child(userMailReplaced);
-            usuariosRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
-
-                    //VERIFICA SE RETORNOU DADOS DA CONSULTA  NO FIREBASE
-                    if (dataSnapshot.exists()) {
-                        mostrarHistorico(dataSnapshot);
-                    } else {
-                        historicoUser.setVisibility(View.VISIBLE); //DEIXA A LABEL "VOCÊ NÃO POSSUI HISTORICO DE VIAGENS" VISÍVEL NA TELA
-                    }
+                if (dataSnapshot.exists()) {
+                    mostrarHistorico(dataSnapshot)
+                } else {
+                    historicoUser.visibility = View.VISIBLE
                 }
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
-    //COLOCA AS INFORMAÇÕES RETORNADAS DO FIREBASE DENTRO DE UM ARRAY
-    public void mostrarHistorico(DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+    fun mostrarHistorico(dataSnapshot: DataSnapshot) {
+        for (ds in dataSnapshot.children) {
+            val historico = ds.getValue(HistoricoUsuario::class.java)!!
 
-            HistoricoUsuario uHistorico = new HistoricoUsuario();
+            val uHistorico = HistoricoUsuario()
+            uHistorico.bairro = historico.bairro
+            uHistorico.cep = historico.cep
+            uHistorico.cidade = historico.cidade
+            uHistorico.data = historico.data
+            uHistorico.rua = historico.rua
+            uHistorico.latitude = historico.latitude
+            uHistorico.longitude = historico.longitude
+            uHistorico.numero = historico.numero
 
-            uHistorico.setBairro(ds.getValue(HistoricoUsuario.class).getBairro());
-            uHistorico.setCep(ds.getValue(HistoricoUsuario.class).getCep());
-            uHistorico.setCidade(ds.getValue(HistoricoUsuario.class).getCidade());
-            uHistorico.setData(ds.getValue(HistoricoUsuario.class).getData());
-            uHistorico.setRua(ds.getValue(HistoricoUsuario.class).getRua());
-            uHistorico.setLatitude(ds.getValue(HistoricoUsuario.class).getLatitude());
-            uHistorico.setLongitude(ds.getValue(HistoricoUsuario.class).getLongitude());
-            uHistorico.setNumero(ds.getValue(HistoricoUsuario.class).getNumero());
+            array2.add(uHistorico)
 
-
-            //ADICIONA O OBJETO HISTORICO COM TODOS OS DADOS NO ARRAY
-            array2.add(uHistorico);
-
-            //CHAMA O METODO PARA PASSAR OS DADOS PARA O RECYVLERVIEW
-            enviarDadosLista(array2);
+            enviarDadosLista(array2)
         }
     }
 
-    //ENVIA DADOS PARA O RECYCLERVIEW
-    public void enviarDadosLista(ArrayList array2) {
+    fun enviarDadosLista(array2: ArrayList<HistoricoUsuario>) {
+        val adapter = AdapterHistoricoViagem(array2)
 
-
-        //CONFIGURA ADAPTER
-        AdapterHistoricoViagem adapter = new AdapterHistoricoViagem(array2);
-
-        //CONFIGURA RECYCLERVIEW
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-
-
+        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
     }
 
-
-    //region Criação do Menu Toolbar XML
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.principal
-                , menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.principal, menu)
+        return true
     }
-    //endregion
 
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
-                break;
-            default:
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
         }
-        return true;
+        return true
     }
 
-
+    companion object {
+        var adapter: ArrayAdapter<String>? = null
+        var array = ArrayList<String>()
+    }
 }

@@ -1,655 +1,499 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
+import com.cursoandroid.mioper.model.Destino
+import com.cursoandroid.mioper.model.Local
+import com.cursoandroid.mioper.model.Requisicao
+import com.cursoandroid.mioper.model.UserProfile
+import com.firebase.geofire.GeoFire
+import com.firebase.geofire.GeoLocation
+import com.firebase.geofire.GeoQueryEventListener
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import java.text.DecimalFormat
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
+class Corrida : AppCompatActivity(), OnMapReadyCallback {
 
-import com.cursoandroid.mioper.model.Local;
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.model.Requisicao;
-import com.cursoandroid.mioper.firebase.UsuarioFirebase;
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.model.Destino;
-import com.cursoandroid.mioper.model.UserProfile;
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryEventListener;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+    private lateinit var buttonAceitarCorrida: Button
+    private lateinit var fabRota: FloatingActionButton
 
-import java.text.DecimalFormat;
+    private lateinit var mMap: GoogleMap
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
+    private var localMotorista: LatLng? = null
+    private var localPassageiro: LatLng? = null
+    private var statusDaViagem: String? = null
+    private var motorista: UserProfile? = null
+    private var passageiro: UserProfile? = null
+    private var idRequisicao: String? = null
+    private var requisicao: Requisicao? = null
+    private lateinit var firebaseRef: DatabaseReference
+    private var marcadorMotorista: Marker? = null
+    private var marcadorPassageiro: Marker? = null
+    private var marcadorDestino: Marker? = null
+    private var statusRequisicao: String? = null
+    private var requisicaoAtiva = false
+    private var destino: Destino? = null
+    private var tipoRequisicao: String? = null
+    private var distancia = 0.0
 
-public class Corrida extends AppCompatActivity implements OnMapReadyCallback {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_corrida)
 
-    //componente
-    private Button buttonAceitarCorrida;
-    private FloatingActionButton fabRota;
+        inicializarComponentes()
 
-    private GoogleMap mMap;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private LatLng localMotorista;
-    private LatLng localMotorista2;
-    private LatLng localPassageiro;
-    private static LatLng localPassageiroAtual;
-    double _latitude;
-    double _longitude;
-    private String statusDaViagem;
-    private UserProfile motorista;
-    private UserProfile passageiro;
-    private String idRequisicao;
-    private Requisicao requisicao;
-    private DatabaseReference firebaseRef;
-    private Marker marcadorMotorista;
-    private Marker marcadorPassageiro;
-    private Marker marcadorDestino;
-    private String statusRequisicao;
-    private boolean requisicaoAtiva;
-    private Destino destino;
-    private String tipoRequisicao;
-    private static boolean verificaEncerramento = false;
-    double distancia;
+        val extras = intent.extras!!
+        if (extras.containsKey("idRequisicao") && extras.containsKey("motorista")) {
+            motorista = extras.getSerializable("motorista") as UserProfile
+            localMotorista = LatLng(
+                motorista!!.latitude!!.toDouble(),
+                motorista!!.longitude!!.toDouble()
+            )
+            idRequisicao = extras.getString("idRequisicao")
+            requisicaoAtiva = extras.getBoolean("requisicaoAtiva")
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_corrida);
-
-        inicializarComponentes();
-
-        //Recupera dados do usuário
-        if (getIntent().getExtras().containsKey("idRequisicao")
-                && getIntent().getExtras().containsKey("motorista")) {
-            Bundle extras = getIntent().getExtras();
-            motorista = (UserProfile) extras.getSerializable("motorista");
-            localMotorista = new LatLng(
-                    Double.parseDouble(motorista.getLatitude()),
-                    Double.parseDouble(motorista.getLongitude())
-            );
-            idRequisicao = extras.getString("idRequisicao");
-            requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
-
-            //ADICIONA LISTENER PARA REQUISIÇÃO
-            verificaStatusRequisicao();
+            verificaStatusRequisicao()
         }
-
-
     }
 
-    private void verificaStatusRequisicao() {
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
 
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes")
-                .child(idRequisicao);
-        requisicoes.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        recuperarLocalizacaoUsuario()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        if (requisicaoAtiva) {
+            Toast.makeText(
+                this@Corrida,
+                "Necessário encerrar a requisição atual!",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            startActivity(Intent(this@Corrida, Requisicoes::class.java))
+        }
+
+        if (!statusRequisicao.isNullOrEmpty()) {
+            requisicao!!.status = Requisicao.STATUS_ENCERRADA
+            requisicao!!.atualizarStatus()
+        }
+
+        return false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_profile_nav, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> startActivity(Intent(this, Requisicoes::class.java))
+
+            R.id.menuEncerrarViagem -> {
+                if (buttonAceitarCorrida.isEnabled) {
+                    Toast.makeText(this, "A viagem ainda não foi iniciada!", Toast.LENGTH_SHORT).show()
+                } else if (statusDaViagem == "acaminho") {
+                    Toast.makeText(this, "O passageiro ainda não foi embarcado!", Toast.LENGTH_SHORT).show()
+                } else {
+                    verificaEncerramento = true
+                    statusDaViagem = "finalizada"
+                    requisicao!!.atualizarLocalizacaoAtualPassageiro()
+                    requisicao!!.status = Requisicao.STATUS_FINALIZADA
+                    requisicao!!.atualizarStatus()
+                }
+            }
+        }
+        return true
+    }
+
+    private fun verificaStatusRequisicao() {
+        val requisicoes = firebaseRef.child("requisicoes").child(idRequisicao!!)
+        requisicoes.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    //RECUPERA REQUISIÇÃO
-                    requisicao = dataSnapshot.getValue(Requisicao.class);
-                    tipoRequisicao = requisicao.getStatus();
-                    if (requisicao != null) {
-                        passageiro = requisicao.getPassageiro();
-                        localPassageiro = new LatLng(
-                                Double.parseDouble(passageiro.getLatitude()),
-                                Double.parseDouble(passageiro.getLongitude())
-                        );
-                        statusRequisicao = requisicao.getStatus();
-                        destino = requisicao.getDestino();
-                        alteraInterfaceStatusRequisicao(statusRequisicao);
+                    requisicao = dataSnapshot.getValue(Requisicao::class.java)
+                    tipoRequisicao = requisicao!!.status
+                    requisicao?.let { requisicao ->
+                        passageiro = requisicao.passageiro
+                        localPassageiro = LatLng(
+                            passageiro!!.latitude!!.toDouble(),
+                            passageiro!!.longitude!!.toDouble()
+                        )
+                        statusRequisicao = requisicao.status
+                        destino = requisicao.destino
+                        alteraInterfaceStatusRequisicao(statusRequisicao)
                     }
                 }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            override fun onCancelled(databaseError: DatabaseError) {
             }
-        });
+        })
     }
 
-    private void alteraInterfaceStatusRequisicao(String status) {
-
-        switch (status) {
-            case Requisicao.STATUS_AGUARDANDO:
-                requisicaoAguardando();
-                break;
-            case Requisicao.STATUS_A_CAMINHO:
-                requisicaoACaminho();
-                break;
-            case Requisicao.STATUS_VIAGEM:
-                requisicaoViagem();
-                break;
-            case Requisicao.STATUS_FINALIZADA:
-                requisicaoFinalizada();
-                break;
-            case Requisicao.STATUS_CANCELADA:
-                requisicaoCancelada();
-                break;
+    private fun alteraInterfaceStatusRequisicao(status: String?) {
+        when (status) {
+            Requisicao.STATUS_AGUARDANDO -> requisicaoAguardando()
+            Requisicao.STATUS_A_CAMINHO -> requisicaoACaminho()
+            Requisicao.STATUS_VIAGEM -> requisicaoViagem()
+            Requisicao.STATUS_FINALIZADA -> requisicaoFinalizada()
+            Requisicao.STATUS_CANCELADA -> requisicaoCancelada()
         }
-
     }
 
-    private void requisicaoCancelada() {
-
+    private fun requisicaoCancelada() {
     }
 
-
-    //CHAMADO QUANDO O MOTORISTA CHEGA AO DESTINO
     @SuppressLint("RestrictedApi")
-    private void requisicaoFinalizada() {
+    private fun requisicaoFinalizada() {
+        locationManager.removeUpdates(locationListener)
 
-        locationManager.removeUpdates(locationListener);
+        fabRota.visibility = View.GONE
+        requisicaoAtiva = false
 
-        fabRota.setVisibility(View.GONE);
-        requisicaoAtiva = false;
+        marcadorMotorista?.remove()
+        marcadorDestino?.remove()
 
-        if (marcadorMotorista != null)
-            marcadorMotorista.remove();
+        val localDestino = LatLng(
+            destino!!.latitude!!.toDouble(),
+            destino!!.longitude!!.toDouble()
+        )
+        adicionaMarcadorDestino(localDestino, "Destino")
+        centralizarMarcador(localDestino)
 
-        if (marcadorDestino != null)
-            marcadorDestino.remove();
-
-        //Exibe marcador de destino
-        LatLng localDestino = new LatLng(
-                Double.parseDouble(destino.getLatitude()),
-                Double.parseDouble(destino.getLongitude())
-        );
-        adicionaMarcadorDestino(localDestino, "Destino");
-        centralizarMarcador(localDestino);
-
-        if (verificaEncerramento == true) {
-            //CALCULA DISTANCIA QUANDO VIAGEM É ENCERRADA ANTES
-            distancia = Local.calcularDistancia(localPassageiro, localMotorista);
-            System.out.println("LOCAL MOTORISTA" + localPassageiro + localMotorista);
+        // Encerrada antes pelo motorista: cobra até onde ele está; finalizada pelo sistema: até o destino
+        distancia = if (verificaEncerramento) {
+            println("LOCAL MOTORISTA" + localPassageiro + localMotorista)
+            Local.calcularDistancia(localPassageiro!!, localMotorista!!).toDouble()
         } else {
-            //CALCULA DISTANCIA QUANDO VIAGEM É FINALIZADA AUTOMATICAMENTE PELO SISTEMA
-            distancia = Local.calcularDistancia(localPassageiro, localDestino);
+            Local.calcularDistancia(localPassageiro!!, localDestino).toDouble()
         }
-        double valor = distancia * 8;//4.56
-        DecimalFormat decimal = new DecimalFormat("0.00");
-        String resultado = decimal.format(valor);
+        val valor = distancia * 8
+        val resultado = DecimalFormat("0.00").format(valor)
 
-        buttonAceitarCorrida.setEnabled(false);
-        buttonAceitarCorrida.setText("Corrida finalizada - R$ " + resultado);
+        buttonAceitarCorrida.isEnabled = false
+        buttonAceitarCorrida.text = "Corrida finalizada - R$ $resultado"
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Corrida.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-        builder.setView(view2);
-        ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
-        ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("O valor a ser recebido é de R$" + resultado);
-        ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText("Encerrar Viagem");
-        ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+        val builder = AlertDialog.Builder(this@Corrida, R.style.AlertDialogTheme)
+        val view2 = LayoutInflater.from(this@Corrida).inflate(
+            R.layout.layout_successok_dialog,
+            findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccessOk)
+        )
+        builder.setView(view2)
+        view2.findViewById<TextView>(R.id.textTitleSuccessOk).text = resources.getString(R.string.success_title_enc_viagem)
+        view2.findViewById<TextView>(R.id.textMessageSuccessOk).text = "O valor a ser recebido é de R$$resultado"
+        view2.findViewById<Button>(R.id.buttonSuccessOk).text = "Encerrar Viagem"
+        view2.findViewById<ImageView>(R.id.imageIconSuccessOk).setImageResource(R.drawable.logo)
 
         try {
-            final AlertDialog alertDialog = builder.create();
+            val alertDialog = builder.create()
 
-            view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view2) {
+            view2.findViewById<View>(R.id.buttonSuccessOk).setOnClickListener {
+                requisicao!!.status = Requisicao.STATUS_ENCERRADA
+                requisicao!!.atualizarStatus()
+                verificaEncerramento = false
+                alertDialog.dismiss()
 
-                    //VOLTA PARA A TELA DE REQUISIÇÃO
-                    requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-                    requisicao.atualizarStatus();
-                    verificaEncerramento = false;
-                    alertDialog.dismiss();
-
-                    //VOLTA PARA TELA DE REQUISIÇÕES
-                    finish();
-                }
-            });
-
-            if (alertDialog.getWindow() != null) {
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                finish()
             }
-            alertDialog.show();
-        } catch (Exception e) {
-            System.out.println("ERRO" + e.getMessage());
+
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+            alertDialog.show()
+        } catch (e: Exception) {
+            println("ERRO" + e.message)
         }
-
-
     }
 
-    private void centralizarMarcador(LatLng local) {
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(local, 18)
-        );
-
+    private fun centralizarMarcador(local: LatLng) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 18f))
     }
 
-    private void requisicaoAguardando() {
+    private fun requisicaoAguardando() {
+        buttonAceitarCorrida.text = "Aceitar corrida"
 
-        buttonAceitarCorrida.setText("Aceitar corrida");
-
-        //Exibe marcador do motorista
-        adicionaMarcadorMotorista(localMotorista, motorista.getName());
-        centralizarMarcador(localMotorista);
-
+        adicionaMarcadorMotorista(localMotorista!!, motorista!!.name)
+        centralizarMarcador(localMotorista!!)
     }
 
     @SuppressLint("RestrictedApi")
-    private void requisicaoACaminho() {
+    private fun requisicaoACaminho() {
+        // Só permite encerrar a viagem antecipadamente quando o status for "viagem"
+        statusDaViagem = "acaminho"
 
-        //PERMITE FINALIZAR A VIAGEM SOMENTE QUANDO STATUS FOR "viagem"
-        statusDaViagem = "acaminho";
+        buttonAceitarCorrida.text = "A caminho do passageiro"
+        buttonAceitarCorrida.isEnabled = false
+        fabRota.visibility = View.VISIBLE
 
-        buttonAceitarCorrida.setText("A caminho do passageiro");
-        buttonAceitarCorrida.setEnabled(false);
-        fabRota.setVisibility(View.VISIBLE);
+        adicionaMarcadorMotorista(localMotorista!!, motorista!!.name)
+        adicionaMarcadorPassageiro(localPassageiro!!, passageiro!!.name)
+        centralizarDoisMarcadores(marcadorMotorista!!, marcadorPassageiro!!)
 
-        //Exibe marcador do motorista
-        adicionaMarcadorMotorista(localMotorista, motorista.getName());
-
-        //Exibe marcador passageiro
-        adicionaMarcadorPassageiro(localPassageiro, passageiro.getName());
-
-        //Centralizar dois marcadores
-        centralizarDoisMarcadores(marcadorMotorista, marcadorPassageiro);
-
-        //Inicia monitoramento do motorista / passageiro
-        iniciarMonitoramento(motorista, localPassageiro, Requisicao.STATUS_VIAGEM);
-
+        iniciarMonitoramento(motorista!!, localPassageiro!!, Requisicao.STATUS_VIAGEM)
     }
-
 
     @SuppressLint("RestrictedApi")
-    private void requisicaoViagem() {
+    private fun requisicaoViagem() {
+        statusDaViagem = "viagem"
 
-        statusDaViagem = "viagem";
+        fabRota.visibility = View.VISIBLE
+        buttonAceitarCorrida.text = "A caminho do destino"
 
-        //Altera interface
-        fabRota.setVisibility(View.VISIBLE);
-        buttonAceitarCorrida.setText("A caminho do destino");
+        adicionaMarcadorMotorista(localMotorista!!, motorista!!.name)
 
-        //Exibe marcador do motorista
-        adicionaMarcadorMotorista(localMotorista, motorista.getName());
+        val localDestino = LatLng(
+            destino!!.latitude!!.toDouble(),
+            destino!!.longitude!!.toDouble()
+        )
+        adicionaMarcadorDestino(localDestino, "Destino")
+        centralizarDoisMarcadores(marcadorMotorista!!, marcadorDestino!!)
 
-        //Exibe marcador de destino
-        LatLng localDestino = new LatLng(
-                Double.parseDouble(destino.getLatitude()),
-                Double.parseDouble(destino.getLongitude())
-        );
-        adicionaMarcadorDestino(localDestino, "Destino");
-
-        //Centraliza marcadores motorista / destino
-        centralizarDoisMarcadores(marcadorMotorista, marcadorDestino);
-
-        //Inicia monitoramento do motorista / passageiro
-        iniciarMonitoramento(motorista, localDestino, Requisicao.STATUS_FINALIZADA);
-
+        iniciarMonitoramento(motorista!!, localDestino, Requisicao.STATUS_FINALIZADA)
     }
 
-    private void iniciarMonitoramento(final UserProfile uOrigem, LatLng localDestino, final String status) {
-        if (!status.equals("finalizada")) {
+    private fun iniciarMonitoramento(uOrigem: UserProfile, localDestino: LatLng, status: String) {
+        if (status == "finalizada") return
 
-            //Inicializar GeoFire
-            DatabaseReference localUsuario = ConfiguracaoFirebase.getFirebaseDatabase()
-                    .child("local_usuario");
-            GeoFire geoFire = new GeoFire(localUsuario);
+        val localUsuario = ConfiguracaoFirebase.getFirebaseDatabase().child("local_usuario")
+        val geoFire = GeoFire(localUsuario)
 
+        val circulo = mMap.addCircle(
+            CircleOptions()
+                .center(localDestino)
+                .radius(30.0)
+                .fillColor(Color.argb(90, 255, 153, 0))
+                .strokeColor(Color.argb(190, 255, 152, 0))
+        )
 
-            //Adiciona círculo no passageiro
-            final Circle circulo = mMap.addCircle(
-                    new CircleOptions()
-                            .center(localDestino)
-                            .radius(30)//em metros
-                            .fillColor(Color.argb(90, 255, 153, 0))
-                            .strokeColor(Color.argb(190, 255, 152, 0))
-            );
+        // Raio em km: 0.03 = 30 metros, igual ao círculo desenhado
+        val geoQuery = geoFire.queryAtLocation(
+            GeoLocation(localDestino.latitude, localDestino.longitude),
+            0.03
+        )
+        geoQuery.addGeoQueryEventListener(object : GeoQueryEventListener {
+            override fun onKeyEntered(key: String, location: GeoLocation) {
+                if (key == uOrigem.id) {
+                    Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!")
 
-            final GeoQuery geoQuery = geoFire.queryAtLocation(
-                    new GeoLocation(localDestino.latitude, localDestino.longitude),
-                    0.03//em km (0.03 30 metros)
-            );
-            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-                @Override
-                public void onKeyEntered(String key, GeoLocation location) {
+                    requisicao!!.status = status
+                    requisicao!!.atualizarStatus()
 
-                    if (key.equals(uOrigem.getId())) {
-                        Log.d("onKeyEntered", "onKeyEntered: motorista está dentro da área!");
-
-
-                        //Altera status da requisicao
-                        requisicao.setStatus(status);
-                        requisicao.atualizarStatus();
-
-                        //Remove listener
-                        geoQuery.removeAllListeners();
-                        circulo.remove();
-
-                    }
-
+                    geoQuery.removeAllListeners()
+                    circulo.remove()
                 }
+            }
 
-                @Override
-                public void onKeyExited(String key) {
+            override fun onKeyExited(key: String) {
+            }
 
-                }
+            override fun onKeyMoved(key: String, location: GeoLocation) {
+            }
 
-                @Override
-                public void onKeyMoved(String key, GeoLocation location) {
+            override fun onGeoQueryReady() {
+            }
 
-                }
-
-                @Override
-                public void onGeoQueryReady() {
-
-                }
-
-                @Override
-                public void onGeoQueryError(DatabaseError error) {
-
-                }
-            });
-
-        }//if
+            override fun onGeoQueryError(error: DatabaseError) {
+            }
+        })
     }
 
-    private void centralizarDoisMarcadores(Marker marcador1, Marker marcador2) {
+    private fun centralizarDoisMarcadores(marcador1: Marker, marcador2: Marker) {
+        val bounds = LatLngBounds.Builder()
+            .include(marcador1.position)
+            .include(marcador2.position)
+            .build()
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        val largura = resources.displayMetrics.widthPixels
+        val altura = resources.displayMetrics.heightPixels
+        val espacoInterno = (largura * 0.30).toInt()
 
-        builder.include(marcador1.getPosition());
-        builder.include(marcador2.getPosition());
-
-        LatLngBounds bounds = builder.build();
-
-        int largura = getResources().getDisplayMetrics().widthPixels;
-        int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.30);
-
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)
-        );
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno))
     }
 
-    private void adicionaMarcadorMotorista(LatLng localizacao, String titulo) {
-
-        if (marcadorMotorista != null)
-            marcadorMotorista.remove();
+    private fun adicionaMarcadorMotorista(localizacao: LatLng, titulo: String?) {
+        marcadorMotorista?.remove()
 
         marcadorMotorista = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.van3))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.van3))
+        )
     }
 
-    private void adicionaMarcadorPassageiro(LatLng localizacao, String titulo) {
-
-        if (marcadorPassageiro != null)
-            marcadorPassageiro.remove();
+    private fun adicionaMarcadorPassageiro(localizacao: LatLng, titulo: String?) {
+        marcadorPassageiro?.remove()
 
         marcadorPassageiro = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.passageiro))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.passageiro))
+        )
     }
 
-    private void adicionaMarcadorDestino(LatLng localizacao, String titulo) {
-
-        if (marcadorPassageiro != null)
-            marcadorPassageiro.remove();
-
-        if (marcadorDestino != null)
-            marcadorDestino.remove();
+    private fun adicionaMarcadorDestino(localizacao: LatLng, titulo: String?) {
+        marcadorPassageiro?.remove()
+        marcadorDestino?.remove()
 
         marcadorDestino = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
+        )
     }
 
+    private fun recuperarLocalizacaoUsuario() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        //Recuperar localizacao do usuário
-        recuperarLocalizacaoUsuario();
-
-    }
-
-    private void recuperarLocalizacaoUsuario() {
-
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
                 try {
-                    //recuperar latitude e longitude
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    localMotorista = new LatLng(latitude, longitude);
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    localMotorista = LatLng(latitude, longitude)
 
-                    //Atualizar GeoFire
-                    UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
+                    UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude)
 
-                    //Atualizar localização motorista no Firebase
-                    motorista.setLatitude(String.valueOf(latitude));
-                    motorista.setLongitude(String.valueOf(longitude));
-                    requisicao.setMotorista(motorista);
-                    requisicao.atualizarLocalizacaoMotorista();
+                    motorista!!.latitude = latitude.toString()
+                    motorista!!.longitude = longitude.toString()
+                    requisicao!!.motorista = motorista
+                    requisicao!!.atualizarLocalizacaoMotorista()
 
-                    alteraInterfaceStatusRequisicao(statusRequisicao);
-                } catch (Exception e) {
-                    System.out.println("OCORREU ALGUM ERRO INTERNO" + e.getMessage());
+                    alteraInterfaceStatusRequisicao(statusRequisicao)
+                } catch (e: Exception) {
+                    println("OCORREU ALGUM ERRO INTERNO" + e.message)
                 }
             }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
             }
 
-            @Override
-            public void onProviderEnabled(String provider) {
-
+            override fun onProviderEnabled(provider: String) {
             }
 
-            @Override
-            public void onProviderDisabled(String provider) {
-
+            override fun onProviderDisabled(provider: String) {
             }
-        };
+        }
 
-        //RECUPERA A LOCALIZAÇÃO (LATITUDE E LONGITUDE) AUTOMATICAMENTE DO USUÁRIO
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    10000,
-                    10,
-                    locationListener
-            );
+                LocationManager.GPS_PROVIDER,
+                10000,
+                10f,
+                locationListener
+            )
         }
     }
 
+    private fun inicializarComponentes() {
+        buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida)
 
-    //BOTÃO ACEITAR CORRIDA
-    public void aceitarCorrida(View view) {
-        verificaStatusRequisicao();
-        if (!tipoRequisicao.equals("cancelada")) {
-            //Configura requisicao
-            requisicao = new Requisicao();
-            requisicao.setId(idRequisicao);
-            requisicao.setMotorista(motorista);
-            requisicao.setStatus(Requisicao.STATUS_A_CAMINHO);
-            requisicao.atualizar();
-        } else {
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase()
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(Corrida.this, R.style.AlertDialogTheme);
-            View view2 = LayoutInflater.from(Corrida.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-            builder.setView(view2);
-            ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.warning_title_ok));
-            ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_ok_viagem_cancelada));
-            ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
-            ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
-            final AlertDialog alertDialog = builder.create();
-            view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
-                    finish();
-                }
-            });
-            if (alertDialog.getWindow() != null) {
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            }
-            alertDialog.show();
-        }
+        fabRota = findViewById(R.id.fabRota)
+        fabRota.setOnClickListener {
+            val status = statusRequisicao
+            if (!status.isNullOrEmpty()) {
+                var lat: String? = ""
+                var lon: String? = ""
 
-    }
-
-    private void inicializarComponentes() {
-
-        buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida);
-
-        //Configurações iniciais
-        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        //Adiciona evento de clique no FabRota
-        fabRota = findViewById(R.id.fabRota);
-        fabRota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String status = statusRequisicao;
-                if (status != null && !status.isEmpty()) {
-
-                    String lat = "";
-                    String lon = "";
-
-                    switch (status) {
-                        case Requisicao.STATUS_A_CAMINHO:
-                            lat = String.valueOf(localPassageiro.latitude);
-                            lon = String.valueOf(localPassageiro.longitude);
-                            break;
-                        case Requisicao.STATUS_VIAGEM:
-                            lat = destino.getLatitude();
-                            lon = destino.getLongitude();
-                            break;
+                when (status) {
+                    Requisicao.STATUS_A_CAMINHO -> {
+                        lat = localPassageiro!!.latitude.toString()
+                        lon = localPassageiro!!.longitude.toString()
                     }
-
-                    //ABRE ROTA NO GOOGLE MAPS
-                    String latLong = lat + "," + lon;
-                    Uri uri = Uri.parse("google.navigation:q=" + latLong + "&mode=d");
-                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                    i.setPackage("com.google.android.apps.maps");
-                    startActivity(i);
-
-                }
-            }
-        });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        if (requisicaoAtiva) {
-            Toast.makeText(Corrida.this,
-                    "Necessário encerrar a requisição atual!",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Intent i = new Intent(Corrida.this, Requisicoes.class);
-            startActivity(i);
-        }
-
-        //Verificar o status da requisição para encerrar
-        if (statusRequisicao != null && !statusRequisicao.isEmpty()) {
-            requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-            requisicao.atualizarStatus();
-        }
-
-        return false;
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile_nav, menu);
-        return true;
-    }
-
-
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                startActivity(new Intent(this, Requisicoes.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
-                break;
-
-            //ENCERRA A VIAGEM ANTECIPADAMENTE PELO MOTORISTA
-            case R.id.menuEncerrarViagem:
-                if (buttonAceitarCorrida.isEnabled()) {
-                    Toast.makeText(this,
-                            "A viagem ainda não foi iniciada!",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    if (statusDaViagem.equals("acaminho")) {
-                        Toast.makeText(this,
-                                "O passageiro ainda não foi embarcado!",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        verificaEncerramento = true;
-                        statusDaViagem = "finalizada";
-                        requisicao.atualizarLocalizacaoAtualPassageiro();
-                        requisicao.setStatus(Requisicao.STATUS_FINALIZADA);
-                        requisicao.atualizarStatus();
+                    Requisicao.STATUS_VIAGEM -> {
+                        lat = destino!!.latitude
+                        lon = destino!!.longitude
                     }
                 }
+
+                val uri = Uri.parse("google.navigation:q=$lat,$lon&mode=d")
+                val i = Intent(Intent.ACTION_VIEW, uri)
+                i.setPackage("com.google.android.apps.maps")
+                startActivity(i)
+            }
         }
-        return true;
+    }
+
+    fun aceitarCorrida(view: View) {
+        verificaStatusRequisicao()
+        if (tipoRequisicao != "cancelada") {
+            requisicao = Requisicao().apply {
+                id = idRequisicao
+                motorista = this@Corrida.motorista
+                status = Requisicao.STATUS_A_CAMINHO
+            }
+            requisicao!!.atualizar()
+        } else {
+            val builder = AlertDialog.Builder(this@Corrida, R.style.AlertDialogTheme)
+            val view2 = LayoutInflater.from(this@Corrida).inflate(
+                R.layout.layout_successok_dialog,
+                findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccessOk)
+            )
+            builder.setView(view2)
+            view2.findViewById<TextView>(R.id.textTitleSuccessOk).text = resources.getString(R.string.warning_title_ok)
+            view2.findViewById<TextView>(R.id.textMessageSuccessOk).text = resources.getString(R.string.text_desc_ok_viagem_cancelada)
+            view2.findViewById<Button>(R.id.buttonSuccessOk).text = resources.getString(R.string.confirmar)
+            view2.findViewById<ImageView>(R.id.imageIconSuccessOk).setImageResource(R.drawable.logo)
+
+            val alertDialog = builder.create()
+            view2.findViewById<View>(R.id.buttonSuccessOk).setOnClickListener {
+                alertDialog.dismiss()
+                finish()
+            }
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+            alertDialog.show()
+        }
+    }
+
+    companion object {
+        private var verificaEncerramento = false
     }
 }

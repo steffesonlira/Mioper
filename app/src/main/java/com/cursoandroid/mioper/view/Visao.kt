@@ -1,123 +1,100 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.os.Bundle;
-import android.text.Html;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.os.Bundle
+import android.text.Html
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.adapter.SliderAdapterVisao
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+class Visao : AppCompatActivity() {
 
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.adapter.SliderAdapterVisao;
+    private lateinit var vSlidePager: ViewPager
+    private lateinit var lDotLayout: LinearLayout
+    private lateinit var btnAnterior: Button
+    private lateinit var btnProximo: Button
+    private lateinit var mDots: Array<TextView>
 
-public class Visao extends AppCompatActivity {
+    private var mCurrentPage = 0
 
-    private ViewPager vSlidePager;
-    private LinearLayout lDotLayout;
-    private Button btnAnterior;
-    private Button btnProximo;
-    private TextView[] mDots;
+    private lateinit var sliderAdapterVisao: SliderAdapterVisao
 
-    private int mCurrentPage;
+    private val viewListener = object : ViewPager.OnPageChangeListener {
 
-    private SliderAdapterVisao sliderAdapterVisao;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visao);
-
-        vSlidePager = findViewById(R.id.slideViewPagerVisao);
-        lDotLayout  = findViewById(R.id.dotsLayoutVisao);
-
-        btnAnterior = findViewById(R.id.btnAnteriorVisao);
-        btnProximo = findViewById(R.id.btnProximoVisao);
-        sliderAdapterVisao= new SliderAdapterVisao(this);
-
-        vSlidePager.setAdapter(sliderAdapterVisao);
-
-        addDotsIndicator(0);
-
-        vSlidePager.addOnPageChangeListener(viewListener);
-
-        //Onclick botão next e back slider
-        btnProximo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vSlidePager.setCurrentItem(mCurrentPage + 1);
-            }
-        });
-
-        btnAnterior.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vSlidePager.setCurrentItem(mCurrentPage - 1);
-            }
-        });
-
-    }
-    public void addDotsIndicator(int position){
-        mDots = new TextView[2];
-        lDotLayout.removeAllViews();
-
-        for(int i = 0; i < mDots.length; i++){
-            mDots[i] = new TextView(this);
-            mDots[i].setText(Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT));
-            mDots[i].setTextSize(45);
-            mDots[i].setTextColor(getResources().getColor(R.color.transparent2));
-
-            lDotLayout.addView(mDots[i]);
+        override fun onPageScrolled(i: Int, v: Float, il: Int) {
         }
-        if(mDots.length > 0){
-            mDots[position].setTextColor(getResources().getColor(R.color.DarkCyan));
+
+        override fun onPageSelected(i: Int) {
+            addDotsIndicator(i)
+            mCurrentPage = i
+
+            if (i == 0) {
+                btnProximo.isEnabled = true
+                btnAnterior.isEnabled = false
+                btnAnterior.visibility = View.INVISIBLE
+
+                btnProximo.text = "Próximo"
+                btnAnterior.text = ""
+            } else if (i == mDots.size - 1) {
+                btnProximo.isEnabled = true
+                btnAnterior.isEnabled = true
+                btnAnterior.visibility = View.VISIBLE
+
+                btnProximo.text = "Fim"
+                btnAnterior.text = "Anterior"
+            } else {
+                btnProximo.isEnabled = true
+                btnAnterior.isEnabled = true
+                btnAnterior.visibility = View.VISIBLE
+
+                btnProximo.text = "Próximo"
+                btnAnterior.text = "Anterior"
+            }
+        }
+
+        override fun onPageScrollStateChanged(i: Int) {
         }
     }
 
-    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_visao)
 
-        @Override
-        public void onPageScrolled(int i, float v, int il) {
+        vSlidePager = findViewById(R.id.slideViewPagerVisao)
+        lDotLayout = findViewById(R.id.dotsLayoutVisao)
 
-        }
+        btnAnterior = findViewById(R.id.btnAnteriorVisao)
+        btnProximo = findViewById(R.id.btnProximoVisao)
+        sliderAdapterVisao = SliderAdapterVisao(this)
 
-        @Override
-        public void onPageSelected(int i) {
+        vSlidePager.adapter = sliderAdapterVisao
 
-            addDotsIndicator(i);
-            mCurrentPage = i;
+        addDotsIndicator(0)
 
-            if(i ==0){
-                btnProximo.setEnabled(true);
-                btnAnterior.setEnabled(false);
-                btnAnterior.setVisibility(View.INVISIBLE);
+        vSlidePager.addOnPageChangeListener(viewListener)
 
-                btnProximo.setText("Próximo");
-                btnAnterior.setText("");
+        btnProximo.setOnClickListener { vSlidePager.currentItem = mCurrentPage + 1 }
 
-            }else if (i == mDots.length - 1){
-                btnProximo.setEnabled(true);
-                btnAnterior.setEnabled(true);
-                btnAnterior.setVisibility(View.VISIBLE);
+        btnAnterior.setOnClickListener { vSlidePager.currentItem = mCurrentPage - 1 }
+    }
 
-                btnProximo.setText("Fim");
-                btnAnterior.setText("Anterior");
-            }else{
-                btnProximo.setEnabled(true);
-                btnAnterior.setEnabled(true);
-                btnAnterior.setVisibility(View.VISIBLE);
+    fun addDotsIndicator(position: Int) {
+        lDotLayout.removeAllViews()
 
-                btnProximo.setText("Próximo");
-                btnAnterior.setText("Anterior");
+        mDots = Array(2) {
+            TextView(this).apply {
+                text = Html.fromHtml("&#8226;", Html.FROM_HTML_MODE_COMPACT)
+                textSize = 45f
+                setTextColor(resources.getColor(R.color.transparent2))
+                lDotLayout.addView(this)
             }
-
         }
-
-        @Override
-        public void onPageScrollStateChanged(int i) {
-
+        if (mDots.isNotEmpty()) {
+            mDots[position].setTextColor(resources.getColor(R.color.DarkCyan))
         }
-    };
+    }
 }

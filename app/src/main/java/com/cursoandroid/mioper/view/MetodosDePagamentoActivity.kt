@@ -1,134 +1,89 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.adapter.AdapterMetodosPagamentos
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class MetodosDePagamentoActivity : AppCompatActivity() {
+    lateinit var botaoCadastrarCartao: Button
+    var userMailReplaced: String? = null
 
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.adapter.AdapterMetodosPagamentos;
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getIdentificadorUsuario;
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getUsuarioAtual;
-
-public class MetodosDePagamentoActivity extends AppCompatActivity {
-    public Button botaoCadastrarCartao;
-    public String userMailReplaced;
-
-    private  ArrayList<String> metodosOk = new ArrayList<>();
+    private val metodosOk = ArrayList<String>()
 
     @SuppressLint("WrongViewCast")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_metodos_de_pagamento);
-        resgatarMetodosPagamentos();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_metodos_de_pagamento)
+        resgatarMetodosPagamentos()
 
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Métodos de Pagamento");
-        //endregion
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "Métodos de Pagamento"
 
-        botaoCadastrarCartao = findViewById(R.id.adcionarCartaoID);
-        botaoCadastrarCartao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adicionarCartao();
+        botaoCadastrarCartao = findViewById(R.id.adcionarCartaoID)
+        botaoCadastrarCartao.setOnClickListener {
+            adicionarCartao()
+        }
+    }
+
+    fun adicionarCartao() {
+        startActivity(Intent(this, CadastrarCartaoActivity::class.java))
+        finish()
+    }
+
+    fun resgatarMetodosPagamentos() {
+        val user = UsuarioFirebase.getUsuarioAtual()!!
+        userMailReplaced = user.email!!.replace('.', '-')
+
+        Log.d("resultado", "onDataChange: " + UsuarioFirebase.getIdentificadorUsuario())
+        val usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
+            .child("CartoesPagamentos").child(userMailReplaced!!)
+
+        usuariosRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds in dataSnapshot.children) {
+                    metodosOk.add(ds.value!!.toString())
+                    IniciarRecyclerView(metodosOk)
+                }
             }
-        });
 
-
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
-    public void adicionarCartao(){
-        Intent intent = new Intent(this, CadastrarCartaoActivity.class);
-        startActivity(intent);
-        finish();
+    fun IniciarRecyclerView(metodos: ArrayList<String>) {
+        val adapter = AdapterMetodosPagamentos(metodos)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.listaMetodosPagamentosID)
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
 
-    public void resgatarMetodosPagamentos(){
-        FirebaseUser user = getUsuarioAtual();
-        String userEmail = user.getEmail();
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.principal, menu)
+        return true
+    }
 
-        userMailReplaced = userEmail.replace('.', '-');
-
-        if (user != null) {
-            Log.d("resultado", "onDataChange: " + getIdentificadorUsuario());
-            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
-                    .child("CartoesPagamentos").child(userMailReplaced);
-
-            usuariosRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        //ADICIONA O OBJETO HISTORICO COM TODOS OS DADOS NO ARRAY
-                        metodosOk.add(ds.getValue().toString());
-                        IniciarRecyclerView(metodosOk);
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
         }
-    }
-
-
-
-    public void IniciarRecyclerView(ArrayList metodos){
-
-        AdapterMetodosPagamentos adapter = new AdapterMetodosPagamentos(metodos);
-
-        RecyclerView recyclerView = findViewById(R.id.listaMetodosPagamentosID);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-
-
-
-    }
-
-    //region Criação do Menu Toolbar XML
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.principal
-                , menu);
-        return true;
-    }
-    //endregion
-
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
-                break;
-            default:
-                break;
-        }
-        return true;
+        return true
     }
 }

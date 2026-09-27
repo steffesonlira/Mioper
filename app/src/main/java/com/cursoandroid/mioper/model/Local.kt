@@ -1,43 +1,31 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-import android.location.Location;
+import android.location.Location
+import com.google.android.gms.maps.model.LatLng
+import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
-import com.google.android.gms.maps.model.LatLng;
+object Local {
 
-import java.text.DecimalFormat;
-
-public class Local {
-
-    public static float calcularDistancia(LatLng latLngInicial, LatLng latLngFinal){
-
-        Location localInicial = new Location("Local inicial");
-        localInicial.setLatitude( latLngInicial.latitude );
-        localInicial.setLongitude( latLngInicial.longitude );
-
-        Location localFinal = new Location("Local final");
-        localFinal.setLatitude( latLngFinal.latitude );
-        localFinal.setLongitude( latLngFinal.longitude );
-
-        //Calcula distancia - Resultado em Metros
-        // dividir por 1000 para converter em KM
-        float distancia = localInicial.distanceTo(localFinal) / 1000;
-
-        return distancia;
-
-    }
-
-    public static String formatarDistancia(float distancia){
-
-        String distanciaFormatada;
-        if( distancia < 1 ){
-            distancia = distancia * 1000;//em Metros
-            distanciaFormatada = Math.round( distancia ) + " M ";
-        }else {
-            DecimalFormat decimal = new DecimalFormat("0.0");
-            distanciaFormatada = decimal.format(distancia) + " KM ";
+    fun calcularDistancia(latLngInicial: LatLng, latLngFinal: LatLng): Float {
+        val localInicial = Location("Local inicial").apply {
+            latitude = latLngInicial.latitude
+            longitude = latLngInicial.longitude
         }
 
-        return distanciaFormatada;
+        val localFinal = Location("Local final").apply {
+            latitude = latLngFinal.latitude
+            longitude = latLngFinal.longitude
+        }
 
+        return localInicial.distanceTo(localFinal) / 1000
+    }
+
+    fun formatarDistancia(distancia: Float): String {
+        return if (distancia < 1) {
+            (distancia * 1000).roundToInt().toString() + " M "
+        } else {
+            DecimalFormat("0.0").format(distancia) + " KM "
+        }
     }
 }

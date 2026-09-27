@@ -1,34 +1,15 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.google.firebase.database.DatabaseReference;
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
 
-public class Cartao {
-    private String numeroCartao;
+class Cartao {
 
+    var numeroCartao: String? = null
 
-    public Cartao(){
+    fun salvar() {
+        val numeroCartaoRef = ConfiguracaoFirebase.getFirebaseDatabase().child("NumeroCartao")
 
+        numeroCartao = numeroCartaoRef.push().key
+        numeroCartaoRef.child(numeroCartao!!).setValue(this)
     }
-
-    public void salvar(){
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference numeroCartao = firebaseRef.child("NumeroCartao");
-
-        String nCartao = numeroCartao.push().getKey();
-        setNumeroCartao( nCartao );
-
-        numeroCartao.child( getNumeroCartao() ).setValue(this);
-    }
-
-    public String getNumeroCartao() {
-        return numeroCartao;
-    }
-
-    public void setNumeroCartao(String numeroCartao) {
-        this.numeroCartao = numeroCartao;
-    }
-
-
 }

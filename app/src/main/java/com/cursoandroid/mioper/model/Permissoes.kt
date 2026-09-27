@@ -1,44 +1,24 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+object Permissoes {
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Permissoes {
-
-    public static boolean validarPermissoes(String[] permissoes, Activity activity, int requestCode){
-
-        if (Build.VERSION.SDK_INT >= 23 ){
-
-            List<String> listaPermissoes = new ArrayList<>();
-
-            /*Percorre as permissões passadas,
-            verificando uma a uma
-            * se já tem a permissao liberada */
-            for ( String permissao : permissoes ){
-                Boolean temPermissao = ContextCompat.checkSelfPermission(activity, permissao) == PackageManager.PERMISSION_GRANTED;
-                if ( !temPermissao ) listaPermissoes.add(permissao);
+    fun validarPermissoes(permissoes: Array<String>, activity: Activity, requestCode: Int): Boolean {
+        if (Build.VERSION.SDK_INT >= 23) {
+            val novasPermissoes = permissoes.filter {
+                ContextCompat.checkSelfPermission(activity, it) != PackageManager.PERMISSION_GRANTED
             }
 
-            /*Caso a lista esteja vazia, não é necessário solicitar permissão*/
-            if ( listaPermissoes.isEmpty() ) return true;
-            String[] novasPermissoes = new String[ listaPermissoes.size() ];
-            listaPermissoes.toArray( novasPermissoes );
+            if (novasPermissoes.isEmpty()) return true
 
-            //Solicita permissão
-            ActivityCompat.requestPermissions(activity, novasPermissoes, requestCode );
-
-
+            ActivityCompat.requestPermissions(activity, novasPermissoes.toTypedArray(), requestCode)
         }
 
-        return true;
-
+        return true
     }
-
 }

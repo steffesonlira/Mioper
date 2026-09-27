@@ -1,772 +1,531 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
+import com.cursoandroid.mioper.model.Destino
+import com.cursoandroid.mioper.model.Local
+import com.cursoandroid.mioper.model.Requisicao
+import com.cursoandroid.mioper.model.UserProfile
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import java.io.IOException
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
+class Passageiro : AppCompatActivity(), OnMapReadyCallback {
 
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.model.Requisicao;
-import com.cursoandroid.mioper.firebase.UsuarioFirebase;
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.model.Destino;
-import com.cursoandroid.mioper.model.Local;
-import com.cursoandroid.mioper.model.UserProfile;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+    private lateinit var editDestino: EditText
+    private lateinit var linearLayoutDestino: LinearLayout
+    private lateinit var buttonChamarUber: Button
+    private var distancia = 0.0
+    private lateinit var mMap: GoogleMap
+    private lateinit var autenticacao: FirebaseAuth
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
+    private var localPassageiro: LatLng? = null
+    // true quando a requisição ainda está aguardando motorista e pode ser cancelada
+    private var cancelarUber = false
+    private lateinit var firebaseRef: DatabaseReference
+    private var requisicao: Requisicao? = null
+    private var tipoRequisicao: String? = null
+    private var passageiro: UserProfile? = null
+    private var statusRequisicao: String? = null
+    private var destino: Destino? = null
+    private var marcadorMotorista: Marker? = null
+    private var marcadorPassageiro: Marker? = null
+    private var marcadorDestino: Marker? = null
+    private var motorista: UserProfile? = null
+    private var localMotorista: LatLng? = null
+    private var localMotoristaAtual: LatLng? = null
+    private var _latitude = 0.0
+    private var _longitude = 0.0
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_passageiro)
 
-public class Passageiro extends AppCompatActivity implements OnMapReadyCallback {
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "Navegue com o Mioper"
 
-    //Componentes
-    private EditText editDestino;
-    private LinearLayout linearLayoutDestino;
-    private Button buttonChamarUber;
-    private double distancia;
-    private GoogleMap mMap;
-    private FirebaseAuth autenticacao;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private LatLng localPassageiro;
-    private boolean cancelarUber = false;
-    private DatabaseReference firebaseRef;
-    private Requisicao requisicao;
-    private String tipoRequisicao;
-    private UserProfile passageiro;
-    private String statusRequisicao;
-    private Destino destino;
-    private Marker marcadorMotorista;
-    private Marker marcadorPassageiro;
-    private Marker marcadorDestino;
-    private UserProfile motorista;
-    private LatLng localMotorista;
-    private LatLng localMotoristaAtual;
-    public static String endereco;
-    public static String cidade;
-    public static String bairro;
-    private double _latitude;
-    private double _longitude;
+        inicializarComponentes()
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passageiro);
-
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Navegue com o Mioper");
-        //endregion
-
-        inicializarComponentes();
-
-        //Adiciona listener para requisição
-        verificaStatusRequisicao();
-
+        verificaStatusRequisicao()
     }
 
-    private void verificaStatusRequisicao() {
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
 
-        UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-        Query requisicaoPesquisa = requisicoes.orderByChild("passageiro/id")
-                .equalTo(usuarioLogado.getId());
+        recuperarLocalizacaoUsuario()
+    }
 
-        requisicaoPesquisa.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.principal, menu)
+        return true
+    }
 
-                List<Requisicao> lista = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    lista.add(ds.getValue(Requisicao.class));
-                }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return true
+    }
 
-                Collections.reverse(lista);
-                if (lista != null && lista.size() > 0) {
-                    requisicao = lista.get(0);
-                    tipoRequisicao = requisicao.getStatus();
+    private fun verificaStatusRequisicao() {
+        val usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado()
+        val requisicaoPesquisa = firebaseRef.child("requisicoes")
+            .orderByChild("passageiro/id")
+            .equalTo(usuarioLogado.id)
 
-                    if (requisicao != null) {
+        requisicaoPesquisa.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val lista = dataSnapshot.children.map { it.getValue(Requisicao::class.java) }.reversed()
 
+                if (lista.isNotEmpty()) {
+                    val requisicaoAtual = lista[0]!!
+                    requisicao = requisicaoAtual
+                    tipoRequisicao = requisicaoAtual.status
 
-                        if (!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
-                            passageiro = requisicao.getPassageiro();
-                            localPassageiro = new LatLng(
-                                    Double.parseDouble(passageiro.getLatitude()),
-                                    Double.parseDouble(passageiro.getLongitude())
-                            );
-                            statusRequisicao = requisicao.getStatus();
-                            destino = requisicao.getDestino();
+                    if (requisicaoAtual.status != Requisicao.STATUS_ENCERRADA) {
+                        val passageiroAtual = requisicaoAtual.passageiro!!
+                        passageiro = passageiroAtual
+                        localPassageiro = LatLng(
+                            passageiroAtual.latitude!!.toDouble(),
+                            passageiroAtual.longitude!!.toDouble()
+                        )
+                        statusRequisicao = requisicaoAtual.status
+                        destino = requisicaoAtual.destino
 
-
-                            //RECUPERA LOCALIZAÇÃO ATUAL DO PASSAGEIRO (QUANDO A VIAGEM É ENCERRADA ANTECIPADAMENTE PELO MOTORISTA)
-                            if (passageiro.getLatitude_atual() != null && passageiro.getLongitude_atual() != null) {
-                                localMotoristaAtual = new LatLng(
-                                        Double.parseDouble(passageiro.getLatitude_atual()),
-                                        Double.parseDouble(passageiro.getLongitude_atual())
-                                );
-                            }
-
-
-                            if (requisicao.getMotorista() != null) {
-                                motorista = requisicao.getMotorista();
-                                localMotorista = new LatLng(
-                                        Double.parseDouble(motorista.getLatitude()),
-                                        Double.parseDouble(motorista.getLongitude())
-                                );
-                            }
-
-                            alteraInterfaceStatusRequisicao(statusRequisicao);
+                        // Preenchida quando o motorista encerra a viagem antes de chegar ao destino
+                        val latitudeAtual = passageiroAtual.latitude_atual
+                        val longitudeAtual = passageiroAtual.longitude_atual
+                        if (latitudeAtual != null && longitudeAtual != null) {
+                            localMotoristaAtual = LatLng(latitudeAtual.toDouble(), longitudeAtual.toDouble())
                         }
+
+                        requisicaoAtual.motorista?.let { motoristaAtual ->
+                            motorista = motoristaAtual
+                            localMotorista = LatLng(
+                                motoristaAtual.latitude!!.toDouble(),
+                                motoristaAtual.longitude!!.toDouble()
+                            )
+                        }
+
+                        alteraInterfaceStatusRequisicao(statusRequisicao)
                     }
                 }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            override fun onCancelled(databaseError: DatabaseError) {
             }
-        });
-
+        })
     }
 
-    private void alteraInterfaceStatusRequisicao(String status) {
-
-        if (status != null && !status.isEmpty()) {
-            cancelarUber = false;
-            switch (status) {
-                case Requisicao.STATUS_AGUARDANDO:
-                    requisicaoAguardando();
-                    break;
-                case Requisicao.STATUS_A_CAMINHO:
-                    requisicaoACaminho();
-                    break;
-                case Requisicao.STATUS_VIAGEM:
-                    requisicaoViagem();
-                    break;
-                case Requisicao.STATUS_FINALIZADA:
-                    requisicaoFinalizada();
-                    break;
-                case Requisicao.STATUS_CANCELADA:
-                    requisicaoCancelada();
-                    break;
-
+    private fun alteraInterfaceStatusRequisicao(status: String?) {
+        if (!status.isNullOrEmpty()) {
+            cancelarUber = false
+            when (status) {
+                Requisicao.STATUS_AGUARDANDO -> requisicaoAguardando()
+                Requisicao.STATUS_A_CAMINHO -> requisicaoACaminho()
+                Requisicao.STATUS_VIAGEM -> requisicaoViagem()
+                Requisicao.STATUS_FINALIZADA -> requisicaoFinalizada()
+                Requisicao.STATUS_CANCELADA -> requisicaoCancelada()
             }
         } else {
-            //Adiciona marcador passageiro
-            adicionaMarcadorPassageiro(localPassageiro, "Seu local");
-            centralizarMarcador(localPassageiro);
+            adicionaMarcadorPassageiro(localPassageiro!!, "Seu local")
+            centralizarMarcador(localPassageiro!!)
         }
-
     }
 
-    private void requisicaoCancelada() {
-
-        linearLayoutDestino.setVisibility(View.VISIBLE);
-        buttonChamarUber.setText("Chamar Mioper");
-        cancelarUber = false;
-
+    private fun requisicaoCancelada() {
+        linearLayoutDestino.visibility = View.VISIBLE
+        buttonChamarUber.text = "Chamar Mioper"
+        cancelarUber = false
     }
 
-    private void requisicaoAguardando() {
+    private fun requisicaoAguardando() {
+        linearLayoutDestino.visibility = View.GONE
+        buttonChamarUber.text = "Cancelar Mioper"
+        cancelarUber = true
 
-        linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("Cancelar Mioper");
-        cancelarUber = true;
-
-        //Adiciona marcador passageiro
-        adicionaMarcadorPassageiro(localPassageiro, passageiro.getName());
-        centralizarMarcador(localPassageiro);
-
+        adicionaMarcadorPassageiro(localPassageiro!!, passageiro!!.name)
+        centralizarMarcador(localPassageiro!!)
     }
 
-    private void requisicaoACaminho() {
+    private fun requisicaoACaminho() {
+        linearLayoutDestino.visibility = View.GONE
+        buttonChamarUber.text = "Motorista a caminho"
+        buttonChamarUber.isEnabled = false
 
-        linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("Motorista a caminho");
-        buttonChamarUber.setEnabled(false);
+        adicionaMarcadorPassageiro(localPassageiro!!, passageiro!!.name)
+        adicionaMarcadorMotorista(localMotorista!!, motorista!!.name)
 
-        //Adiciona marcador passageiro
-        adicionaMarcadorPassageiro(localPassageiro, passageiro.getName());
-
-        //Adiciona marcador motorista
-        adicionaMarcadorMotorista(localMotorista, motorista.getName());
-
-        //Centralizar passageiro / motorista
-        centralizarDoisMarcadores(marcadorMotorista, marcadorPassageiro);
-
+        centralizarDoisMarcadores(marcadorMotorista, marcadorPassageiro)
     }
 
-    private void requisicaoViagem() {
+    private fun requisicaoViagem() {
+        linearLayoutDestino.visibility = View.GONE
+        buttonChamarUber.text = "A caminho do destino"
+        buttonChamarUber.isEnabled = false
 
-        linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("A caminho do destino");
-        buttonChamarUber.setEnabled(false);
+        adicionaMarcadorMotorista(localMotorista!!, motorista!!.name)
 
-        //Adiciona marcador motorista
-        adicionaMarcadorMotorista(localMotorista, motorista.getName());
+        val localDestino = LatLng(
+            destino!!.latitude!!.toDouble(),
+            destino!!.longitude!!.toDouble()
+        )
+        adicionaMarcadorDestino(localDestino, "Destino")
 
-        //Adiciona marcador de destino
-        LatLng localDestino = new LatLng(
-                Double.parseDouble(destino.getLatitude()),
-                Double.parseDouble(destino.getLongitude())
-        );
-        adicionaMarcadorDestino(localDestino, "Destino");
-
-        //Centraliza marcadores motorista / destino
-        centralizarDoisMarcadores(marcadorMotorista, marcadorDestino);
-
+        centralizarDoisMarcadores(marcadorMotorista, marcadorDestino)
     }
 
-    //CHAMADO QUANDO O PASSAGEIRO CHEGA AO DESTINO
-    private void requisicaoFinalizada() {
+    private fun requisicaoFinalizada() {
+        linearLayoutDestino.visibility = View.GONE
+        buttonChamarUber.isEnabled = false
 
+        val localDestino = LatLng(
+            destino!!.latitude!!.toDouble(),
+            destino!!.longitude!!.toDouble()
+        )
+        adicionaMarcadorDestino(localDestino, "Destino")
+        centralizarMarcador(localDestino)
 
-        linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setEnabled(false);
-
-        //Adiciona marcador de destino
-        LatLng localDestino = new LatLng(
-                Double.parseDouble(destino.getLatitude()),
-                Double.parseDouble(destino.getLongitude())
-        );
-        adicionaMarcadorDestino(localDestino, "Destino");
-        centralizarMarcador(localDestino);
-
-
-        if (localMotoristaAtual != null) {
-            distancia = Local.calcularDistancia(localPassageiro, localMotoristaAtual);
-            System.out.println("LOCAL PASSAGEIRO" + localPassageiro + localMotoristaAtual);
+        val localAtual = localMotoristaAtual
+        distancia = if (localAtual != null) {
+            println("LOCAL PASSAGEIRO$localPassageiro$localAtual")
+            Local.calcularDistancia(localPassageiro!!, localAtual).toDouble()
         } else {
-            distancia = Local.calcularDistancia(localPassageiro, localDestino);
+            Local.calcularDistancia(localPassageiro!!, localDestino).toDouble()
         }
 
-        double valor = distancia * 8;
-        DecimalFormat decimal = new DecimalFormat("0.00");
-        String resultado = decimal.format(valor);
+        val valor = distancia * 8
+        val resultado = DecimalFormat("0.00").format(valor)
 
-        buttonChamarUber.setText("Corrida finalizada - R$ " + resultado);
+        buttonChamarUber.text = "Corrida finalizada - R$ $resultado"
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-        builder.setView(view2);
-        ((TextView) view2.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_enc_viagem));
-        ((TextView) view2.findViewById(R.id.textMessageSuccessOk)).setText("Sua viagem ficou: R$ " + resultado);
-        ((Button) view2.findViewById(R.id.buttonSuccessOk)).setText("Encerrar Viagem");
-        ((ImageView) view2.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+        val view2 = LayoutInflater.from(this)
+            .inflate(R.layout.layout_successok_dialog, findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccessOk))
+        builder.setView(view2)
+        view2.findViewById<TextView>(R.id.textTitleSuccessOk).text = resources.getString(R.string.success_title_enc_viagem)
+        view2.findViewById<TextView>(R.id.textMessageSuccessOk).text = "Sua viagem ficou: R$ $resultado"
+        view2.findViewById<Button>(R.id.buttonSuccessOk).text = "Encerrar Viagem"
+        view2.findViewById<ImageView>(R.id.imageIconSuccessOk).setImageResource(R.drawable.logo)
 
         try {
-            final AlertDialog alertDialog = builder.create();
+            val alertDialog = builder.create()
 
-            view2.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view2) {
-                    requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-                    requisicao.atualizarStatus();
-                    localMotoristaAtual = null;
-                    alertDialog.dismiss();
+            view2.findViewById<View>(R.id.buttonSuccessOk).setOnClickListener {
+                requisicao!!.status = Requisicao.STATUS_ENCERRADA
+                requisicao!!.atualizarStatus()
+                localMotoristaAtual = null
+                alertDialog.dismiss()
 
-                    //VOLTA PARA A TELA PRINCIPAL
-                    finish();
-                }
-            });
-
-            if (alertDialog.getWindow() != null) {
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                finish()
             }
-            alertDialog.show();
-        } catch (Exception e) {
-            System.out.println("ERRO" + e.getMessage());
+
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+            alertDialog.show()
+        } catch (e: Exception) {
+            println("ERRO" + e.message)
         }
-
-
     }
 
-    private void adicionaMarcadorPassageiro(LatLng localizacao, String titulo) {
-
-        if (marcadorPassageiro != null)
-            marcadorPassageiro.remove();
+    private fun adicionaMarcadorPassageiro(localizacao: LatLng, titulo: String?) {
+        marcadorPassageiro?.remove()
 
         marcadorPassageiro = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.passageiro))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.passageiro))
+        )
     }
 
-    private void adicionaMarcadorMotorista(LatLng localizacao, String titulo) {
-
-        if (marcadorMotorista != null)
-            marcadorMotorista.remove();
+    private fun adicionaMarcadorMotorista(localizacao: LatLng, titulo: String?) {
+        marcadorMotorista?.remove()
 
         marcadorMotorista = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.van3))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.van3))
+        )
     }
 
-    private void adicionaMarcadorDestino(LatLng localizacao, String titulo) {
-
-        if (marcadorPassageiro != null)
-            marcadorPassageiro.remove();
-
-        if (marcadorDestino != null)
-            marcadorDestino.remove();
+    private fun adicionaMarcadorDestino(localizacao: LatLng, titulo: String) {
+        marcadorPassageiro?.remove()
+        marcadorDestino?.remove()
 
         marcadorDestino = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
-        );
-
+            MarkerOptions()
+                .position(localizacao)
+                .title(titulo)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.chegada))
+        )
     }
 
-    private void centralizarMarcador(LatLng local) {
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(local, 18)
-        );
+    private fun centralizarMarcador(local: LatLng) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(local, 18f))
     }
 
-    private void centralizarDoisMarcadores(Marker marcador1, Marker marcador2) {
+    private fun centralizarDoisMarcadores(marcador1: Marker?, marcador2: Marker?) {
+        val bounds = LatLngBounds.Builder()
+            .include(marcador1!!.position)
+            .include(marcador2!!.position)
+            .build()
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        val largura = resources.displayMetrics.widthPixels
+        val altura = resources.displayMetrics.heightPixels
+        val espacoInterno = (largura * 0.30).toInt()
 
-        builder.include(marcador1.getPosition());
-        builder.include(marcador2.getPosition());
-
-        LatLngBounds bounds = builder.build();
-
-        int largura = getResources().getDisplayMetrics().widthPixels;
-        int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.30);
-
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno)
-        );
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, largura, altura, espacoInterno))
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        //Recuperar localizacao do usuário
-        recuperarLocalizacaoUsuario();
-
-    }
-
-    //BOTÃO CHAMAR MIOPER
-    public void chamarUber(View view) {
-
-        //VERIFICAÇÃO SE GPS DO CELULAR ESTÁ LIGADO
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (gpsStatus == false) {
-            Toast.makeText(this,
-                    "A localização do seu celular está desligada ou o sinal está muito fraco.",
-                    Toast.LENGTH_SHORT).show();
-            return;
+    fun chamarUber(view: View) {
+        val manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(
+                this,
+                "A localização do seu celular está desligada ou o sinal está muito fraco.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
         }
 
-        if(isOnline(this) == false){
-            Toast.makeText(this,
-                    "Sem conexão com a internet",
-                    Toast.LENGTH_SHORT).show();
-            return;
+        if (!isOnline(this)) {
+            Toast.makeText(this, "Sem conexão com a internet", Toast.LENGTH_SHORT).show()
+            return
         }
 
-
-        //false -> uber não pode ser cancelado ainda
-        //true -> uber pode ser cancelado
-        if (cancelarUber) {//Uber pode ser cancelado
-
-            //Cancelar a requisição
-            if (tipoRequisicao.equals("aguardando")) {
-                requisicao.setStatus(Requisicao.STATUS_CANCELADA);
-                requisicao.atualizarStatus();
-                requisicao.excluirHistorico();
+        if (cancelarUber) {
+            if (tipoRequisicao == "aguardando") {
+                requisicao!!.status = Requisicao.STATUS_CANCELADA
+                requisicao!!.atualizarStatus()
+                requisicao!!.excluirHistorico()
             }
         } else {
+            getCompleteAddressString(_latitude, _longitude)
 
-            //RECUPERA ENDEREÇO ATUAL DO PASSAGEIRO ATRAVES DA LATITUDE E LONGITUDE
-            getCompleteAddressString(_latitude, _longitude);
+            val enderecoDestino = editDestino.text.toString()
 
+            if (enderecoDestino != "") {
+                val dataFormatada = SimpleDateFormat("dd/MM/yyyy - HH:mm").format(Date())
 
-            String enderecoDestino = editDestino.getText().toString();
-
-            //SE USUÁRIO INFORMAR O ENDEREÇO
-            if (!enderecoDestino.equals("")) {
-
-                //DATA E HORA ATUAL
-                SimpleDateFormat formataData = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
-                Date data = new Date();
-                String dataFormatada = formataData.format(data);
-                //========
-
-                Address addressDestino = recuperarEndereco(enderecoDestino);
+                val addressDestino = recuperarEndereco(enderecoDestino)
                 if (addressDestino != null) {
-                    final Destino destino = new Destino();
-                    destino.setData(dataFormatada);
+                    val destino = Destino()
+                    destino.data = dataFormatada
+                    destino.cidade = addressDestino.subAdminArea ?: "N/A"
+                    destino.cep = addressDestino.postalCode ?: "N/A"
+                    destino.bairro = addressDestino.subLocality ?: "N/A"
+                    destino.rua = addressDestino.thoroughfare ?: "N/A"
+                    destino.numero = addressDestino.featureName ?: "N/A"
+                    destino.latitude = addressDestino.latitude.toString()
+                    destino.longitude = addressDestino.longitude.toString()
 
+                    val mensagem = StringBuilder()
+                    mensagem.append("Cidade: " + (destino.cidade ?: "N/A"))
+                    mensagem.append("\nRua: " + (destino.rua ?: "N/A"))
+                    mensagem.append("\nBairro: " + (destino.bairro ?: "N/A"))
 
-                    if (addressDestino.getSubAdminArea() == null) {
-                        destino.setCidade("N/A");
-                    } else {
-                        destino.setCidade(addressDestino.getSubAdminArea());
+                    val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                    val view2 = LayoutInflater.from(this)
+                        .inflate(R.layout.layout_success_dialog, findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccessOk))
+                    builder.setView(view2)
+                    view2.findViewById<TextView>(R.id.textTitleSuccess).text = resources.getString(R.string.success_title_confirme_viagem)
+                    view2.findViewById<TextView>(R.id.textMessageSuccess).text = mensagem
+                    view2.findViewById<Button>(R.id.buttonConfirmaSuccess).text = resources.getString(R.string.confirmar)
+                    view2.findViewById<Button>(R.id.buttonCancelSuccess).text = resources.getString(R.string.cancelar)
+                    view2.findViewById<ImageView>(R.id.imageIconSuccess).setImageResource(R.drawable.logo)
+
+                    val alertDialog = builder.create()
+
+                    view2.findViewById<View>(R.id.buttonConfirmaSuccess).setOnClickListener {
+                        alertDialog.dismiss()
+                        salvarRequisicao(destino)
+
+                        Requisicao().salvarHistorico(destino)
                     }
 
-                    if (addressDestino.getPostalCode() == null) {
-                        destino.setCep("N/A");
-                    } else {
-                        destino.setCep(addressDestino.getPostalCode());
+                    view2.findViewById<View>(R.id.buttonCancelSuccess).setOnClickListener {
+                        alertDialog.dismiss()
                     }
 
-                    if (addressDestino.getSubLocality() == null) {
-                        destino.setBairro("N/A");
-                    } else {
-                        destino.setBairro(addressDestino.getSubLocality());
-                    }
-
-                    if (addressDestino.getThoroughfare() == null) {
-                        destino.setRua("N/A");
-                    } else {
-                        destino.setRua(addressDestino.getThoroughfare());
-                    }
-
-                    if (addressDestino.getFeatureName() == null) {
-                        destino.setNumero("N/A");
-                    } else {
-                        destino.setNumero(addressDestino.getFeatureName());
-                    }
-
-                    destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
-                    destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
-
-
-                    //CONTROI O ARRAY DE CONFIRMAÇÃO DE ENDEREÇO AO CHAMAR O MIOPER
-                    StringBuilder mensagem = new StringBuilder();
-
-                    if (destino.getCidade() != null) {
-                        mensagem.append("Cidade: " + destino.getCidade());
-                    } else {
-
-                        mensagem.append("Cidade: " + "N/A");
-                    }
-
-
-                    if (destino.getRua() != null) {
-
-                        mensagem.append("\nRua: " + destino.getRua());
-                    } else {
-                        mensagem.append("\nRua: " + "N/A");
-                    }
-
-
-                    if (destino.getBairro() != null) {
-
-                        mensagem.append("\nBairro: " + destino.getBairro());
-                    } else {
-                        mensagem.append("\nBairro: " + "N/A");
-                    }
-
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Passageiro.this, R.style.AlertDialogTheme);
-                    View view2 = LayoutInflater.from(Passageiro.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-                    builder.setView(view2);
-                    ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.success_title_confirme_viagem));
-                    ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(mensagem);
-                    ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
-                    ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
-                    ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
-
-                    final AlertDialog alertDialog = builder.create();
-
-                    view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-                            //salvar requisição
-                            salvarRequisicao(destino);
-
-                            //SALVAR HISTORICO DO USUÁRIO
-                            Requisicao requisicao1 = new Requisicao();
-                            requisicao1.salvarHistorico(destino);
-
-                        }
-                    });
-
-                    view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-
-                        }
-                    });
-
-
-                    if (alertDialog.getWindow() != null) {
-                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    }
-                    alertDialog.show();
+                    alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+                    alertDialog.show()
                 }
-
             } else {
-                Toast.makeText(this,
-                        "Informe o endereço de destino!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Informe o endereço de destino!", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
-
-    //RECUPERA ENDEREÇO ATUAL DO PASSAGEIRO ATRAVES DA LATITUDE E LONGITUDE
-    private void getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+    private fun getCompleteAddressString(LATITUDE: Double, LONGITUDE: Double) {
         try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            val addresses = Geocoder(this, Locale.getDefault()).getFromLocation(LATITUDE, LONGITUDE, 1)
 
-            if (addresses != null && addresses.size() > 0) {
-                endereco = addresses.get(0).getThoroughfare(); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                cidade = addresses.get(0).getSubAdminArea();
-                bairro = addresses.get(0).getSubLocality();
+            if (!addresses.isNullOrEmpty()) {
+                endereco = addresses[0].thoroughfare
+                cidade = addresses[0].subAdminArea
+                bairro = addresses[0].subLocality
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-
     }
 
+    private fun salvarRequisicao(destino: Destino) {
+        val requisicao = Requisicao()
+        requisicao.destino = destino
 
-    private void salvarRequisicao(Destino destino) {
+        val usuarioPassageiro = UsuarioFirebase.getDadosUsuarioLogado()
+        usuarioPassageiro.latitude = localPassageiro!!.latitude.toString()
+        usuarioPassageiro.longitude = localPassageiro!!.longitude.toString()
+        usuarioPassageiro.enderecoAtualUsuario = endereco
+        usuarioPassageiro.cidadeAtualUsuario = cidade
+        usuarioPassageiro.bairroAtualUsuario = bairro
 
-        Requisicao requisicao = new Requisicao();
-        requisicao.setDestino(destino);
+        requisicao.passageiro = usuarioPassageiro
+        requisicao.status = Requisicao.STATUS_AGUARDANDO
+        requisicao.salvar()
 
-        UserProfile usuarioPassageiro = UsuarioFirebase.getDadosUsuarioLogado();
-        usuarioPassageiro.setLatitude(String.valueOf(localPassageiro.latitude));
-        usuarioPassageiro.setLongitude(String.valueOf(localPassageiro.longitude));
-        usuarioPassageiro.enderecoAtualUsuario = endereco;
-        usuarioPassageiro.cidadeAtualUsuario = cidade;
-        usuarioPassageiro.bairroAtualUsuario = bairro;
-
-
-        requisicao.setPassageiro(usuarioPassageiro);
-        requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
-        requisicao.salvar();
-
-        linearLayoutDestino.setVisibility(View.GONE);
-        buttonChamarUber.setText("Cancelar Mioper");
-
+        linearLayoutDestino.visibility = View.GONE
+        buttonChamarUber.text = "Cancelar Mioper"
     }
 
-    //RECUPERA ENDEREÇO DIGITADO PELO USUÁRIO E VERIFICA NA NUVEM SE EXISTE
-    private Address recuperarEndereco(String endereco) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+    private fun recuperarEndereco(endereco: String): Address? {
+        val geocoder = Geocoder(this, Locale.getDefault())
         try {
-
-            List<Address> listaEnderecos = geocoder.getFromLocationName(endereco, 1);
-            if (listaEnderecos != null && listaEnderecos.size() > 0) {
-                Address address = listaEnderecos.get(0);
-
-                return address;
-
+            val listaEnderecos = geocoder.getFromLocationName(endereco, 1)
+            if (!listaEnderecos.isNullOrEmpty()) {
+                return listaEnderecos[0]
             } else {
-                Toast.makeText(this,
-                        "Ops! Endereço não encontrado.",
-                        Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this, "Ops! Endereço não encontrado.", Toast.LENGTH_SHORT).show()
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
 
-        return null;
-
+        return null
     }
 
+    private fun recuperarLocalizacaoUsuario() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-    //RECUPERA LATITUDE E LONGITUDE ATUAL DO USUARIO
-    private void recuperarLocalizacaoUsuario() {
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                val latitude = location.latitude
+                val longitude = location.longitude
+                _latitude = latitude
+                _longitude = longitude
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+                localPassageiro = LatLng(latitude, longitude)
 
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+                UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude)
 
-                //latitude e longitude
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                _latitude = latitude;
-                _longitude = longitude;
+                alteraInterfaceStatusRequisicao(statusRequisicao)
 
-
-                localPassageiro = new LatLng(latitude, longitude);
-
-                //Atualizar GeoFire
-                UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
-
-                //Altera interface de acordo com o status
-                alteraInterfaceStatusRequisicao(statusRequisicao);
-
-                if (statusRequisicao != null && !statusRequisicao.isEmpty()) {
-                    if (statusRequisicao.equals(Requisicao.STATUS_VIAGEM)
-                            || statusRequisicao.equals(Requisicao.STATUS_FINALIZADA)) {
-                        locationManager.removeUpdates(locationListener);
-                    } else {
-
-                        //RECUPERA A LOCALIZAÇÃO (LATITUDE E LONGITUDE) AUTOMATICAMENTE DO USUÁRIO
-                        if (ActivityCompat.checkSelfPermission(Passageiro.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            locationManager.requestLocationUpdates(
-                                    LocationManager.GPS_PROVIDER,
-                                    10000,
-                                    10,
-                                    locationListener
-                            );
-                        }
+                val status = statusRequisicao
+                if (!status.isNullOrEmpty()) {
+                    if (status == Requisicao.STATUS_VIAGEM || status == Requisicao.STATUS_FINALIZADA) {
+                        locationManager.removeUpdates(locationListener)
+                    } else if (ActivityCompat.checkSelfPermission(
+                            this@Passageiro,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        locationManager.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER,
+                            10000,
+                            10f,
+                            locationListener
+                        )
                     }
                 }
             }
 
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
             }
 
-            @Override
-            public void onProviderEnabled(String provider) {
-
+            override fun onProviderEnabled(provider: String) {
             }
 
-            @Override
-            public void onProviderDisabled(String provider) {
-
+            override fun onProviderDisabled(provider: String) {
             }
-        };
+        }
 
-
-        //Solicitar atualizações de localização
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    10000,
-                    10,
-                    locationListener
-            );
+                LocationManager.GPS_PROVIDER,
+                10000,
+                10f,
+                locationListener
+            )
         }
-
-
     }
 
+    private fun inicializarComponentes() {
+        editDestino = findViewById(R.id.editDestino)
+        linearLayoutDestino = findViewById(R.id.linearLayoutDestino)
+        buttonChamarUber = findViewById(R.id.buttonChamarUber)
 
-    private void inicializarComponentes() {
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao()
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase()
 
-        //Inicializar componentes
-        editDestino = findViewById(R.id.editDestino);
-        linearLayoutDestino = findViewById(R.id.linearLayoutDestino);
-        buttonChamarUber = findViewById(R.id.buttonChamarUber);
-
-        //Configurações iniciais
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
+    companion object {
+        var endereco: String? = null
+        var cidade: String? = null
+        var bairro: String? = null
 
-    //region Criação do Menu Toolbar XML
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.principal
-                , menu);
-        return true;
-    }
-    //endregion
-
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();  //Método para matar a activity e não deixa-lá indexada na pilhagem
-                break;
-            default:
-                break;
+        fun isOnline(context: Context): Boolean {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val netInfo = cm.activeNetworkInfo
+            return netInfo != null && netInfo.isConnected
         }
-        return true;
     }
-
-
-    //VERIFICA SE EXISTE CONEXÃO COM A INTERNET
-    public static boolean isOnline(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-        if (netInfo != null && netInfo.isConnected())
-            return true;
-        else
-            return false;
-    }
-
-
 }

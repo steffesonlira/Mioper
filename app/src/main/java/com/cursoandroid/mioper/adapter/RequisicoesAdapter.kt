@@ -1,95 +1,64 @@
-package com.cursoandroid.mioper.adapter;
+package com.cursoandroid.mioper.adapter
 
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.model.Local
+import com.cursoandroid.mioper.model.Requisicao
+import com.cursoandroid.mioper.model.UserProfile
+import com.google.android.gms.maps.model.LatLng
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+class RequisicoesAdapter(
+    private val requisicoes: List<Requisicao>,
+    private val context: Context,
+    private val motorista: UserProfile?
+) : RecyclerView.Adapter<RequisicoesAdapter.MyViewHolder>() {
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.cursoandroid.mioper.model.Destino;
-import com.cursoandroid.mioper.model.Local;
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.model.Requisicao;
-import com.cursoandroid.mioper.model.UserProfile;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.List;
-
-public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.MyViewHolder> {
-
-    private List<Requisicao> requisicoes;
-    private Context context;
-    private UserProfile motorista;
-
-    public RequisicoesAdapter(List<Requisicao> requisicoes, Context context, UserProfile motorista) {
-        this.requisicoes = requisicoes;
-        this.context = context;
-        this.motorista = motorista;
-
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val item = LayoutInflater.from(parent.context).inflate(R.layout.adapter_requisicoes, parent, false)
+        return MyViewHolder(item)
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_requisicoes, parent, false);
-        return new MyViewHolder(item);
-    }
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val requisicao = requisicoes[position]
+        val passageiro = requisicao.passageiro!!
+        val destino = requisicao.destino
 
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-
-        Requisicao requisicao = requisicoes.get(position);
-        UserProfile passageiro = requisicao.getPassageiro();
-        Destino destino = requisicao.getDestino();
-
-        holder.nome.setText("Passageiro: " + passageiro.getName());
+        holder.nome.text = "Passageiro: " + passageiro.name
         try {
             if (motorista != null) {
+                val localPassageiro = LatLng(
+                    passageiro.latitude!!.toDouble(),
+                    passageiro.longitude!!.toDouble()
+                )
 
-                LatLng localPassageiro = new LatLng(
-                        Double.parseDouble(passageiro.getLatitude()),
-                        Double.parseDouble(passageiro.getLongitude())
-                );
+                val localMotorista = LatLng(
+                    motorista.latitude!!.toDouble(),
+                    motorista.longitude!!.toDouble()
+                )
 
-                LatLng localMotorista = new LatLng(
-                        Double.parseDouble(motorista.getLatitude()),
-                        Double.parseDouble(motorista.getLongitude())
-                );
-
-                float distancia = Local.calcularDistancia(localPassageiro, localMotorista);
-                String distanciaFormatada = Local.formatarDistancia(distancia);
-                holder.endereco.setText("Local Atual: " + passageiro.enderecoAtualUsuario + " - " + passageiro.bairroAtualUsuario + " - " + passageiro.cidadeAtualUsuario);
-                holder.destino.setText("Destino: " + destino.getRua() + " - " + destino.getBairro() + " - " + destino.getCidade());
-                holder.distancia.setText("Distância aproximada até o passageiro: " + distanciaFormatada);
-
+                val distancia = Local.calcularDistancia(localPassageiro, localMotorista)
+                val distanciaFormatada = Local.formatarDistancia(distancia)
+                holder.endereco.text = "Local Atual: " + passageiro.enderecoAtualUsuario + " - " + passageiro.bairroAtualUsuario + " - " + passageiro.cidadeAtualUsuario
+                holder.destino.text = "Destino: " + destino!!.rua + " - " + destino.bairro + " - " + destino.cidade
+                holder.distancia.text = "Distância aproximada até o passageiro: $distanciaFormatada"
             }
-        } catch (Exception e) {
-            Log.d("ERRO!", "onKeyEntered: Algum erro interno occoreu." + e.getMessage());
+        } catch (e: Exception) {
+            Log.d("ERRO!", "onKeyEntered: Algum erro interno occoreu." + e.message)
         }
-
     }
 
-    @Override
-    public int getItemCount() {
-        return requisicoes.size();
-    }
+    override fun getItemCount(): Int = requisicoes.size
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView nome, distancia, endereco, destino;
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-
-            nome = itemView.findViewById(R.id.textRequisicaoNome);
-            distancia = itemView.findViewById(R.id.textRequisicaoDistancia);
-            endereco = itemView.findViewById(R.id.textRequisicaoEndereco);
-            destino = itemView.findViewById(R.id.textRequisicaoDestino);
-
-        }
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nome: TextView = itemView.findViewById(R.id.textRequisicaoNome)
+        val distancia: TextView = itemView.findViewById(R.id.textRequisicaoDistancia)
+        val endereco: TextView = itemView.findViewById(R.id.textRequisicaoEndereco)
+        val destino: TextView = itemView.findViewById(R.id.textRequisicaoDestino)
     }
 }

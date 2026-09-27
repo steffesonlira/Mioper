@@ -1,58 +1,51 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 
-public class Mask {
-    public static final String FORMAT_CPF = "###.###.###-##";
-    public static final String FORMAT_FONE = "(##)#####-####";
-    public static final String FORMAT_CEP = "#####-###";
-    public static final String FORMAT_DATE = "##/##/####";
-    public static final String FORMAT_HOUR = "##:##";
+object Mask {
+    const val FORMAT_CPF = "###.###.###-##"
+    const val FORMAT_FONE = "(##)#####-####"
+    const val FORMAT_CEP = "#####-###"
+    const val FORMAT_DATE = "##/##/####"
+    const val FORMAT_HOUR = "##:##"
 
-    public static TextWatcher mask(final EditText ediTxt, final String mask) {
+    fun mask(ediTxt: EditText, mask: String): TextWatcher {
+        return object : TextWatcher {
+            var isUpdating = false
+            var old = ""
 
-        return new TextWatcher() {
-            boolean isUpdating;
-            String old = "";
+            override fun afterTextChanged(s: Editable) {}
 
-            @Override
-            public void afterTextChanged(final Editable s) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                final String str = Mask.unmask(s.toString());
-                String mascara = "";
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val str = unmask(s.toString())
                 if (isUpdating) {
-                    old = str;
-                    isUpdating = false;
-                    return;
+                    old = str
+                    isUpdating = false
+                    return
                 }
-                int i = 0;
-                for (final char m : mask.toCharArray()) {
-                    if (m != '#' && str.length() > old.length()) {
-                        mascara += m;
-                        continue;
+                val mascara = StringBuilder()
+                var i = 0
+                for (m in mask) {
+                    if (m != '#' && str.length > old.length) {
+                        mascara.append(m)
+                        continue
                     }
-                    try {
-                        mascara += str.charAt(i);
-                    } catch (final Exception e) {
-                        break;
-                    }
-                    i++;
+                    if (i >= str.length) break
+                    mascara.append(str[i])
+                    i++
                 }
-                isUpdating = true;
-                ediTxt.setText(mascara);
-                ediTxt.setSelection(mascara.length());
+                isUpdating = true
+                ediTxt.setText(mascara)
+                ediTxt.setSelection(mascara.length)
             }
-        };
+        }
     }
 
-    public static String unmask(final String s) {
-        return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[:]", "").replaceAll("[)]", "");
+    fun unmask(s: String): String {
+        return s.replace(Regex("[.\\-/( :)]"), "")
     }
 }

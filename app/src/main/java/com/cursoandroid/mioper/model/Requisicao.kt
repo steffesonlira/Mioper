@@ -1,181 +1,83 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
 
-import java.util.HashMap;
-import java.util.Map;
+class Requisicao {
+    var id: String? = null
+    var status: String? = null
+    var passageiro: UserProfile? = null
+    var motorista: UserProfile? = null
+    var destino: Destino? = null
 
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getUsuarioAtual;
+    fun salvar() {
+        val requisicoes = ConfiguracaoFirebase.getFirebaseDatabase().child("requisicoes")
 
-public class Requisicao {
-    private String id;
-    private String status;
-    private UserProfile passageiro;
-    private UserProfile motorista;
-    private Destino destino;
-
-
-    public static final String STATUS_AGUARDANDO = "aguardando";
-    public static final String STATUS_A_CAMINHO = "acaminho";
-    public static final String STATUS_VIAGEM = "viagem";
-    public static final String STATUS_FINALIZADA = "finalizada";
-    public static final String STATUS_ENCERRADA = "encerrada";
-    public static final String STATUS_CANCELADA = "cancelada";
-    static String idRequisicaoHistorico;
-
-
-    public Requisicao() {
+        id = requisicoes.push().key
+        requisicoes.child(id!!).setValue(this)
     }
 
+    fun salvarHistorico(destino: Destino?) {
+        val historico = ConfiguracaoFirebase.getFirebaseDatabase()
+            .child("historicoUsuario")
+            .child(emailUsuarioComoChave())
 
-    public void salvar() {
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-
-        String idRequisicao = requisicoes.push().getKey();
-        setId(idRequisicao);
-
-        requisicoes.child(getId()).setValue(this);
-
+        idRequisicaoHistorico = historico.push().key
+        id = idRequisicaoHistorico
+        historico.child(id!!).setValue(destino)
     }
 
-    //SALVAR HISTORICO DO USUARIO
-    public void salvarHistorico(Destino destino) {
-
-        FirebaseUser firebaseUser = getUsuarioAtual();
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-
-        String userEmail = firebaseUser.getEmail();
-        String userMailReplaced = userEmail.replace('.', '-');
-
-
-        DatabaseReference historico = firebaseRef.child("historicoUsuario").child(userMailReplaced);
-
-        idRequisicaoHistorico = historico.push().getKey();
-        setId(idRequisicaoHistorico);
-        historico.child(getId()).setValue(destino);
-
+    fun excluirHistorico() {
+        ConfiguracaoFirebase.getFirebaseDatabase()
+            .child("historicoUsuario")
+            .child(emailUsuarioComoChave())
+            .child(idRequisicaoHistorico!!)
+            .removeValue()
     }
 
-    public void excluirHistorico() {
-
-        FirebaseUser firebaseUser = getUsuarioAtual();
-        String userEmail = firebaseUser.getEmail();
-
-        String userMailReplaced = userEmail.replace('.', '-');
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef.child("historicoUsuario").child(userMailReplaced).child(idRequisicaoHistorico);
-
-        requisicoes.removeValue();
+    fun atualizar() {
+        val objeto = mapOf<String, Any?>(
+            "motorista" to motorista,
+            "status" to status
+        )
+        requisicaoRef().updateChildren(objeto)
     }
 
-    public void atualizar() {
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-
-        DatabaseReference requisicao = requisicoes.child(getId());
-
-        Map objeto = new HashMap();
-        objeto.put("motorista", getMotorista());
-        objeto.put("status", getStatus());
-
-        requisicao.updateChildren(objeto);
-
+    fun atualizarStatus() {
+        requisicaoRef().updateChildren(mapOf<String, Any?>("status" to status))
     }
 
-    public void atualizarStatus() {
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-
-        DatabaseReference requisicao = requisicoes.child(getId());
-
-        Map objeto = new HashMap();
-        objeto.put("status", getStatus());
-        requisicao.updateChildren(objeto);
-
+    fun atualizarLocalizacaoMotorista() {
+        val objeto = mapOf<String, Any?>(
+            "latitude" to motorista?.latitude,
+            "longitude" to motorista?.longitude
+        )
+        requisicaoRef().child("motorista").updateChildren(objeto)
     }
 
-    public void atualizarLocalizacaoMotorista() {
-
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef
-                .child("requisicoes");
-
-        DatabaseReference requisicao = requisicoes
-                .child(getId())
-                .child("motorista");
-
-        Map objeto = new HashMap();
-        objeto.put("latitude", getMotorista().getLatitude());
-        objeto.put("longitude", getMotorista().getLongitude());
-
-        requisicao.updateChildren(objeto);
-
+    fun atualizarLocalizacaoAtualPassageiro() {
+        val objeto = mapOf<String, Any?>(
+            "latitude_atual" to motorista?.latitude,
+            "longitude_atual" to motorista?.longitude
+        )
+        requisicaoRef().child("passageiro").updateChildren(objeto)
     }
 
+    private fun requisicaoRef() =
+        ConfiguracaoFirebase.getFirebaseDatabase().child("requisicoes").child(id!!)
 
-    public void atualizarLocalizacaoAtualPassageiro() {
+    // O Firebase não aceita "." em chaves de nó
+    private fun emailUsuarioComoChave() =
+        UsuarioFirebase.getUsuarioAtual()!!.email!!.replace('.', '-')
 
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef
-                .child("requisicoes");
+    companion object {
+        const val STATUS_AGUARDANDO = "aguardando"
+        const val STATUS_A_CAMINHO = "acaminho"
+        const val STATUS_VIAGEM = "viagem"
+        const val STATUS_FINALIZADA = "finalizada"
+        const val STATUS_ENCERRADA = "encerrada"
+        const val STATUS_CANCELADA = "cancelada"
 
-        DatabaseReference requisicao = requisicoes
-                .child(getId())
-                .child("passageiro");
-
-        Map objeto = new HashMap();
-        objeto.put("latitude_atual", getMotorista().getLatitude());
-        objeto.put("longitude_atual", getMotorista().getLongitude());
-
-        requisicao.updateChildren(objeto);
-
-    }
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public UserProfile getPassageiro() {
-        return passageiro;
-    }
-
-    public void setPassageiro(UserProfile passageiro) {
-        this.passageiro = passageiro;
-    }
-
-    public UserProfile getMotorista() {
-        return motorista;
-    }
-
-    public void setMotorista(UserProfile motorista) {
-        this.motorista = motorista;
-    }
-
-    public Destino getDestino() {
-        return destino;
-    }
-
-    public void setDestino(Destino destino) {
-        this.destino = destino;
+        private var idRequisicaoHistorico: String? = null
     }
 }

@@ -1,515 +1,401 @@
-package com.cursoandroid.mioper.view;
+package com.cursoandroid.mioper.view
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.cursoandroid.mioper.R
+import com.cursoandroid.mioper.adapter.RecyclerItemClickListener
+import com.cursoandroid.mioper.adapter.RequisicoesAdapter
+import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase
+import com.cursoandroid.mioper.firebase.UsuarioFirebase
+import com.cursoandroid.mioper.model.Requisicao
+import com.cursoandroid.mioper.model.UserProfile
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class Requisicoes : AppCompatActivity() {
 
-import com.cursoandroid.mioper.R;
-import com.cursoandroid.mioper.firebase.UsuarioFirebase;
-import com.cursoandroid.mioper.adapter.RecyclerItemClickListener;
-import com.cursoandroid.mioper.adapter.RequisicoesAdapter;
-import com.cursoandroid.mioper.firebase.ConfiguracaoFirebase;
-import com.cursoandroid.mioper.model.Requisicao;
-import com.cursoandroid.mioper.model.UserProfile;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+    private lateinit var recyclerRequisicoes: RecyclerView
+    private lateinit var textResultado: TextView
 
-import java.util.ArrayList;
-import java.util.List;
+    private lateinit var autenticacao: FirebaseAuth
+    private lateinit var firebaseRef: DatabaseReference
+    private val listaRequisicoes: MutableList<Requisicao> = ArrayList()
+    private lateinit var adapter: RequisicoesAdapter
+    private var motorista: UserProfile? = null
+    private var _dataSnapshot: DataSnapshot? = null
 
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getIdentificadorUsuario;
-import static com.cursoandroid.mioper.firebase.UsuarioFirebase.getUsuarioAtual;
+    private var nomeUsuario1: String? = null
+    private var celularUsuario: String? = null
+    private var senhaUsuario: String? = null
+    private var emailUsuario: String? = null
+    private var enderecoUsuario: String? = null
+    private var nascimentoUsuario: String? = null
+    private var cpfUsuario: String? = null
+    private var generoUsuario: String? = null
+    private var tipoUsuario: String? = null
 
-public class Requisicoes extends AppCompatActivity {
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
 
-    //Componentes
-    private RecyclerView recyclerRequisicoes;
-    private TextView textResultado;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_requisicoes)
 
-    private FirebaseAuth autenticacao;
-    private DatabaseReference firebaseRef;
-    private List<Requisicao> listaRequisicoes = new ArrayList<>();
-    private RequisicoesAdapter adapter;
-    private UserProfile motorista;
-    DataSnapshot _dataSnapshot;
+        // Carrega os dados do motorista para repassar à tela de Meus Dados
+        if (UsuarioFirebase.getUsuarioAtual() != null) {
+            Log.d("resultado", "onDataChange: " + UsuarioFirebase.getIdentificadorUsuario())
+            val usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
+                .child("Users")
+                .child(UsuarioFirebase.getIdentificadorUsuario())
+            usuariosRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    Log.d("resultado", "onDataChange: $dataSnapshot")
+                    val usuario = dataSnapshot.getValue(UserProfile::class.java)!!
 
-    String nomeUsuario1;
-    String celularUsuario;
-    String senhaUsuario;
-    String emailUsuario;
-    String enderecoUsuario;
-    String nascimentoUsuario;
-    String cpfUsuario;
-    String generoUsuario;
-    String tipoUsuario;
+                    _dataSnapshot = dataSnapshot
 
-
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requisicoes);
-
-
-        //FAZ CONSULTA NO FIREBASE PARA PASSAR OS DADOS DO MOTORISTA PARA TELA DE MEUS DADOS
-        FirebaseUser user = getUsuarioAtual();
-        if (user != null) {
-            Log.d("resultado", "onDataChange: " + getIdentificadorUsuario());
-            DatabaseReference usuariosRef = ConfiguracaoFirebase.getFirebaseDatabase()
-                    .child("Users")
-                    .child(getIdentificadorUsuario());
-            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("resultado", "onDataChange: " + dataSnapshot.toString());
-                    UserProfile usuario = dataSnapshot.getValue(UserProfile.class);
-
-                    _dataSnapshot = dataSnapshot;
-
-                    nomeUsuario1 = usuario.getName();
-                    celularUsuario = usuario.getMobile();
-                    senhaUsuario = usuario.getSenha();
-                    emailUsuario = usuario.getEmail();
-                    enderecoUsuario = usuario.getAdress();
-                    nascimentoUsuario = usuario.getNascimento();
-                    cpfUsuario = usuario.getCpf();
-                    generoUsuario = usuario.getGenero();
-                    tipoUsuario = usuario.getTipouser();
-
+                    nomeUsuario1 = usuario.name
+                    celularUsuario = usuario.mobile
+                    senhaUsuario = usuario.senha
+                    emailUsuario = usuario.email
+                    enderecoUsuario = usuario.adress
+                    nascimentoUsuario = usuario.nascimento
+                    cpfUsuario = usuario.cpf
+                    generoUsuario = usuario.genero
+                    tipoUsuario = usuario.tipouser
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                override fun onCancelled(databaseError: DatabaseError) {
                 }
-
-            });
+            })
         }
 
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.title = "Requisições"
 
-        //region Criando botão de voltar no toolbar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Requisições");
-        //endregion
+        inicializarComponentes()
 
-        inicializarComponentes();
-
-        //Recuperar localizacao do usuário
-        recuperarLocalizacaoUsuario();
+        recuperarLocalizacaoUsuario()
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
 
-        verificaStatusRequisicao();
+        verificaStatusRequisicao()
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        inicializarComponentes();
-        //Recuperar localizacao do usuário
-        recuperarLocalizacaoUsuario();
+    override fun onResume() {
+        super.onResume()
+        inicializarComponentes()
+        recuperarLocalizacaoUsuario()
     }
 
-    private void verificaStatusRequisicao() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
 
-        UserProfile usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-        DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                val builder2 = AlertDialog.Builder(this@Requisicoes, R.style.AlertDialogTheme)
+                val view2 = LayoutInflater.from(this@Requisicoes).inflate(
+                    R.layout.layout_success_dialog,
+                    findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccess)
+                )
+                builder2.setView(view2)
+                view2.findViewById<TextView>(R.id.textTitleSuccess).text = resources.getString(R.string.warning_title_requisicao)
+                view2.findViewById<TextView>(R.id.textMessageSuccess).text = resources.getString(R.string.text_desc_requisicao)
+                view2.findViewById<Button>(R.id.buttonConfirmaSuccess).text = resources.getString(R.string.confirmar)
+                view2.findViewById<Button>(R.id.buttonCancelSuccess).text = resources.getString(R.string.cancelar)
+                view2.findViewById<ImageView>(R.id.imageIconSuccess).setImageResource(R.drawable.logo)
 
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+                val alertDialog = builder2.create()
 
-        Query requisicoesPesquisa = requisicoes.orderByChild("motorista/id")
-                .equalTo(usuarioLogado.getId());
+                view2.findViewById<View>(R.id.buttonConfirmaSuccess).setOnClickListener {
+                    alertDialog.dismiss()
+                    autenticacao.signOut()
+                    val i = Intent(this@Requisicoes, Login::class.java)
+                    finishAffinity()
+                    startActivity(i)
+                }
 
-        requisicoesPesquisa.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                view2.findViewById<View>(R.id.buttonCancelSuccess).setOnClickListener {
+                    alertDialog.dismiss()
+                }
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+                alertDialog.show()
+            }
+            R.id.menuSair -> {
+                val builder3 = AlertDialog.Builder(this@Requisicoes, R.style.AlertDialogTheme)
+                val view3 = LayoutInflater.from(this@Requisicoes).inflate(
+                    R.layout.layout_success_dialog,
+                    findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccess)
+                )
+                builder3.setView(view3)
+                view3.findViewById<TextView>(R.id.textTitleSuccess).text = resources.getString(R.string.warning_title_requisicao)
+                view3.findViewById<TextView>(R.id.textMessageSuccess).text = resources.getString(R.string.text_desc_requisicao)
+                view3.findViewById<Button>(R.id.buttonConfirmaSuccess).text = resources.getString(R.string.confirmar)
+                view3.findViewById<Button>(R.id.buttonCancelSuccess).text = resources.getString(R.string.cancelar)
+                view3.findViewById<ImageView>(R.id.imageIconSuccess).setImageResource(R.drawable.logo)
 
-                    Requisicao requisicao = ds.getValue(Requisicao.class);
+                val alertDialogSair = builder3.create()
 
-                    if (requisicao.getStatus().equals(Requisicao.STATUS_A_CAMINHO)
-                            || requisicao.getStatus().equals(Requisicao.STATUS_VIAGEM)
-                            || requisicao.getStatus().equals(Requisicao.STATUS_FINALIZADA)) {
-                        motorista = requisicao.getMotorista();
-                        abrirTelaCorrida(requisicao.getId(), motorista, true);
+                view3.findViewById<View>(R.id.buttonConfirmaSuccess).setOnClickListener {
+                    alertDialogSair.dismiss()
+                    autenticacao.signOut()
+                    startActivity(Intent(this@Requisicoes, Login::class.java))
+                    finishAffinity()
+                }
+
+                view3.findViewById<View>(R.id.buttonCancelSuccess).setOnClickListener {
+                    alertDialogSair.dismiss()
+                }
+                alertDialogSair.window?.setBackgroundDrawable(ColorDrawable(0))
+                alertDialogSair.show()
+            }
+            R.id.gerenciarDados -> {
+                try {
+                    if (!_dataSnapshot!!.exists()) {
+                        val builder = AlertDialog.Builder(this@Requisicoes, R.style.AlertDialogTheme)
+                        val view4 = LayoutInflater.from(this@Requisicoes).inflate(
+                            R.layout.layout_successok_dialog,
+                            findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccessOk)
+                        )
+                        builder.setView(view4)
+                        view4.findViewById<TextView>(R.id.textTitleSuccessOk).text = resources.getString(R.string.success_title_nao_motorista)
+                        view4.findViewById<TextView>(R.id.textMessageSuccessOk).text = resources.getString(R.string.text_desc_nao_motorista)
+                        view4.findViewById<Button>(R.id.buttonSuccessOk).text = resources.getString(R.string.confirmar)
+                        view4.findViewById<ImageView>(R.id.imageIconSuccessOk).setImageResource(R.drawable.logo)
+
+                        val alertDialog2 = builder.create()
+
+                        view4.findViewById<View>(R.id.buttonSuccessOk).setOnClickListener {
+                            alertDialog2.dismiss()
+                        }
+                        alertDialog2.window?.setBackgroundDrawable(ColorDrawable(0))
+                        alertDialog2.show()
+                    } else {
+                        val i = Intent(this@Requisicoes, MeusDados::class.java)
+                        i.putExtra("name", nomeUsuario1)
+                        i.putExtra("mobile", celularUsuario)
+                        i.putExtra("senha", senhaUsuario)
+                        i.putExtra("email", emailUsuario)
+                        i.putExtra("adress", enderecoUsuario)
+                        i.putExtra("nascimento", nascimentoUsuario)
+                        i.putExtra("cpf", cpfUsuario)
+                        i.putExtra("genero", generoUsuario)
+                        i.putExtra("tipouser", tipoUsuario)
+
+                        startActivity(i)
                     }
-
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@Requisicoes,
+                        "Por Favor realize a operação novamente!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }
+        return true
     }
 
-    private void recuperarLocalizacaoUsuario() {
+    override fun onBackPressed() {
+        val builder2 = AlertDialog.Builder(this@Requisicoes, R.style.AlertDialogTheme)
+        val view2 = LayoutInflater.from(this@Requisicoes).inflate(
+            R.layout.layout_success_dialog,
+            findViewById<ConstraintLayout>(R.id.layoutDialogContainerSuccess)
+        )
+        builder2.setView(view2)
+        view2.findViewById<TextView>(R.id.textTitleSuccess).text = resources.getString(R.string.warning_title_requisicao)
+        view2.findViewById<TextView>(R.id.textMessageSuccess).text = resources.getString(R.string.text_desc_requisicao)
+        view2.findViewById<Button>(R.id.buttonConfirmaSuccess).text = resources.getString(R.string.confirmar)
+        view2.findViewById<Button>(R.id.buttonCancelSuccess).text = resources.getString(R.string.cancelar)
+        view2.findViewById<ImageView>(R.id.imageIconSuccess).setImageResource(R.drawable.logo)
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        val alertDialog = builder2.create()
 
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+        view2.findViewById<View>(R.id.buttonConfirmaSuccess).setOnClickListener {
+            alertDialog.dismiss()
+            autenticacao.signOut()
+            val i = Intent(this@Requisicoes, Login::class.java)
+            finishAffinity()
+            startActivity(i)
+        }
 
-                //recuperar latitude e longitude
-                String latitude = String.valueOf(location.getLatitude());
-                String longitude = String.valueOf(location.getLongitude());
+        view2.findViewById<View>(R.id.buttonCancelSuccess).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(0))
+        alertDialog.show()
+    }
 
-                //Atualizar GeoFire
-                UsuarioFirebase.atualizarDadosLocalizacao(
-                        location.getLatitude(),
-                        location.getLongitude()
-                );
+    private fun verificaStatusRequisicao() {
+        val usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado()
 
-                if (!latitude.isEmpty() && !longitude.isEmpty()) {
-                    motorista.setLatitude(latitude);
-                    motorista.setLongitude(longitude);
+        val requisicoesPesquisa = ConfiguracaoFirebase.getFirebaseDatabase()
+            .child("requisicoes")
+            .orderByChild("motorista/id")
+            .equalTo(usuarioLogado.id)
 
-                    adicionaEventoCliqueRecyclerView();
-                    locationManager.removeUpdates(locationListener);
-                    adapter.notifyDataSetChanged();
+        requisicoesPesquisa.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (ds in dataSnapshot.children) {
+                    val requisicao = ds.getValue(Requisicao::class.java)!!
+
+                    if (requisicao.status == Requisicao.STATUS_A_CAMINHO ||
+                        requisicao.status == Requisicao.STATUS_VIAGEM ||
+                        requisicao.status == Requisicao.STATUS_FINALIZADA
+                    ) {
+                        motorista = requisicao.motorista
+                        abrirTelaCorrida(requisicao.id, motorista, true)
+                    }
                 }
-
             }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+    }
 
+    private fun recuperarLocalizacaoUsuario() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                val latitude = location.latitude.toString()
+                val longitude = location.longitude.toString()
+
+                UsuarioFirebase.atualizarDadosLocalizacao(location.latitude, location.longitude)
+
+                if (latitude.isNotEmpty() && longitude.isNotEmpty()) {
+                    motorista!!.latitude = latitude
+                    motorista!!.longitude = longitude
+
+                    adicionaEventoCliqueRecyclerView()
+                    locationManager.removeUpdates(locationListener)
+                    adapter.notifyDataSetChanged()
+                }
             }
 
-            @Override
-            public void onProviderEnabled(String provider) {
-
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
             }
 
-            @Override
-            public void onProviderDisabled(String provider) {
-
+            override fun onProviderEnabled(provider: String) {
             }
-        };
 
-        //Solicitar atualizações de localização
+            override fun onProviderDisabled(provider: String) {
+            }
+        }
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    0,
-                    0,
-                    locationListener
-            );
+                LocationManager.GPS_PROVIDER,
+                0,
+                0f,
+                locationListener
+            )
         }
-
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private fun abrirTelaCorrida(idRequisicao: String?, motorista: UserProfile?, requisicaoAtiva: Boolean) {
+        val i = Intent(this@Requisicoes, Corrida::class.java)
+        i.putExtra("idRequisicao", idRequisicao)
+        i.putExtra("motorista", motorista)
+        i.putExtra("requisicaoAtiva", requisicaoAtiva)
+        startActivity(i)
     }
 
+    private fun inicializarComponentes() {
+        recyclerRequisicoes = findViewById(R.id.recyclerRequisicoes)
+        textResultado = findViewById(R.id.textResultado)
 
-    private void abrirTelaCorrida(String idRequisicao, UserProfile motorista, boolean requisicaoAtiva) {
-        Intent i = new Intent(Requisicoes.this, Corrida.class);
-        i.putExtra("idRequisicao", idRequisicao);
-        i.putExtra("motorista", motorista);
-        i.putExtra("requisicaoAtiva", requisicaoAtiva);
-        startActivity(i);
+        motorista = UsuarioFirebase.getDadosUsuarioLogado()
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao()
+        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase()
+
+        adapter = RequisicoesAdapter(listaRequisicoes, applicationContext, motorista!!)
+        recyclerRequisicoes.layoutManager = LinearLayoutManager(applicationContext)
+        recyclerRequisicoes.setHasFixedSize(true)
+        recyclerRequisicoes.adapter = adapter
+
+        recuperarRequisicoes()
     }
 
-    private void inicializarComponentes() {
-
-        // getSupportActionBar().setTitle("Requisições");
-
-        //Configura componentes
-        recyclerRequisicoes = findViewById(R.id.recyclerRequisicoes);
-        textResultado = findViewById(R.id.textResultado);
-
-        //Configurações iniciais
-        motorista = UsuarioFirebase.getDadosUsuarioLogado();
-        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
-        firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-
-        //Configurar RecyclerView
-        adapter = new RequisicoesAdapter(listaRequisicoes, getApplicationContext(), motorista);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerRequisicoes.setLayoutManager(layoutManager);
-        recyclerRequisicoes.setHasFixedSize(true);
-        recyclerRequisicoes.setAdapter(adapter);
-
-        recuperarRequisicoes();
-
-    }
-
-    private void adicionaEventoCliqueRecyclerView() {
-
-        //Adiciona evento de clique no recycler
+    private fun adicionaEventoCliqueRecyclerView() {
         recyclerRequisicoes.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getApplicationContext(),
-                        recyclerRequisicoes,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Requisicao requisicao = listaRequisicoes.get(position);
-                                abrirTelaCorrida(requisicao.getId(), motorista, false);
-                            }
+            RecyclerItemClickListener(
+                applicationContext,
+                recyclerRequisicoes,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        val requisicao = listaRequisicoes[position]
+                        abrirTelaCorrida(requisicao.id, motorista, false)
+                    }
 
-                            @Override
-                            public void onLongItemClick(View view, int position) {
+                    override fun onLongItemClick(view: View, position: Int) {
+                    }
 
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            }
-                        }
-                )
-        );
-
+                    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    }
+                }
+            )
+        )
     }
 
-    private void recuperarRequisicoes() {
+    private fun recuperarRequisicoes() {
+        val requisicaoPesquisa = firebaseRef.child("requisicoes")
+            .orderByChild("status")
+            .equalTo(Requisicao.STATUS_AGUARDANDO)
 
-        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-
-        Query requisicaoPesquisa = requisicoes.orderByChild("status")
-                .equalTo(Requisicao.STATUS_AGUARDANDO);
-
-        requisicaoPesquisa.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.getChildrenCount() > 0) {
-                    textResultado.setVisibility(View.GONE);
-                    recyclerRequisicoes.setVisibility(View.VISIBLE);
+        requisicaoPesquisa.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.childrenCount > 0) {
+                    textResultado.visibility = View.GONE
+                    recyclerRequisicoes.visibility = View.VISIBLE
                 } else {
-                    textResultado.setVisibility(View.VISIBLE);
-                    recyclerRequisicoes.setVisibility(View.GONE);
+                    textResultado.visibility = View.VISIBLE
+                    recyclerRequisicoes.visibility = View.GONE
                 }
 
-                listaRequisicoes.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Requisicao requisicao = ds.getValue(Requisicao.class);
-                    listaRequisicoes.add(requisicao);
+                listaRequisicoes.clear()
+                for (ds in dataSnapshot.children) {
+                    ds.getValue(Requisicao::class.java)?.let { listaRequisicoes.add(it) }
                 }
 
-                adapter.notifyDataSetChanged();
-
+                adapter.notifyDataSetChanged()
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            override fun onCancelled(databaseError: DatabaseError) {
             }
-        });
-
+        })
     }
-
-    //region onOptionsItemSelected() Ao clicar na seta voltar do toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-
-                AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-                View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
-                builder2.setView(view2);
-                ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
-                ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
-                ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
-                ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
-                ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
-
-                final AlertDialog alertDialog = builder2.create();
-
-                view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view2) {
-                        alertDialog.dismiss();
-                        autenticacao.signOut();
-                        Intent i = new Intent(Requisicoes.this, Login.class);
-                        finishAffinity();
-                        startActivity(i);
-
-                    }
-                });
-
-                view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-                if (alertDialog.getWindow() != null) {
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                }
-                alertDialog.show();
-                break;
-            case R.id.menuSair:
-                AlertDialog.Builder builder3 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-                View view3 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
-                builder3.setView(view3);
-                ((TextView) view3.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
-                ((TextView) view3.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
-                ((Button) view3.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
-                ((Button) view3.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
-                ((ImageView) view3.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
-
-                final AlertDialog alertDialogSair = builder3.create();
-
-                view3.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view2) {
-                        alertDialogSair.dismiss();
-                        autenticacao.signOut();
-                        Intent i = new Intent(Requisicoes.this, Login.class);
-                        startActivity(i);
-                        finishAffinity();
-
-                    }
-                });
-
-                view3.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialogSair.dismiss();
-                    }
-                });
-                if (alertDialogSair.getWindow() != null) {
-                    alertDialogSair.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                }
-                alertDialogSair.show();
-                break;
-            case R.id.gerenciarDados:
-                try {
-                    //SE NÃO EXISTIR DADOS DO MOTORISTA
-                    if (!_dataSnapshot.exists()) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-                        View view4 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_successok_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccessOk));
-                        builder.setView(view4);
-                        ((TextView) view4.findViewById(R.id.textTitleSuccessOk)).setText(getResources().getString(R.string.success_title_nao_motorista));
-                        ((TextView) view4.findViewById(R.id.textMessageSuccessOk)).setText(getResources().getString(R.string.text_desc_nao_motorista));
-                        ((Button) view4.findViewById(R.id.buttonSuccessOk)).setText(getResources().getString(R.string.confirmar));
-                        ((ImageView) view4.findViewById(R.id.imageIconSuccessOk)).setImageResource(R.drawable.logo);
-
-                        final AlertDialog alertDialog2 = builder.create();
-
-                        view4.findViewById(R.id.buttonSuccessOk).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog2.dismiss();
-                            }
-                        });
-                        if (alertDialog2.getWindow() != null) {
-                            alertDialog2.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                        }
-                        alertDialog2.show();
-                        break;
-                    } else {
-
-                        Intent i = new Intent(Requisicoes.this, MeusDados.class);
-                        i.putExtra("name", nomeUsuario1);
-                        i.putExtra("mobile", celularUsuario);
-                        i.putExtra("senha", senhaUsuario);
-                        i.putExtra("email", emailUsuario);
-                        i.putExtra("adress", enderecoUsuario);
-                        i.putExtra("nascimento", nascimentoUsuario);
-                        i.putExtra("cpf", cpfUsuario);
-                        i.putExtra("genero", generoUsuario);
-                        i.putExtra("tipouser", tipoUsuario);
-
-                        startActivity(i);
-                        break;
-
-                    }
-
-                } catch (Exception e) {
-                    Toast.makeText(Requisicoes.this,
-                            "Por Favor realize a operação novamente!",
-                            Toast.LENGTH_SHORT).show();
-                }
-
-        }
-        return true;
-    }
-
-    //BOTÃO INFERIOR ESQUERDO DE VOLTAR DO SISTEMA ANDROID
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(Requisicoes.this, R.style.AlertDialogTheme);
-        View view2 = LayoutInflater.from(Requisicoes.this).inflate(R.layout.layout_success_dialog, (ConstraintLayout) findViewById(R.id.layoutDialogContainerSuccess));
-        builder2.setView(view2);
-        ((TextView) view2.findViewById(R.id.textTitleSuccess)).setText(getResources().getString(R.string.warning_title_requisicao));
-        ((TextView) view2.findViewById(R.id.textMessageSuccess)).setText(getResources().getString(R.string.text_desc_requisicao));
-        ((Button) view2.findViewById(R.id.buttonConfirmaSuccess)).setText(getResources().getString(R.string.confirmar));
-        ((Button) view2.findViewById(R.id.buttonCancelSuccess)).setText(getResources().getString(R.string.cancelar));
-        ((ImageView) view2.findViewById(R.id.imageIconSuccess)).setImageResource(R.drawable.logo);
-
-        final AlertDialog alertDialog = builder2.create();
-
-        view2.findViewById(R.id.buttonConfirmaSuccess).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view2) {
-                alertDialog.dismiss();
-                autenticacao.signOut();
-                Intent i = new Intent(Requisicoes.this, Login.class);
-                finishAffinity();
-                startActivity(i);
-
-            }
-        });
-
-        view2.findViewById(R.id.buttonCancelSuccess).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.dismiss();
-            }
-        });
-        if (alertDialog.getWindow() != null) {
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        }
-        alertDialog.show();
-    }
-
 }

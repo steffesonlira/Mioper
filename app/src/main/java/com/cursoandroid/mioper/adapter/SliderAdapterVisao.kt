@@ -1,74 +1,56 @@
-package com.cursoandroid.mioper.adapter;
+package com.cursoandroid.mioper.adapter
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.viewpager.widget.PagerAdapter
+import com.cursoandroid.mioper.R
 
-import androidx.viewpager.widget.PagerAdapter;
+class SliderAdapterVisao(var context: Context) : PagerAdapter() {
 
-import com.cursoandroid.mioper.R;
+    var layoutInflater: LayoutInflater? = null
 
-public class SliderAdapterVisao extends PagerAdapter {
+    val slide_images = intArrayOf(
+        R.drawable.visao1,
+        R.drawable.visao2
+    )
 
-    Context context;
-    LayoutInflater layoutInflater;
+    val slide_headings = arrayOf(
+        "Ser Líder:",
+        "Entrega Responsável:"
+    )
 
-    public SliderAdapterVisao(Context context){
-        this.context = context;
+    val slide_descs = arrayOf(
+        "Ser a empresa líder no segmento de transporte coletivo",
+        "Ser uma empresa que seja referência na entrega de valores ao cliente"
+    )
+
+    override fun getCount(): Int = slide_headings.size
+
+    override fun isViewFromObject(view: View, o: Any): Boolean = view == o as RelativeLayout
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = layoutInflater!!.inflate(R.layout.slide_manifesto, container, false)
+
+        val slideImageView = view.findViewById<ImageView>(R.id.imgManifesto1)
+        val slideHeading = view.findViewById<TextView>(R.id.txtManifesto1)
+        val slideDescription = view.findViewById<TextView>(R.id.txtManifesto1Desc1)
+
+        slideImageView.setImageResource(slide_images[position])
+        slideHeading.text = slide_headings[position]
+        slideDescription.text = slide_descs[position]
+
+        container.addView(view)
+
+        return view
     }
 
-    //Arrays
-    public int[] slide_images = {
-            R.drawable.visao1,
-            R.drawable.visao2
-    };
-
-    public String[] slide_headings = {
-
-            "Ser Líder:",
-            "Entrega Responsável:"
-    };
-
-    public String[] slide_descs = {
-
-            "Ser a empresa líder no segmento de transporte coletivo",
-            "Ser uma empresa que seja referência na entrega de valores ao cliente"
-    };
-
-    @Override
-    public int getCount() {
-        return slide_headings.length;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object o) {
-        return view == (RelativeLayout) o;
-    }
-    @Override
-    public Object instantiateItem(ViewGroup container, int position){
-        layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        View view = layoutInflater.inflate(R.layout.slide_manifesto, container, false);
-
-        ImageView slideImageView =  view.findViewById(R.id.imgManifesto1);
-        TextView slideHeading = view.findViewById(R.id.txtManifesto1);
-        TextView slideDescription = view.findViewById(R.id.txtManifesto1Desc1);
-
-        slideImageView.setImageResource(slide_images[position]);
-        slideHeading.setText(slide_headings[position]);
-        slideDescription.setText(slide_descs[position]);
-
-        container.addView(view);
-
-        return view;
-
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object){
-        container.removeView((RelativeLayout)object);
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as RelativeLayout)
     }
 }

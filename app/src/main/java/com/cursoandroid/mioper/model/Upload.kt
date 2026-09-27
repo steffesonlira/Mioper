@@ -1,39 +1,27 @@
-package com.cursoandroid.mioper.model;
+package com.cursoandroid.mioper.model
 
-public class Upload {
+// Getters/setters explícitos para manter os nomes de propriedade que o Firebase já serializa ("nome", "name", "mImageUrl")
+class Upload {
 
-    private String mName;
-    private String mImageUrl;
+    private var mName: String? = null
+    private var mImageUrl: String? = null
 
-    public Upload(){
+    constructor()
 
+    constructor(name: String, imageUrl: String?) {
+        mName = if (name.trim().isEmpty()) "Nenhum nome" else name
+        mImageUrl = imageUrl
     }
 
-    public Upload(String name, String imageUrl){
+    fun getNome(): String? = mName
 
-        if(name.trim().equals("")){
-            name = "Nenhum nome";
-        }
-
-        mName = name;
-        mImageUrl = imageUrl;
+    fun setName(name: String?) {
+        mName = name
     }
 
-    public String getNome(){
-        return mName;
+    fun getmImageUrl(): String? = mImageUrl
+
+    fun setmImageUrl(imageUrl: String?) {
+        mImageUrl = imageUrl
     }
-
-    public void setName(String name){
-        mName = name;
-    }
-
-    public String getmImageUrl(){
-        return mImageUrl;
-    }
-
-    public void setmImageUrl(String imageUrl){
-        mImageUrl = imageUrl;
-    }
-
-
 }
